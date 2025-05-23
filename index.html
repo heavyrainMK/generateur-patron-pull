@@ -1,47 +1,225 @@
+<!--
+# *******************************************************
+# Nom ......... : index.html
+# Rôle ........ : Interface utilisateur pour la génération de patrons de pull personnalisés
+# Auteurs ..... : M, L, M
+# Version ..... : V2.0.0 du 23/05/2025
+# Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
+# Description . : Formulaire web interactif permettant de saisir les mesures corporelles
+#                 et spécifications techniques pour générer un patron de tricot personnalisé
+# Technologies : HTML5, CSS3, JavaScript
+# Dépendances . : style.css, script.js
+# Usage ....... : Ouvrir dans un navigateur web moderne
+# *******************************************************
+-->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Générateur de patron de pull</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Générateur de Patron de Pull Professionnel</title>
+  <!-- Lien vers la feuille de style CSS externe -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Conteneur principal de l'application -->
   <div class="container">
-    <h1>🧶 Générateur de patron de pull</h1>
-
+    <!-- En-tête avec titre principal et sous-titre -->
+    <h1><span class="emoji">🧶</span> <span class="gradient-text">Générateur de Patron de Pull</span></h1>
+    <p class="subtitle">Créez des patrons de pulls personnalisés et professionnels</p>
+    
+    <!-- Formulaire principal pour saisir toutes les mesures et paramètres -->
     <form id="formulaire">
-      <label>🧶 Nombre de mailles</label>
-      <input type="number" name="nombre_mailles" required>
+      <div class="form-container">
 
-      <label>🧶 Nombre de rangs</label>
-      <input type="number" name="nombre_rangs" required>
+        <!-- SECTION 1: Spécifications techniques du tricot -->
+        <div class="form-section yarn">
+          <h2><span class="section-icon">🧶</span> Spécifications techniques</h2>
+          <div class="two-column">
+            <!-- Échantillon de mailles -->
+            <label>
+              <span class="label-text">🧶 Mailles dans 10 cm</span>
+              <span class="help-text">Échantillon en jersey endroit</span>
+              <input type="number" name="mailles_10cm" step="0.5" min="10" max="50" required />
+            </label>
+            <!-- Échantillon de rangs : pour calculer la hauteur -->
+            <label>
+              <span class="label-text">🧶 Rangs dans 10 cm</span>
+              <span class="help-text">Échantillon en jersey endroit</span>
+              <input type="number" name="rangs_10cm" step="0.5" min="10" max="80" required />
+            </label>
+            <!-- Taille des aiguilles pour le corps principal -->
+            <label>
+              <span class="label-text">🪡 Taille d'aiguilles (mm)</span>
+              <span class="help-text">Pour le corps du pull</span>
+              <input type="number" name="taille_aig_corps" step="0.25" min="2" max="12" required />
+            </label>
+            <!-- Taille des aiguilles pour les côtes -->
+            <label>
+              <span class="label-text">🪡 Taille d'aiguilles côtes (mm)</span>
+              <span class="help-text">Généralement 0,5 mm plus petites</span>
+              <input type="number" name="taille_aig_cotes" step="0.25" min="1.5" max="11" required />
+            </label>
+          </div>
+        </div>
 
-      <label>📏 Tour de poitrine (cm)</label>
-      <input type="number" name="tour_poitrine" required>
+        <!-- SECTION 2: Mesures du corps -->
+        <div class="form-section body">
+          <h2><span class="section-icon">👤</span> Mesures corporelles</h2>
+          <div class="two-column">
+            <!-- Mesure du cou pour calculer l'encolure -->
+            <label>
+              <span class="label-text">📏 Tour de cou (cm)</span>
+              <span class="help-text">Mesurer à la base du cou</span>
+              <input type="number" name="tour_cou" step="0.5" min="25" max="50" required />
+            </label>
+            <!-- Tour de poitrine -->
+            <label>
+              <span class="label-text">📏 Tour de poitrine (cm)</span>
+              <span class="help-text">Mesurer au point le plus large</span>
+              <input type="number" name="tour_poitrine" step="0.5" min="60" max="150" required />
+            </label>
+            <!-- Tour de taille pour l'ajustement -->
+            <label>
+              <span class="label-text">📏 Tour de taille (cm)</span>
+              <span class="help-text">À la taille naturelle</span>
+              <input type="number" name="tour_taille" step="0.5" min="50" max="130" required />
+            </label>
+            <!-- Hauteur pour calculer la longueur du torse -->
+            <label>
+              <span class="label-text">📏 Hauteur nuque-taille (cm)</span>
+              <span class="help-text">De la nuque à la taille naturelle</span>
+              <input type="number" name="hauteur_nuque_taille" step="0.5" min="30" max="70" required />
+            </label>
+            <!-- Tour de hanches pour l'ajustement du bas -->
+            <label>
+              <span class="label-text">📏 Tour de hanches (cm)</span>
+              <span class="help-text">Au point le plus large</span>
+              <input type="number" name="tour_hanches" step="0.5" min="60" max="150" required />
+            </label>
+            <!-- Largeur d'épaules pour le placement des manches -->
+            <label>
+              <span class="label-text">📏 Largeur d'épaules (cm)</span>
+              <span class="help-text">D'une épaule à l'autre</span>
+              <input type="number" name="largeur_epaules" step="0.5" min="30" max="60" required />
+            </label>
+            <!-- Hauteur d'emmanchure pour calculer les manches -->
+            <label>
+              <span class="label-text">📏 Hauteur d'emmanchure (cm)</span>
+              <span class="help-text">De l'épaule à l'aisselle</span>
+              <input type="number" name="hauteur_emmanchure" step="0.5" min="15" max="30" required />
+            </label>
+          </div>
+          <!-- Longueur totale souhaitée : dimension finale du pull -->
+          <label class="full-width">
+            <span class="label-text">📏 Longueur totale désirée (cm)</span>
+            <span class="help-text">Du haut de l'épaule au bas du pull</span>
+            <input type="number" name="longueur_totale" step="0.5" min="40" max="80" required />
+          </label>
+        </div>
 
-      <label>📏 Longueur des bras (cm)</label>
-      <input type="number" name="longueur_bras" required>
+        <!-- SECTION 3: Mesures des bras pour les manches -->
+        <div class="form-section arms">
+          <h2><span class="section-icon">💪</span> Mesures des bras</h2>
+          <div class="two-column">
+            <!-- Longueur des manches depuis l'épaule -->
+            <label>
+              <span class="label-text">📏 Longueur des manches (cm)</span>
+              <span class="help-text">De l'épaule au poignet</span>
+              <input type="number" name="longueur_manches" step="0.5" min="30" max="70" required />
+            </label>
+            <!-- Tour de bras pour calculer la largeur des manches -->
+            <label>
+              <span class="label-text">📏 Tour de bras (cm)</span>
+              <span class="help-text">Au biceps, bras détendu</span>
+              <input type="number" name="tour_bras" step="0.5" min="20" max="50" required />
+            </label>
+            <!-- Tour de poignet pour les côtes des manches -->
+            <label>
+              <span class="label-text">📏 Tour de poignet (cm)</span>
+              <span class="help-text">À la base de la main</span>
+              <input type="number" name="tour_poignet" step="0.5" min="12" max="25" required />
+            </label>
+            <!-- Tour de coude pour l'ajustement des manches -->
+            <label>
+              <span class="label-text">📏 Tour de coude (cm)</span>
+              <span class="help-text">Au coude fléchi</span>
+              <input type="number" name="tour_coude" step="0.5" min="18" max="35" required />
+            </label>
+          </div>
+        </div>
 
-      <label>📏 Tour de tête (cm)</label>
-      <input type="number" name="tour_tete" required>
+        <!-- SECTION 4: Options de style et finitions -->
+        <div class="form-section success">
+          <h2><span class="section-icon">✨</span> Style et finitions</h2>
+          <!-- Aisance : espace supplémentaire pour le confort -->
+          <label>
+            <span class="label-text">Aisance (cm) :</span>
+            <input type="number" name="aisance" step="0.5" min="-2" max="25" value="10" required />
+            <span class="help-text">Exemples : Très ajusté (-5 à 0 cm), Ajusté (5-10 cm), Standard (15-20 cm), Large (25-30 cm)</span>
+          </label>
+          <!-- Choix d'application de l'aisance -->
+          <label>
+            <span class="label-text">Appliquer l'aisance à :</span>
+            <div class="radio-group">
+              <!-- Option par défaut : aisance seulement sur le corps -->
+              <label class="radio-option">
+                <input type="radio" name="appliquer_aisance" value="corps_seulement" checked />
+                <span class="radio-label">Corps seulement</span>
+              </label>
+              <!-- Option alternative : aisance sur corps et manches -->
+              <label class="radio-option">
+                <input type="radio" name="appliquer_aisance" value="corps_et_manches" />
+                <span class="radio-label">Corps et manches</span>
+              </label>
+            </div>
+          </label>
+          <!-- Type d'encolure - affecte le calcul du col -->
+          <label>
+            <span class="label-text">Type d'encolure :</span>
+            <select name="encolure" required>
+              <option value="">-- Choisissez --</option>
+              <option value="ras_cou">Ras du cou</option>
+              <option value="v">Encolure en V</option>
+              <option value="ronde">Encolure arrondie</option>
+              <option value="bateau">Encolure bateau</option>
+            </select>
+          </label>
+          <div class="two-column">
+            <!-- Longueur des côtes du bas (bordure élastique) -->
+            <label>
+              <span class="label-text">📏 Longueur côtes du bas (cm)</span>
+              <span class="help-text">Bordure élastique du bas</span>
+              <input type="number" name="cotes_bas" step="0.5" min="2" max="15" value="5" required />
+            </label>
+            <!-- Longueur des côtes aux poignets -->
+            <label>
+              <span class="label-text">📏 Longueur côtes poignets (cm)</span>
+              <span class="help-text">Bordure élastique des manches</span>
+              <input type="number" name="cotes_poignets" step="0.5" min="2" max="10" value="5" required />
+            </label>
+          </div>
+        </div>
 
-      <label>📏 Hauteur nuque → aisselles (cm)</label>
-      <input type="number" name="hauteur_nuque_aisselles" required>
+      </div>
 
-      <label>📏 Hauteur totale (de la nuque jusqu’en bas) (cm)</label>
-      <input type="number" name="hauteur_totale" required>
-
-      <label>⚖️ Aisance (positive ou négative) (cm)</label>
-      <input type="number" name="aisance" step="0.1" required>
-
-      <button type="submit">Générer le patron</button>
+      <!-- Bouton de soumission du formulaire -->
+      <button type="submit">🧶 Générer le patron</button>
     </form>
 
-    <div id="résultat"></div>
+    <!-- Boutons d'action supplémentaires -->
+    <div class="action-buttons">
+      <!-- Bouton de téléchargement PDF (masqué initialement) -->
+      <button type="button" class="secondary-button" onclick="telechargerPDF()" style="display: none;" id="downloadBtn">📄 Télécharger en PDF</button>
+    </div>
 
-    <button onclick="telechargerPDF()">📄 Télécharger en PDF</button>
+    <!-- Zones d'affichage des messages et résultats -->
+    <div id="message"></div>     <!-- Pour les messages d'erreur ou de statut -->
+    <div id="résultat"></div>    <!-- Pour afficher le patron généré -->
   </div>
 
+  <!-- Lien vers le fichier JavaScript qui gère la logique -->
   <script src="script.js"></script>
 </body>
 </html>

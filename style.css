@@ -1,37 +1,288 @@
+/*
+# *******************************************************
+# Nom ......... : style.css
+# Rôle ........ : Feuille de style pour le générateur de patron de pull
+# Auteurs ..... : M, L, M
+# Version ..... : V2.0.0 du 23/05/2025
+# Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
+# Description . : Styles CSS modernes avec dégradés, animations et design responsive
+#                 pour l'interface du générateur de patron de pull
+# Features .... : Design responsive, dégradés, animations de transition,
+#                 sections colorées thématiques, interface utilisateur moderne
+# Compatibilité : Navigateurs modernes (Chrome, Firefox, Safari, Edge)
+# *******************************************************
+*/
+
+/* Reset CSS global - supprime les marges et paddings par défaut */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Inclut padding et border dans la largeur totale */
+}
+
+/* Style du body principal avec dégradé de fond */
 body {
-font-family: sans-serif;
-background: #f4f4f4;
-padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Dégradé bleu-violet */
+  min-height: 100vh; /* Prend toute la hauteur de l'écran */
+  padding: 20px;
 }
 
+/* Container principal centré avec design moderne */
 .container {
-background: white;
-max-width: 600px;
-margin: auto;
-padding: 30px;
-border-radius: 10px;
-box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 1000px;
+  margin: 0 auto; /* Centre horizontalement */
+  background: white;
+  border-radius: 20px; /* Coins arrondis */
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1); /* Ombre portée subtile */
+  padding: 40px;
 }
 
-input {
-width: 100%;
-padding: 8px;
-margin: 5px 0 15px;
-border: 1px solid #ccc;
-border-radius: 4px;
+/* Titre principal */
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
-button {
-padding: 10px 15px;
-margin-top: 10px;
-cursor: pointer;
+/* Classe pour appliquer un dégradé au texte */
+.gradient-text {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  -webkit-background-clip: text; /* Clip le dégradé sur le texte */
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Rend le texte transparent pour voir le dégradé */
 }
 
+/* Sous-titre */
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+/* Container pour organiser les sections du formulaire */
+.form-container {
+  display: grid;
+  gap: 30px; /* Espacement entre les sections */
+}
+
+/* Style de base pour chaque section du formulaire */
+.form-section {
+  background: #f8f9fa; /* Fond gris très clair */
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 5px solid #667eea; /* Bordure colorée à gauche */
+}
+
+/* Variantes de couleurs pour différentes sections */
+.form-section.success {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%); /* Dégradé vert clair */
+  border-left-color: #4caf50;
+}
+
+.form-section.yarn {
+  background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%); /* Dégradé orange/rose */
+  border-left-color: #ff9800;
+}
+
+/* Titres des sections avec icônes */
+.form-section h2 {
+  color: #333;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center; /* Centre verticalement l'icône et le texte */
+  gap: 10px; /* Espace entre l'icône et le texte */
+}
+
+/* Taille des icônes dans les titres */
+.section-icon {
+  font-size: 1.5rem;
+}
+
+/* Layout en deux colonnes pour certaines sections */
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+  gap: 20px;
+}
+
+/* Classe pour faire qu'un élément occupe toute la largeur */
+.full-width {
+  grid-column: 1 / -1; /* S'étend sur toutes les colonnes */
+}
+
+/* Style de base pour les labels */
+label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+/* Texte principal du label */
+.label-text {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Texte d'aide sous les labels */
+.help-text {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+/* Style uniforme pour tous les champs de saisie pertinents */
+input[type="number"], select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease; /* Animation fluide pour les interactions */
+}
+
+/* État focus pour les champs de saisie */
+input:focus, select:focus {
+  outline: none; /* Supprime l'outline par défaut du navigateur */
+  border-color: #667eea; /* Change la couleur de la bordure */
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Ajoute une ombre de focus */
+}
+
+/* Container pour les groupes de boutons radio */
+.radio-group {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Style pour chaque option radio */
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Effet hover sur les options radio */
+.radio-option:hover {
+  border-color: #667eea;
+  background: #f5f7ff; /* Fond légèrement coloré au survol */
+}
+
+/* Réinitialise le style des inputs radio dans les options */
+.radio-option input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+/* Style du label quand l'option radio est sélectionnée */
+.radio-option input[type="radio"]:checked + .radio-label {
+  color: #667eea;
+  font-weight: 600;
+}
+
+/* Bouton de soumission principal */
+button[type="submit"] {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(45deg, #667eea, #764ba2); /* Même dégradé que le thème */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+}
+
+/* Effet hover sur le bouton principal */
+button[type="submit"]:hover {
+  transform: translateY(-2px); /* Légère élévation */
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); /* Ombre plus prononcée */
+}
+
+/* Style pour les boutons secondaires */
+.secondary-button {
+  background: #6c757d; /* Gris neutre */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Effet hover sur les boutons secondaires */
+.secondary-button:hover {
+  background: #5a6268; /* Gris plus foncé */
+  transform: translateY(-1px);
+}
+
+/* Container pour centrer les boutons d'action */
+.action-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Zone d'affichage des messages de retour */
+#message {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Style pour les messages de succès */
+#message.success {
+  background: #d4edda; /* Fond vert clair */
+  color: #155724; /* Texte vert foncé */
+  border: 1px solid #c3e6cb;
+}
+
+/* Style pour les messages d'erreur */
+#message.error {
+  background: #f8d7da; /* Fond rouge clair */
+  color: #721c24; /* Texte rouge foncé */
+  border: 1px solid #f5c6cb;
+}
+
+/* Zone d'affichage des résultats */
 #résultat {
-white-space: pre-wrap;
-margin-top: 20px;
-padding: 15px;
-background: #eef;
-border-radius: 5px;
-border: 1px solid #ccd;
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  white-space: pre-wrap; /* Préserve les espaces et retours à la ligne */
+  font-family: 'Courier New', monospace; /* Police à espacement fixe pour le code */
+  line-height: 1.6;
+  max-height: 600px;
+  overflow-y: auto; /* Scroll vertical si le contenu dépasse */
+}
+
+/* Styles responsive pour les écrans mobiles */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px; /* Réduit le padding sur mobile */
+  }
+  
+  .two-column {
+    grid-template-columns: 1fr; /* Passe en une seule colonne */
+  }
+  
+  h1 {
+    font-size: 2rem; /* Réduit la taille du titre */
+  }
 }

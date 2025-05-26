@@ -4,12 +4,6 @@ class Front:
         self.chest_width = chest_width
         self.armhole_depth = armhole_depth
         self.underarm_to_hem_length = underarm_to_hem_length
-        #on commence a tricoter a plat pour avoir une encolure plus haute derriere que devant 
-        #au debut il n'y a que 2 mailles de de chaque cote devant, puis on augmente petit a petit, jusqu'a ce que le total 
-        #des mailles devant_gauche + devant_droit soit egal au nombre de mailles derriere
-        #ca permet de faire un col en "V", plus on augmente vite, moins le V est profond
-        self.left_front_stitches = 2
-        self.rigth_front_stitches = 2
         self.chest_stitches = 0
         self.rows_to_underarm = 0
         self.rows_to_hem = 0

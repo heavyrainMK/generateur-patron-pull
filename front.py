@@ -9,7 +9,7 @@ class Front:
         #des mailles devant_gauche + devant_droit soit egal au nombre de mailles derriere
         #ca permet de faire un col en "V", plus on augmente vite, moins le V est profond
         self.left = 2
-        self.rigth = 2
+        self.right = 2
         self.chest_stitches = 0
         self.rows_to_underarm = 0
         self.rows_to_hem = 0

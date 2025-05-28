@@ -1,6 +1,6 @@
 class Sleeve:
 
-    def __init__(self, upperarm_circumference, wrist_circumference, armhole_depth, underarm_to_hem_length): 
+    def __init__(self, upperarm_circumference, wrist_circumference, armhole_depth, underarm_to_hem_length) 
         self.upperarm_circumference = upperarm_circumference
         self.wrist_circumference = wrist_circumference
         self.armhole_depth = armhole_depth
@@ -23,26 +23,26 @@ class Sleeve:
     def getUnderArmToHemLength(self):
         return self.underarm_to_hem_length
 
-    def setUpperarmStitches(self, stitches_per_cm):
-        self.upperarm_stitches = self.upperarm_circumference * stitches_per_cm
+    def setUpperarmStitches(self, nb_of_stitches):
+        self.upperarm_stitches = nb_of_stitches
 
     def getUpperarmStitches(self):
         return self.upperarm_stitches
 
-    def setWristStitches(self, stitches_per_cm):
-        self.wrist_stitches = self.wrist_circumference * stitches_per_cm
+    def setWristStitches(self, nb_of_stitches):
+        self.wrist_stitches = nb_of_stitches
 
     def getWristStitches(self):
         return self.wrist_stitches
 
-    def setRowsToUnderarm(self, rows_per_cm):
-        self.rows_to_underarm = self.armhole_depth * rows_per_cm
+    def setRowsToUnderarm(self, nb_of_rows):
+        self.rows_to_underarm = nb_of_rows
 
     def getRowsToUnderarm(self):
         return self.rows_to_underarm
 
-    def setRowsToWrist(self, rows_per_cm):
-        self.rows_to_wrist = self.rows_to_wrist * rows_per_cm
+    def setRowsToWrist(self, nb_of_rows):
+        self.rows_to_wrist = nb_of_rows
 
     def getRowsToUnderarm(self):
         return self.rows_to_wrist

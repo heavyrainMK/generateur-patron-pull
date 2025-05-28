@@ -1,6 +1,6 @@
 class Back:
 
-    def __init__(self, chest_width, armhole_depth, underarm_to_hem_length) 
+    def __init__(self, chest_width, armhole_depth, underarm_to_hem_length): 
         self.chest_width = chest_width
         self.armhole_depth = armhole_depth
         self.underarm_to_hem_length = underarm_to_hem_length
@@ -36,4 +36,4 @@ class Back:
         return self.rows_to_hem
 
     def __str__(self):
-        return f"Le dos mesure {self.armhole_depth}CM depuis l'encolure jusqu'a l'aisselle et {self.underarm_to_hem_length}CM de l'aisselle jusqu'a l'ourlet. Le tour de poitrine est {self.chest_width}
+        return f"Le dos mesure {self.armhole_depth}CM depuis l'encolure jusqu'a l'aisselle et {self.underarm_to_hem_length}CM de l'aisselle jusqu'a l'ourlet. Le tour de poitrine est {self.chest_width}"

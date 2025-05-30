@@ -1,8 +1,5 @@
 class Back:
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
+    
     def __init__(self, chest_width, armhole_depth, underarm_to_hem_length):
         self.chest_width = chest_width
         self.armhole_depth = armhole_depth

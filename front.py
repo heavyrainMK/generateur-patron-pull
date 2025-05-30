@@ -1,10 +1,6 @@
 class Front:
-<<<<<<< Updated upstream
 
     def __init__(self, chest_width, armhole_depth, underarm_to_hem_length): 
-=======
-    def __init__(self, chest_width, armhole_depth, underarm_to_hem_length):
->>>>>>> Stashed changes
         self.chest_width = chest_width
         self.armhole_depth = armhole_depth
         self.underarm_to_hem_length = underarm_to_hem_length

@@ -1,10 +1,6 @@
 class Sleeve:
-
-<<<<<<< Updated upstream
+    
     def __init__(self, upperarm_circumference, wrist_circumference, armhole_depth, underarm_to_hem_length): 
-=======
-    def __init__(self, upperarm_circumference, wrist_circumference, armhole_depth, underarm_to_hem_length):
->>>>>>> Stashed changes
         self.upperarm_circumference = upperarm_circumference
         self.wrist_circumference = wrist_circumference
         self.armhole_depth = armhole_depth

@@ -1,12 +1,17 @@
 class Back:
     
-    def __init__(self, chest_width, armhole_depth, underarm_to_hem_length):
+    def __init__(self, neck_width, chest_width, armhole_depth, underarm_to_hem_length):
+        self.neck_width = neck_width
         self.chest_width = chest_width
         self.armhole_depth = armhole_depth
         self.underarm_to_hem_length = underarm_to_hem_length
+        self.neck_stitches = 0
         self.chest_stitches = 0
         self.rows_to_underarm = 0
         self.rows_to_hem = 0
+
+    def getNeckWidth(self):
+        return self.neck_width
 
     def getChestWidth(self):
         return self.chest_width
@@ -16,6 +21,12 @@ class Back:
 
     def getUnderArmToHemLength(self):
         return self.underarm_to_hem_length
+
+    def setNeckStitches(self, nb_of_stitches):
+        self.neck_stitches = nb_of_stitches
+
+    def getNeckStitches(self):
+        return self.neck_stitches
 
     def setChestStitches(self, nb_of_stitches):
         self.chest_stitches = nb_of_stitches

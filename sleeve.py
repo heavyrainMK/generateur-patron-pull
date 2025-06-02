@@ -5,11 +5,16 @@ class Sleeve:
         self.wrist_circumference = wrist_circumference
         self.armhole_depth = armhole_depth
         self.underarm_to_hem_length = underarm_to_hem_length
+        self.top_sleeve_width = 3#j'ai mesuré un de mes pulls, je changerai probablement plus tard
+        self.top_sleeve_stitches = 0
         self.upperarm_stitches = 0
         self.wrist_stitches = 0
         self.rows_to_underarm = 0
         self.rows_to_wrist = 0
         
+
+    def getTopSleeveWidth(self):
+        return self.top_sleeve_width
 
     def getUpperArmCircumference(self):
         return self.upperarm_circumference
@@ -22,6 +27,12 @@ class Sleeve:
 
     def getUnderArmToHemLength(self):
         return self.underarm_to_hem_length
+
+    def setTopSleeveStitches(self, nb_of_stitches):
+        self.top_sleeve_stitches = nb_of_stitches
+
+    def getTopSleeveStitches(self):
+        return self.top_sleeve_stitches
 
     def setUpperarmStitches(self, nb_of_stitches):
         self.upperarm_stitches = nb_of_stitches

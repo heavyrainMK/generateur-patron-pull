@@ -2,11 +2,7 @@ from swatch import Swatch
 import math
 
 class Sweater:
-    def __init__(self, right_sleeve, left_sleeve, front, back, swatch):
-        self.right_sleeve = right_sleeve
-        self.left_sleeve = left_sleeve
-        self.front = front
-        self.back = back
+    def __init__(self, swatch):
         self.swatch = swatch
 
     #don't forget to round up the numbers

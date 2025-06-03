@@ -32,7 +32,14 @@ def main():
     my_right_sleeve.setTopSleeveStitches(calculStitchesNeeded(my_swatch.getStitches(), my_right_sleeve.getTopSleeveWidth()))
     my_left_sleeve.setTopSleeveStitches(calculStitchesNeeded(my_swatch.getStitches(), my_left_sleeve.getTopSleeveWidth()))
 
+    #on ajoute 4 mailles pour former les raglan
+    total_mailles_debut = my_front.getRightFrontStitches() + my_right_sleeve.getTopSleeveStitches() + my_back.getNeckStitches() + my_left_sleeve.getTopSleeveStitches() + my_front.getLeftFrontStitches() + 4  
 
+    #calcul des mailles avant separation des manche et du corps
+    my_front.setChestStitches(calculStitchesNeeded(my_swatch.getStitches(), my_front.getChestWidth()))
+    my_back.setChestStitches(calculStitchesNeeded(my_swatch.getStitches(), my_back.getChestWidth()))
+    my_right_sleeve.setUpperarmStitches(calculStitchesNeeded(my_swatch.getStitches(), my_right_sleeve.getUpperArmCircumference()))
+    my_left_sleeve.setUpperarmStitches(calculStitchesNeeded(my_swatch.getStitches(), my_left_sleeve.getUpperArmCircumference()))
 
     if __name__ == "__main__":
         main()

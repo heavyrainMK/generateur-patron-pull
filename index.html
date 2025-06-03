@@ -41,25 +41,25 @@
             <label>
               <span class="label-text">🧶 Mailles dans 10 cm</span>
               <span class="help-text">Échantillon en jersey endroit</span>
-              <input type="number" name="mailles_10cm" step="0.5" min="10" max="50" required />
+              <input type="number" id="mailles_10cm" name="mailles_10cm" step="0.5" min="10" max="50" required />
             </label>
             <!-- Échantillon de rangs : pour calculer la hauteur -->
             <label>
               <span class="label-text">🧶 Rangs dans 10 cm</span>
               <span class="help-text">Échantillon en jersey endroit</span>
-              <input type="number" name="rangs_10cm" step="0.5" min="10" max="80" required />
+              <input type="number" id="rangs_10cm" name="rangs_10cm" step="0.5" min="10" max="80" required />
             </label>
             <!-- Taille des aiguilles pour le corps principal -->
             <label>
               <span class="label-text">🪡 Taille d'aiguilles (mm)</span>
               <span class="help-text">Pour le corps du pull</span>
-              <input type="number" name="taille_aig_corps" step="0.25" min="2" max="12" required />
+              <input type="number" id="taille_aig_corps" name="taille_aig_corps" step="0.25" min="2" max="12" required />
             </label>
             <!-- Taille des aiguilles pour les côtes -->
             <label>
               <span class="label-text">🪡 Taille d'aiguilles côtes (mm)</span>
               <span class="help-text">Généralement 0,5 mm plus petites</span>
-              <input type="number" name="taille_aig_cotes" step="0.25" min="1.5" max="11" required />
+              <input type="number" id="taille_aig_cotes" name="taille_aig_cotes" step="0.25" min="1.5" max="11" required />
             </label>
           </div>
         </div>
@@ -72,50 +72,50 @@
             <label>
               <span class="label-text">📏 Tour de cou (cm)</span>
               <span class="help-text">Mesurer à la base du cou</span>
-              <input type="number" name="tour_cou" step="0.5" min="25" max="50" required />
+              <input type="number" id="tour_cou" name="tour_cou" step="0.5" min="25" max="50" required />
             </label>
             <!-- Tour de poitrine -->
             <label>
               <span class="label-text">📏 Tour de poitrine (cm)</span>
               <span class="help-text">Mesurer au point le plus large</span>
-              <input type="number" name="tour_poitrine" step="0.5" min="60" max="150" required />
+              <input type="number" id="tour_poitrine" name="tour_poitrine" step="0.5" min="60" max="150" required />
             </label>
             <!-- Tour de taille pour l'ajustement -->
             <label>
               <span class="label-text">📏 Tour de taille (cm)</span>
               <span class="help-text">À la taille naturelle</span>
-              <input type="number" name="tour_taille" step="0.5" min="50" max="130" required />
+              <input type="number" id="tour_taille" name="tour_taille" step="0.5" min="50" max="130" required />
             </label>
             <!-- Hauteur pour calculer la longueur du torse -->
             <label>
               <span class="label-text">📏 Hauteur nuque-taille (cm)</span>
               <span class="help-text">De la nuque à la taille naturelle</span>
-              <input type="number" name="hauteur_nuque_taille" step="0.5" min="30" max="70" required />
+              <input type="number" id="hauteur_nuque_taille" name="hauteur_nuque_taille" step="0.5" min="30" max="70" required />
             </label>
             <!-- Tour de hanches pour l'ajustement du bas -->
             <label>
               <span class="label-text">📏 Tour de hanches (cm)</span>
               <span class="help-text">Au point le plus large</span>
-              <input type="number" name="tour_hanches" step="0.5" min="60" max="150" required />
+              <input type="number" id="tour_hanches" name="tour_hanches" step="0.5" min="60" max="150" required />
             </label>
             <!-- Largeur d'épaules pour le placement des manches -->
             <label>
               <span class="label-text">📏 Largeur d'épaules (cm)</span>
               <span class="help-text">D'une épaule à l'autre</span>
-              <input type="number" name="largeur_epaules" step="0.5" min="30" max="60" required />
+              <input type="number" id="largeur_epaules" name="largeur_epaules" step="0.5" min="30" max="60" required />
             </label>
             <!-- Hauteur d'emmanchure pour calculer les manches -->
             <label>
               <span class="label-text">📏 Hauteur d'emmanchure (cm)</span>
               <span class="help-text">De l'épaule à l'aisselle</span>
-              <input type="number" name="hauteur_emmanchure" step="0.5" min="15" max="30" required />
+              <input type="number" id="hauteur_emmanchure" name="hauteur_emmanchure" step="0.5" min="15" max="30" required />
             </label>
           </div>
           <!-- Longueur totale souhaitée : dimension finale du pull -->
           <label class="full-width">
             <span class="label-text">📏 Longueur totale désirée (cm)</span>
             <span class="help-text">Du haut de l'épaule au bas du pull</span>
-            <input type="number" name="longueur_totale" step="0.5" min="40" max="80" required />
+            <input type="number" id="longueur_totale" name="longueur_totale" step="0.5" min="40" max="80" required />
           </label>
         </div>
 
@@ -127,25 +127,25 @@
             <label>
               <span class="label-text">📏 Longueur des manches (cm)</span>
               <span class="help-text">Depuis l'aisselle au poignet</span>
-              <input type="number" name="longueur_manches" step="0.5" min="30" max="70" required />
+              <input type="number" id="longueur_manches" name="longueur_manches" step="0.5" min="30" max="70" required />
             </label>
             <!-- Tour de bras pour calculer la largeur des manches -->
             <label>
               <span class="label-text">📏 Tour de bras (cm)</span>
               <span class="help-text">Au biceps, bras détendu</span>
-              <input type="number" name="tour_bras" step="0.5" min="20" max="50" required />
+              <input type="number" id="tour_bras" name="tour_bras" step="0.5" min="20" max="50" required />
             </label>
             <!-- Tour de poignet pour les côtes des manches -->
             <label>
               <span class="label-text">📏 Tour de poignet (cm)</span>
               <span class="help-text">À la base de la main</span>
-              <input type="number" name="tour_poignet" step="0.5" min="12" max="25" required />
+              <input type="number" id="tour_poignet" name="tour_poignet" step="0.5" min="12" max="25" required />
             </label>
             <!-- Tour de coude pour l'ajustement des manches -->
             <label>
               <span class="label-text">📏 Tour de coude (cm)</span>
               <span class="help-text">Au coude fléchi</span>
-              <input type="number" name="tour_coude" step="0.5" min="18" max="35" required />
+              <input type="number" id="tour_coude" name="tour_coude" step="0.5" min="18" max="35" required />
             </label>
           </div>
         </div>
@@ -156,7 +156,7 @@
           <!-- Aisance : espace supplémentaire pour le confort -->
           <label>
             <span class="label-text">Aisance (cm) :</span>
-            <input type="number" name="aisance" step="0.5" min="-2" max="25" value="10" required />
+            <input type="number" id="aisance" name="aisance" step="0.5" min="-2" max="25" value="10" required />
             <span class="help-text">Exemples : Très ajusté (-5 à 0 cm), Ajusté (5-10 cm), Standard (15-20 cm), Large (25-30 cm)</span>
           </label>
           <!-- Choix d'application de l'aisance -->
@@ -165,12 +165,12 @@
             <div class="radio-group">
               <!-- Option par défaut : aisance seulement sur le corps -->
               <label class="radio-option">
-                <input type="radio" name="appliquer_aisance" value="corps_seulement" checked />
+                <input type="radio" id="appliquer_aisance" name="appliquer_aisance" value="corps_seulement" checked />
                 <span class="radio-label">Corps seulement</span>
               </label>
               <!-- Option alternative : aisance sur corps et manches -->
               <label class="radio-option">
-                <input type="radio" name="appliquer_aisance" value="corps_et_manches" />
+                <input type="radio" id="appliquer_aisance" name="appliquer_aisance" value="corps_et_manches" />
                 <span class="radio-label">Corps et manches</span>
               </label>
             </div>
@@ -178,7 +178,7 @@
           <!-- Type d'encolure - affecte le calcul du col -->
           <label>
             <span class="label-text">Type d'encolure :</span>
-            <select name="encolure" required>
+            <select id="encolure" name="encolure" required>
               <option value="">-- Choisissez --</option>
               <option value="ras_cou">Ras du cou</option>
               <option value="v">Encolure en V</option>
@@ -191,13 +191,13 @@
             <label>
               <span class="label-text">📏 Longueur côtes du bas (cm)</span>
               <span class="help-text">Bordure élastique du bas</span>
-              <input type="number" name="cotes_bas" step="0.5" min="2" max="15" value="5" required />
+              <input type="number" id="cotes_bas" name="cotes_bas" step="0.5" min="2" max="15" value="5" required />
             </label>
             <!-- Longueur des côtes aux poignets -->
             <label>
               <span class="label-text">📏 Longueur côtes poignets (cm)</span>
               <span class="help-text">Bordure élastique des manches</span>
-              <input type="number" name="cotes_poignets" step="0.5" min="2" max="10" value="5" required />
+              <input type="number" id="cotes_poignets" name="cotes_poignets" step="0.5" min="2" max="10" value="5" required />
             </label>
           </div>
         </div>

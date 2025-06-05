@@ -11,12 +11,11 @@ def calculStitchesNeeded(stitches, width):
 def calculRowsNeeded(rows, length):
         return math.ceil(rows / 10 * length)
 
-def calculIncreases(width_1, width_2):
-        return width_2 - width_1
+def calculIncreases(nb_mailles_1, nb_mailles_2):
+        return nb_mailles_2 - nb_mailles_1
 
-def calculDecreases(width_1, width_2):
-        return width_1 - width_2
-
+def calculDecreases(nb_mailles_1, nb_mailles_2):
+        return nb_mailles_1 - nb_mailles_2
 
 def main():
     #il faut construire les objets avec les mesures fournis par l'utilisateur
@@ -27,6 +26,11 @@ def main():
 
     my_swatch = Swatch(mailles, rangs)
 
+    #je ne mets pas les mailles d'aisselle dans une classe car elles sont communes a la manches et au corps, reparties sur le devant et le dos
+    nb_de_mailles_aisselle = 0
+    nb_augmentations_dos = 0
+    nb_augmentations_manches = 0
+
     #calcul des mailles au montage
     my_back.setNeckStitches(calculStitchesNeeded(my_swatch.getStitches(), my_back.getNeckWidth()))
     my_right_sleeve.setTopSleeveStitches(calculStitchesNeeded(my_swatch.getStitches(), my_right_sleeve.getTopSleeveWidth()))
@@ -36,10 +40,21 @@ def main():
     total_mailles_debut = my_front.getRightFrontStitches() + my_right_sleeve.getTopSleeveStitches() + my_back.getNeckStitches() + my_left_sleeve.getTopSleeveStitches() + my_front.getLeftFrontStitches() + 4  
 
     #calcul des mailles avant separation des manche et du corps
-    my_front.setChestStitches(calculStitchesNeeded(my_swatch.getStitches(), my_front.getChestWidth()))
-    my_back.setChestStitches(calculStitchesNeeded(my_swatch.getStitches(), my_back.getChestWidth()))
-    my_right_sleeve.setUpperarmStitches(calculStitchesNeeded(my_swatch.getStitches(), my_right_sleeve.getUpperArmCircumference()))
-    my_left_sleeve.setUpperarmStitches(calculStitchesNeeded(my_swatch.getStitches(), my_left_sleeve.getUpperArmCircumference()))
+    #bien penser a prendre en compte l'aisance souhaitee
+    #on divise la circonference totale par 2 puisqu'elle est repartie sur les mailles du devant et du dos
+    my_front.setChestStitches(calculStitchesNeeded(my_swatch.getStitches(), (my_front.getChestWidth() / 2) + aisance))
+    my_back.setChestStitches(calculStitchesNeeded(my_swatch.getStitches(), (my_back.getChestWidth() / 2) + aisance))
+    my_right_sleeve.setUpperarmStitches(calculStitchesNeeded(my_swatch.getStitches(), my_right_sleeve.getUpperArmCircumference() + aisance))
+    my_left_sleeve.setUpperarmStitches(calculStitchesNeeded(my_swatch.getStitches(), my_left_sleeve.getUpperArmCircumference() + aisance))
+
+    #calcul des augmentations necessaires
+    #au moment de la separation des bras et du corps, on monte des mailles supplementaires sour l'aisselle pour ne pas que cela soit trop serre
+    #il faut donc bien penser a les soustraire au nombre d'augmentation pour ne pas se retrouver avec des manches/un corps trop large
+    #je compte une largeur d'aisselle de 4m, 3cm, changerai peut etre plus tard
+    nb_de_mailles_aisselle = calculStitchesNeeded(my_swatch.getStitches(), 3)
+    nb_augmentations_dos = calculIncreases(my_back.getChestStitches(), my_back.getNeckStitches())
+
+
 
     if __name__ == "__main__":
         main()

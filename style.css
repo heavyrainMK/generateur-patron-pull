@@ -1,40 +1,40 @@
 /*
 # *******************************************************
 # Nom ......... : style.css
-# Rôle ........ : Feuille de style pour le générateur de patron de pull
+# Rôle ........ : Feuille de style pour le générateur de patrons de pulls
 # Auteurs ..... : M, L, M
-# Version ..... : V2.0.0 du 23/05/2025
+# Version ..... : V2.1.0 du 23/05/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Styles CSS modernes avec dégradés, animations et design responsive
-#                 pour l'interface du générateur de patron de pull
-# Features .... : Design responsive, dégradés, animations de transition,
-#                 sections colorées thématiques, interface utilisateur moderne
+#                 pour l'interface du générateur de patrons de pulls
+# Fonctionnalités : Design responsive, dégradés, animations de transition,
+#                  sections colorées thématiques, interface utilisateur moderne
 # Compatibilité : Navigateurs modernes (Chrome, Firefox, Safari, Edge)
 # *******************************************************
 */
 
-/* Reset CSS global - supprime les marges et paddings par défaut */
+/* Réinitialisation globale : supprime les marges et paddings par défaut */
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* Inclut padding et border dans la largeur totale */
+  box-sizing: border-box;
 }
 
 /* Style du body principal avec dégradé de fond */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Dégradé bleu-violet */
-  min-height: 100vh; /* Prend toute la hauteur de l'écran */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
   padding: 20px;
 }
 
-/* Container principal centré avec design moderne */
-.container {
+/* Conteneur principal centré avec design moderne */
+.conteneur {
   max-width: 1000px;
-  margin: 0 auto; /* Centre horizontalement */
+  margin: 0 auto;
   background: white;
-  border-radius: 20px; /* Coins arrondis */
-  box-shadow: 0 20px 60px rgba(0,0,0,0.1); /* Ombre portée subtile */
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   padding: 40px;
 }
 
@@ -46,71 +46,179 @@ h1 {
 }
 
 /* Classe pour appliquer un dégradé au texte */
-.gradient-text {
+.texte-dégradé {
   background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text; /* Clip le dégradé sur le texte */
+  -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent; /* Rend le texte transparent pour voir le dégradé */
+  -webkit-text-fill-color: transparent;
 }
 
 /* Sous-titre */
-.subtitle {
+.sous-titre {
   text-align: center;
   color: #666;
   font-size: 1.2rem;
   margin-bottom: 40px;
 }
 
-/* Container pour organiser les sections du formulaire */
+/* Styles pour l'indicateur de progression */
+.conteneur-progression {
+  margin-bottom: 40px;
+}
+
+.barre-progression {
+  width: 100%;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.remplissage-progression {
+  height: 100%;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  width: 25%;
+  transition: width 0.3s ease;
+  border-radius: 3px;
+}
+
+.etapes-progression {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.etape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.numero-etape {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.etiquette-etape {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.etape.active .numero-etape {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+}
+
+.etape.active .etiquette-etape {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.etape.terminee .numero-etape {
+  background: #28a745;
+  color: white;
+}
+
+.etape.terminee .etiquette-etape {
+  color: #28a745;
+}
+
+/* Styles pour les étapes du formulaire */
+.etape-formulaire {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.etape-formulaire.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container pour organiser les sections du formulaire (invisible ici, car chaque étape a son propre conteneur) */
 .form-container {
   display: grid;
-  gap: 30px; /* Espacement entre les sections */
+  gap: 30px;
 }
 
 /* Style de base pour chaque section du formulaire */
-.form-section {
-  background: #f8f9fa; /* Fond gris très clair */
+.section-formulaire {
+  background: #f8f9fa;
   padding: 25px;
   border-radius: 15px;
-  border-left: 5px solid #667eea; /* Bordure colorée à gauche */
+  border-left: 5px solid #667eea;
 }
 
 /* Variantes de couleurs pour différentes sections */
-.form-section.success {
-  background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%); /* Dégradé vert clair */
+.section-formulaire.succes {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
   border-left-color: #4caf50;
 }
 
-.form-section.yarn {
-  background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%); /* Dégradé orange/rose */
+.section-formulaire.fil {
+  background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%);
   border-left-color: #ff9800;
 }
 
+.section-formulaire.corps {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  border-left-color: #2196f3;
+}
+
+.section-formulaire.bras {
+  background: linear-gradient(135deg, #fff8e1 0%, #f1f8e9 100%);
+  border-left-color: #ff5722;
+}
+
 /* Titres des sections avec icônes */
-.form-section h2 {
+.section-formulaire h2 {
   color: #333;
   font-size: 1.4rem;
   margin-bottom: 20px;
   display: flex;
-  align-items: center; /* Centre verticalement l'icône et le texte */
-  gap: 10px; /* Espace entre l'icône et le texte */
+  align-items: center;
+  gap: 10px;
 }
 
 /* Taille des icônes dans les titres */
-.section-icon {
+.icone-section {
   font-size: 1.5rem;
 }
 
 /* Layout en deux colonnes pour certaines sections */
-.two-column {
+.deux-colonnes {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
 /* Classe pour faire qu'un élément occupe toute la largeur */
-.full-width {
-  grid-column: 1 / -1; /* S'étend sur toutes les colonnes */
+.pleine-largeur {
+  grid-column: 1 / -1;
 }
 
 /* Style de base pour les labels */
@@ -120,7 +228,7 @@ label {
 }
 
 /* Texte principal du label */
-.label-text {
+.texte-label {
   display: block;
   font-weight: 600;
   color: #333;
@@ -128,12 +236,21 @@ label {
 }
 
 /* Texte d'aide sous les labels */
-.help-text {
+.texte-aide {
   display: block;
   font-size: 0.85rem;
   color: #666;
   margin-bottom: 8px;
   font-style: italic;
+}
+
+/* Style pour les messages d'erreur */
+.message-erreur {
+  display: block;
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  min-height: 16px;
 }
 
 /* Style uniforme pour tous les champs de saisie pertinents */
@@ -143,25 +260,31 @@ input[type="number"], select {
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
-  transition: all 0.3s ease; /* Animation fluide pour les interactions */
+  transition: all 0.3s ease;
 }
 
-/* État focus pour les champs de saisie */
+/* Effet focus pour les champs */
 input:focus, select:focus {
-  outline: none; /* Supprime l'outline par défaut du navigateur */
-  border-color: #667eea; /* Change la couleur de la bordure */
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Ajoute une ombre de focus */
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Style quand un champ est en erreur */
+input.erreur, select.erreur {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
 }
 
 /* Container pour les groupes de boutons radio */
-.radio-group {
+.groupe-radio {
   display: grid;
   gap: 10px;
   margin-top: 10px;
 }
 
 /* Style pour chaque option radio */
-.radio-option {
+.option-radio {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -172,29 +295,67 @@ input:focus, select:focus {
   transition: all 0.3s ease;
 }
 
-/* Effet hover sur les options radio */
-.radio-option:hover {
+.option-radio:hover {
   border-color: #667eea;
-  background: #f5f7ff; /* Fond légèrement coloré au survol */
+  background: #f5f7ff;
 }
 
-/* Réinitialise le style des inputs radio dans les options */
-.radio-option input[type="radio"] {
+.option-radio input[type="radio"] {
   width: auto;
   margin: 0;
 }
 
 /* Style du label quand l'option radio est sélectionnée */
-.radio-option input[type="radio"]:checked + .radio-label {
+.option-radio input[type="radio"]:checked + .etiquette-radio {
   color: #667eea;
   font-weight: 600;
 }
 
-/* Bouton de soumission principal */
+/* Styles pour les boutons de navigation */
+.boutons-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.bouton-navigation {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.bouton-primaire {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+}
+
+.bouton-primaire:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.bouton-secondaire {
+  background: #6c757d;
+  color: white;
+}
+
+.bouton-secondaire:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Bouton de soumission principal (reste optionnel) */
 button[type="submit"] {
   width: 100%;
   padding: 18px;
-  background: linear-gradient(45deg, #667eea, #764ba2); /* Même dégradé que le thème */
+  background: linear-gradient(45deg, #667eea, #764ba2);
   color: white;
   border: none;
   border-radius: 12px;
@@ -205,33 +366,13 @@ button[type="submit"] {
   margin-top: 30px;
 }
 
-/* Effet hover sur le bouton principal */
 button[type="submit"]:hover {
-  transform: translateY(-2px); /* Légère élévation */
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); /* Ombre plus prononcée */
-}
-
-/* Style pour les boutons secondaires */
-.secondary-button {
-  background: #6c757d; /* Gris neutre */
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin: 10px;
-  transition: all 0.3s ease;
-}
-
-/* Effet hover sur les boutons secondaires */
-.secondary-button:hover {
-  background: #5a6268; /* Gris plus foncé */
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
 /* Container pour centrer les boutons d'action */
-.action-buttons {
+.boutons-action {
   text-align: center;
   margin-top: 20px;
 }
@@ -243,19 +384,20 @@ button[type="submit"]:hover {
   border-radius: 8px;
   text-align: center;
   font-weight: 600;
+  display: none;
 }
 
 /* Style pour les messages de succès */
 #message.success {
-  background: #d4edda; /* Fond vert clair */
-  color: #155724; /* Texte vert foncé */
+  background: #d4edda;
+  color: #155724;
   border: 1px solid #c3e6cb;
 }
 
 /* Style pour les messages d'erreur */
 #message.error {
-  background: #f8d7da; /* Fond rouge clair */
-  color: #721c24; /* Texte rouge foncé */
+  background: #f8d7da;
+  color: #721c24;
   border: 1px solid #f5c6cb;
 }
 
@@ -265,24 +407,44 @@ button[type="submit"]:hover {
   padding: 20px;
   background: #f8f9fa;
   border-radius: 12px;
-  white-space: pre-wrap; /* Préserve les espaces et retours à la ligne */
-  font-family: 'Courier New', monospace; /* Police à espacement fixe pour le code */
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
   line-height: 1.6;
   max-height: 600px;
-  overflow-y: auto; /* Scroll vertical si le contenu dépasse */
+  overflow-y: auto;
 }
 
 /* Styles responsive pour les écrans mobiles */
 @media (max-width: 768px) {
-  .container {
-    padding: 20px; /* Réduit le padding sur mobile */
+  .conteneur {
+    padding: 20px;
   }
   
-  .two-column {
-    grid-template-columns: 1fr; /* Passe en une seule colonne */
+  .deux-colonnes {
+    grid-template-columns: 1fr;
   }
   
   h1 {
-    font-size: 2rem; /* Réduit la taille du titre */
+    font-size: 2rem;
+  }
+  
+  .etapes-progression {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  .etape {
+    flex: 0 0 calc(50% - 15px);
+    min-width: 120px;
+  }
+  
+  .boutons-navigation {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .bouton-navigation {
+    width: 100%;
   }
 }

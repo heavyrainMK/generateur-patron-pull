@@ -6,16 +6,23 @@ import math
 
 #don't forget to round up the numbers
 def calculStitchesNeeded(stitches, width):
-        return math.ceil(stitches / 10 * width)
+    return math.ceil(stitches / 10 * width)
 
 def calculRowsNeeded(rows, length):
-        return math.ceil(rows / 10 * length)
+    return math.ceil(rows / 10 * length)
 
+#les augmentation/diminutions fonctionnent par paires
 def calculIncreases(nb_mailles_1, nb_mailles_2):
-        return nb_mailles_2 - nb_mailles_1
+    inc = nb_mailles_2 - nb_mailles_1
+    if inc % 2 != 0:
+        inc = inc + 1
+    return inc
 
 def calculDecreases(nb_mailles_1, nb_mailles_2):
-        return nb_mailles_1 - nb_mailles_2
+    dec = nb_mailles_1 - nb_mailles_2
+    if dec % 2 != 0:
+        dec = dec -1
+    return dec
 
 def main():
     #il faut construire les objets avec les mesures fournis par l'utilisateur
@@ -52,7 +59,13 @@ def main():
     #il faut donc bien penser a les soustraire au nombre d'augmentation pour ne pas se retrouver avec des manches/un corps trop large
     #je compte une largeur d'aisselle de 4m, 3cm, changerai peut etre plus tard
     nb_de_mailles_aisselle = calculStitchesNeeded(my_swatch.getStitches(), 3)
-    nb_augmentations_dos = calculIncreases(my_back.getChestStitches(), my_back.getNeckStitches())
+
+    #on fait le meme nombre d'augmentations devant et derriere, donc on ne fait qu'une fois le calcul
+    nb_augmentations_dos = calculIncreases(my_back.getChestStitches(), my_back.getNeckStitches()) - nb_de_mailles_aisselle
+    #les deux manches sont pareilles, on ne fait qu'une fois le calcul
+    nb_augmentations_manches = calculIncreases(my_left_sleeve.getTopSleeveStitches(), my_left_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle
+    
+
 
 
 

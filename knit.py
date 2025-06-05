@@ -61,9 +61,17 @@ def main():
     nb_de_mailles_aisselle = calculStitchesNeeded(my_swatch.getStitches(), 3)
 
     #on fait le meme nombre d'augmentations devant et derriere, donc on ne fait qu'une fois le calcul
-    nb_augmentations_dos = calculIncreases(my_back.getChestStitches(), my_back.getNeckStitches()) - nb_de_mailles_aisselle
+    #les augmentation/diminutions vont toujours par paire, une au debut une a la fin
+    #on divise donc par 2 pour savoir le nombre de rangs qui contiendront des augmentations
+    nb_augmentations_dos = (calculIncreases(my_back.getChestStitches(), my_back.getNeckStitches()) - nb_de_mailles_aisselle) / 2
     #les deux manches sont pareilles, on ne fait qu'une fois le calcul
-    nb_augmentations_manches = calculIncreases(my_left_sleeve.getTopSleeveStitches(), my_left_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle
+    nb_augmentations_manches = (calculIncreases(my_left_sleeve.getTopSleeveStitches(), my_left_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle) / 2
+
+    #calcul du nombre de rangs pour arriver jusqu'a l'emmenchure
+
+
+
+
     
 
 

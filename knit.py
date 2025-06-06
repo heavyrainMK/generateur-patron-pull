@@ -45,8 +45,13 @@ def main():
     my_right_sleeve.setTopSleeveStitches(calculStitchesNeeded(my_swatch.getStitches(), my_right_sleeve.getTopSleeveWidth(), 0))
     my_left_sleeve.setTopSleeveStitches(calculStitchesNeeded(my_swatch.getStitches(), my_left_sleeve.getTopSleeveWidth(), 0))
 
+    #NE PAS OUBLIER D'ENLEVER AVANT DE RENDRE !!!!!!!
+    test = 'devant droit ' + str(my_front.getRightFrontStitches()) + ' mailles, manche droite ' + str(my_right_sleeve.getTopSleeveStitches()) + ' mailles, dos ' + str(my_back.getNeckStitches()) + ' mailles, manche gauche ' + str(my_left_sleeve.getTopSleeveStitches()) + ' mailles, devant gauche ' + str(my_front.getLeftFrontStitches()) + ' mailles'
+    print(test)
+
     #on ajoute 4 mailles pour former les raglan
     total_mailles_debut = my_front.getRightFrontStitches() + my_right_sleeve.getTopSleeveStitches() + my_back.getNeckStitches() + my_left_sleeve.getTopSleeveStitches() + my_front.getLeftFrontStitches() + 4  
+    print('total des mailles pour le devant, le dos et les manches, plus 4 pour les raglans : ' + str(total_mailles_debut))
 
     #calcul des mailles avant separation des manche et du corps
     #bien penser a prendre en compte l'aisance souhaitee
@@ -73,16 +78,7 @@ def main():
     #la profondeur d'emmanchure est la meeme pour le devant, le dos et les manches, on fait le calcul une seule fois
     my_back.setRowsToUnderarm(calculRowsNeeded(my_swatch.getRows(), my_back.getArmholeDepth()))
 
-
-
-
-
-    
-
-
-
-
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
 
     

@@ -32,11 +32,13 @@ class Calculs(ABC):
 
 
     def augmentationsRaglan(self, increases, rows):
-        if ((rows / 2) > increases):
-            self.augmentations_raglan['tous_les_4_rangs'] = math.ceil(rows / 4)
+        if (increases < (rows/2)):
+            self.augmentations_raglan['tous_les_4_rangs'] = math.floor(rows / 4)
             self.augmentations_raglan['tous_les_2_rangs'] = increases - self.augmentations_raglan['tous_les_4_rangs']
+            self.augmentations_raglan['tous_les_rangs'] = 0
 
         else:
-            self.augmentations_raglan['tous_les_2_rangs'] = math.ceil(rows / 2)
-            self.augmentations_raglan['tous_les_rangs'] = increases - self.augmentations_raglan['tous_les_2_rangs']
+            self.augmentations_raglan['tous_les_4_rangs'] = 0
+            self.augmentations_raglan['tous_les_2_rangs'] = math.floor(rows / 2)
+            self.augmentations_raglan['tous_les_rangs'] = self.augmentations_raglan['tous_les_2_rangs']
 

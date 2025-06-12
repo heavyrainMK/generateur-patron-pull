@@ -6,12 +6,12 @@ import math
 
 def main():
     #il faut construire les objets avec les mesures fournis par l'utilisateur
-    my_front = Front(120, 30)
-    my_back = Back(21, 120, 25, 30)
+    my_front = Front(92, 30)
+    my_back = Back(21, 92, 25, 30)
     my_right_sleeve = Sleeve(28, 18.5, 45)
     my_left_sleeve = Sleeve(28, 18.5, 45)
 
-    my_swatch = Swatch(25, 39)
+    my_swatch = Swatch(22, 30)
     aisance_corps = 5
     aisance_manches = 2
 

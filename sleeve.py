@@ -1,4 +1,6 @@
-class Sleeve:
+from calculs import Calculs
+
+class Sleeve(Calculs):
     
     def __init__(self, upperarm_circumference, wrist_circumference, armhole_depth, underarm_to_hem_length): 
         self.upperarm_circumference = upperarm_circumference

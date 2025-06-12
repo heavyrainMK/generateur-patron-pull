@@ -1,4 +1,6 @@
-class Back:
+from calculs import Calculs
+
+class Back(Calculs):
     
     def __init__(self, neck_width, chest_width, armhole_depth, underarm_to_hem_length):
         self.neck_width = neck_width

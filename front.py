@@ -1,4 +1,6 @@
-class Front:
+from calculs import Calculs 
+
+class Front(Calculs):
 
     def __init__(self, chest_width, armhole_depth, underarm_to_hem_length):  
         self.chest_width = chest_width

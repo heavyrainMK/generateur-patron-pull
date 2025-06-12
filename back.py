@@ -3,6 +3,7 @@ from calculs import Calculs
 class Back(Calculs):
     
     def __init__(self, neck_width, chest_width, armhole_depth, underarm_to_hem_length):
+        super().__init__()
         self.neck_width = neck_width
         self.chest_width = chest_width
         self.armhole_depth = armhole_depth

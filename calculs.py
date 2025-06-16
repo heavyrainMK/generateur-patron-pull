@@ -6,6 +6,7 @@ class Calculs(ABC):
     def __init__(self):
         self.augmentations_raglan = {
             'tous_les_4_rangs' : 0,
+            'tout_les_3_rangs' : 0,
             'tous_les_2_rangs' : 0,
             'tous_les_rangs' : 0
         }
@@ -32,13 +33,35 @@ class Calculs(ABC):
 
 
     def augmentationsRaglan(self, increases, rows):
-        if (increases < (rows/2)):
-            self.augmentations_raglan['tous_les_4_rangs'] = math.floor(rows / 4)
-            self.augmentations_raglan['tous_les_2_rangs'] = increases - self.augmentations_raglan['tous_les_4_rangs']
-            self.augmentations_raglan['tous_les_rangs'] = 0
+        rang_en_cours = 0
+        rangs_restants = rows
+        augmentations_effectuees = 0
+        augmentations_restantes = increases
+        if (math.floor(rows/2) < increases):
+            while (augmentations_restantes > (rangs_restants/2)):
+                rang_en_cours = rang_en_cours + 1
+                rangs_restants = rangs_restants - 1
+                augmentations_effectuees = augmentations_effectuees + 1
+                augmentations_restantes = augmentations_restantes - 1
+            self.augmentations_raglan['tous_les_rangs'] = augmentations_effectuees
+            self.augmentations_raglan['tous_les_2_rangs'] = augmentations_restantes
+
+        elif (math.floor(rows/3) < increases):
+            while (augmentations_restantes > (rangs_restants/3)):
+                rang_en_cours = rang_en_cours + 1
+                rangs_restants = rangs_restants - 1
+                augmentations_effectuees = augmentations_effectuees + 1
+                augmentations_restantes = augmentations_restantes - 1
+            self.augmentations_raglan['tous_les_rangs'] = augmentations_effectuees
+            self.augmentations_raglan['tous_les_3_rangs'] = augmentations_restantes
 
         else:
-            self.augmentations_raglan['tous_les_4_rangs'] = 0
-            self.augmentations_raglan['tous_les_2_rangs'] = math.floor(rows / 2)
-            self.augmentations_raglan['tous_les_rangs'] = self.augmentations_raglan['tous_les_2_rangs']
+            while(augmentations_restantes > (rangs_restants/4)):
+                rang_en_cours = rang_en_cours + 2
+                rangs_restants = rangs_restants - 2
+                augmentations_effectuees = augmentations_effectuees + 1
+                augmentations_restantes = augmentations_restantes - 1
+            self.augmentations_raglan['tous_les_2_rangs'] = augmentations_effectuees
+            self.augmentations_raglan['tous_les_4_rangs'] = augmentations_restantes
+
 

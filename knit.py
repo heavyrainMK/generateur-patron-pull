@@ -10,7 +10,7 @@ def main():
     my_back = Back(21, 92, 25, 30)
     my_sleeve = Sleeve(28, 18.5, 45)
 
-    my_swatch = Swatch(22, 30)
+    my_swatch = Swatch(22, 39)
     aisance_corps = 5
     aisance_manches = 2
 

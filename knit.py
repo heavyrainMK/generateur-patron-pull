@@ -10,7 +10,7 @@ def main():
     my_back = Back(21, 92, 25, 30)
     my_sleeve = Sleeve(28, 18.5, 45)
 
-    my_swatch = Swatch(22, 39)
+    my_swatch = Swatch(28, 32)
     aisance_corps = 5
     aisance_manches = 2
 
@@ -73,13 +73,13 @@ def main():
 
     my_back.augmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
 
-    test_corps = 'corps : ' + str(my_back.augmentations_raglan['tous_les_4_rangs']) + ' augmentations tous les 4 rangs, ' + str(my_back.augmentations_raglan['tous_les_2_rangs']) + ' augmentations tous les 2 rangs et ' + str(my_back.augmentations_raglan['tous_les_rangs']) + ' augmentations tous les rangs\n'
+    test_corps = 'corps : ' + str(my_back.augmentations_raglan['tous_les_4_rangs']) + ' augmentations tous les 4 rangs, ' + str(my_back.augmentations_raglan['tous_les_3_rangs']) + ' augmentations tous les 3 rangs, ' + str(my_back.augmentations_raglan['tous_les_2_rangs']) + ' augmentations tous les 2 rangs et ' + str(my_back.augmentations_raglan['tous_les_rangs']) + ' augmentations tous les rangs\n'
 
     print(test_corps)
 
     my_sleeve.augmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
-    test_manches = 'manches : ' + str(my_sleeve.augmentations_raglan['tous_les_4_rangs']) + ' augmentations tous les 4 rangs, ' + str(my_sleeve.augmentations_raglan['tous_les_2_rangs']) + ' augmentations tous les 2 rangs et ' + str(my_sleeve.augmentations_raglan['tous_les_rangs']) + ' augmentations tous les rangs\n'
+    test_manches = 'manches : ' + str(my_sleeve.augmentations_raglan['tous_les_4_rangs']) + ' augmentations tous les 4 rangs, '  + str(my_sleeve.augmentations_raglan['tous_les_3_rangs']) + ' augmentations tous les 3 rangs, '+ str(my_sleeve.augmentations_raglan['tous_les_2_rangs']) + ' augmentations tous les 2 rangs et ' + str(my_sleeve.augmentations_raglan['tous_les_rangs']) + ' augmentations tous les rangs\n'
 
     print(test_manches)
 

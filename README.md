@@ -25,6 +25,20 @@ Ce projet permet de générer automatiquement un patron de tricot personnalisé 
 - **Python** : Moteur de calculs pour générer les instructions
 - *(Optionnel)* **Base de données** : Sauvegarde des patrons générés.
 
+## 🔧 Installation (en local)
+
+```bash
+# 1. Créer un environnement virtuel (recommandé)
+python3 -m venv venv
+source venv/bin/activate  # Sur Windows : venv\Scripts\activate
+
+# 2. Installer les dépendances nécessaires
+pip install -r requirements.txt
+
+# 3. Lancer le backend Flask (si nécessaire)
+python3 backend/app.py
+```
+
 ## 🚧 Fonctionnalités futures
 
 - Intégration complète en ligne via un hébergement web.

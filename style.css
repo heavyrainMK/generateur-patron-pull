@@ -3,7 +3,7 @@
 # Nom ......... : style.css
 # Rôle ........ : Feuille de style pour le générateur de patrons de pulls
 # Auteurs ..... : M, L, M
-# Version ..... : V2.1.0 du 23/05/2025
+# Version ..... : V2.1.1 du 19/06/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Styles CSS modernes avec dégradés, animations et design responsive
 #                 pour l'interface du générateur de patrons de pulls
@@ -163,6 +163,12 @@ h1 {
 .form-container {
   display: grid;
   gap: 30px;
+}
+
+/* Styles pour les sections du formulaire */
+.section-formulaire.aisance {
+  background: linear-gradient(135deg, #f5f3ff 0%, #e3f2fd 100%);
+  border-left-color: #ab47bc;
 }
 
 /* Style de base pour chaque section du formulaire */

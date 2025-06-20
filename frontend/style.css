@@ -3,7 +3,7 @@
 # Nom ......... : style.css
 # Rôle ........ : Feuille de style pour le générateur de patrons de pulls
 # Auteurs ..... : M, L, M
-# Version ..... : V2.1.1 du 19/06/2025
+# Version ..... : V3.1.1 du 20/06/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Styles CSS modernes avec dégradés, animations et design responsive
 #                 pour l'interface du générateur de patrons de pulls
@@ -13,6 +13,13 @@
 # *******************************************************
 */
 
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --text-white: #ffffff;
+  --text-gray: rgba(255, 255, 255, 0.8);
+}
+
 /* Réinitialisation globale : supprime les marges et paddings par défaut */
 * {
   margin: 0;
@@ -20,8 +27,273 @@
   box-sizing: border-box;
 }
 
+
+/*
+
+STYLES PAGE D'ACCUEIL
+
+*/ 
+body.accueil {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #85b1b7 50%, #3650c7 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  min-height: 100vh;
+  color: var(--text-white);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gradient pour le fond d'écran */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Conteneur principal centré */
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.hero {
+  text-align: center;
+  max-width: 800px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  padding: 55px 45px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Titre principal */
+.hero h1 {
+  color: #ffffff;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+/* Paragraphe principal */
+.hero p {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Bouton "Commencer maintenant" */
+.start-button {
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 20px 40px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+/* Bouton au survol de la souris */
+.start-button:hover {
+  background: rgba(255, 255, 255, 0.8);  
+  color: #000000;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);  
+  transform: translateY(-2px); 
+}
+
+/* Pied de page */
+.footer {
+  padding: 30px 40px;
+  text-align: center;
+  margin-top: -30px;
+}
+
+/* Bouton "Qui sommes-nous" */
+.about-button { 
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.654);
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+}
+
+/* Bouton "Qui sommes-nous" au survol */
+.about-button:hover {
+  background: rgba(255, 255, 255, 0.8); 
+  color: #000000;                       
+  border-color: rgba(255, 255, 255, 0.6); 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px); 
+}
+
+/* Icônes flottants en arrière-plan */
+.floating-element {
+  position: absolute;
+  opacity: 0.6;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Animation de flottement */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(var(--rotation));  }
+  50% { transform: translateY(-20px) rotate(var(--rotation));  }
+}
+
+/* Positionnement des éléments flottants */
+.float-1 { top: 15%; right: 6%; animation-delay: 0s;--rotation: 35deg;  }
+.float-2 { bottom: 12%; right: 90%; animation-delay: 0s;--rotation: -20deg; }
+.float-3 { top: 15%; left: 6%; animation-delay: 0s;--rotation: -15deg; }
+.float-4 { top: 50%; left: 80%; animation-delay: 0s;--rotation: 20deg; }
+.float-5 { top: 46%; right: 82%; animation-delay: 0s;--rotation: 20deg;  }
+.float-6 { bottom: 12%; right: 5%; animation-delay: 0s;--rotation: 50deg; }
+
+
+/* Fenêtre "Qui sommes-nous" */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Activation de la fenêtre */
+.about-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Conteneur "Qui sommes-nous" */
+.about-content {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px) brightness(1.4);
+  border-radius: 25px;
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+/* En-tête de section */
+.about-header {
+  margin-bottom: 30px;
+}
+
+.about-header h2 {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Boîte de membre d'équipe */
+.team-member {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Emoji du membre */
+.member-emoji {
+  font-size: 2rem;
+  margin-right: 15px;
+}
+
+/* Prénoms des membres */
+.member-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/*Description en bas de prenoms*/
+.about-description {
+  color: #ffffff;
+  line-height: 1.6;
+  margin: 25px 0;
+  font-size: 1rem;
+}
+
+/* Bouton de fermeture */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+/* Inversion des couleurs des images */
+.icone-blanche {
+  filter: invert(1) brightness(1.2) contrast(1.2);
+  width: 70px;   /* adapte selon ton design */
+  height: auto;
+}
+
+
+/* Flou d’arrière-plan sur le contenu */
+.blur-background {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+
+/*
+
+STYLES FORMULAIRE
+
+*/ 
+
 /* Style du body principal avec dégradé de fond */
-body {
+body:not(.accueil) {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;

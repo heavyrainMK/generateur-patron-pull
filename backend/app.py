@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
+import os
 
 from swatch import Swatch
 from back import Back
@@ -104,6 +105,14 @@ def calculer_patron():
     patron += f"Augmentations raglan manches : {my_sleeve.augmentations_raglan}\n"
 
     return jsonify({"patron": patron})
+
+@app.route('/')
+def index():
+    return send_from_directory('../frontend', 'index.html')
+
+@app.route('/<path:path>')
+def static_proxy(path):
+    return send_from_directory('../frontend', path)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)

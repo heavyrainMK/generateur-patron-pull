@@ -410,7 +410,7 @@ async function genererPatron() {
         if (!['tres_ajuste', 'ajuste'].includes(donnees['mode_aisance'])) {
             ['tour_taille','tour_hanches','hauteur_nuque_taille','tour_coude'].forEach(cle => delete donnees[cle]);
         }
-        const reponse = await fetch('http://localhost:10000/api/calculer-patron', {
+        const reponse = await fetch('/api/calculer-patron', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ def calculer_patron():
 
     # Extraction des données
     mode_aisance = data.get('mode_aisance')
-    aisance = float(data['aisance']) if data.get('aisance') else None
+    aisance = float(data['aisance']) if 'aisance' in data and data['aisance'] else None
 
     mailles_10cm = float(data['mailles_10cm'])
     rangs_10cm = float(data['rangs_10cm'])
@@ -40,8 +40,8 @@ def calculer_patron():
     tour_poignet = float(data['tour_poignet'])
     tour_coude = float(data['tour_coude']) if 'tour_coude' in data and data['tour_coude'] else None
 
-    appliquer_aisance = data['appliquer_aisance']
-    encolure = data['encolure']
+    appliquer_aisance = data.get('appliquer_aisance')
+    encolure = data.get('encolure')
     cotes_bas = float(data['cotes_bas'])
     cotes_poignets = float(data['cotes_poignets'])
 

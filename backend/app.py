@@ -1,3 +1,19 @@
+# *******************************************************
+# Nom ......... : app.py
+# Rôle ........ : Serveur Flask pour le générateur de patrons de tricot
+# Auteurs ..... : M, L, M
+# Version ..... : V2.0.1 du 20/06/2025
+# Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
+# Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
+#                 traitement des données, calculs personnalisés, génération du résumé du patron.
+#                 Sert également les fichiers statiques frontend (HTML/CSS/JS).
+#
+# Technologies  : Python, Flask
+# Dépendances . : flask, flask-cors, gunicorn
+# Usage ....... : Déploiement sur Render ; endpoint principal : POST /api/calculer-patron
+#                 Le frontend est accessible à la racine du site (/).
+# *******************************************************
+
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
@@ -11,7 +27,6 @@ from backend.sleeve import Sleeve
 
 app = Flask(__name__)
 CORS(app)  # Autorise les requêtes depuis le frontend
-
 
 @app.route('/api/calculer-patron', methods=['POST'])
 def calculer_patron():

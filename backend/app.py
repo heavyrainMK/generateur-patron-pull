@@ -2,10 +2,10 @@ from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
 import os
 
-from swatch import Swatch
-from back import Back
-from front import Front
-from sleeve import Sleeve
+from backend.swatch import Swatch
+from backend.back import Back
+from backend.front import Front
+from backend.sleeve import Sleeve
 
 import math
 

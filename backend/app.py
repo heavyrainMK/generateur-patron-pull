@@ -132,7 +132,7 @@ def calculer_patron():
 
 @app.route('/')
 def accueil():
-    return send_from_directory('../frontend', 'page_accueil.html')
+    return send_from_directory('../frontend', 'page_accueille.html')
 
 @app.route('/<path:path>')
 def static_proxy(path):

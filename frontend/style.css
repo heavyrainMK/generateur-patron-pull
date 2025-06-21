@@ -294,46 +294,56 @@ STYLES FORMULAIRE
 
 /* Style du body principal avec dégradé de fond */
 body:not(.accueil) {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #85b1b7 50%, #3650c7 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
   min-height: 100vh;
-  padding: 20px;
+  padding: 60px 20px;
+  color: var(--text-white);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Conteneur principal centré avec design moderne */
+/* Conteneur principal centré avec design harmonisé */
 .conteneur {
-  max-width: 1000px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  padding: 55px 45px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
   margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  color: var(--text-white);
 }
 
 /* Titre principal */
 h1 {
+  color: #ffffff;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-/* Classe pour appliquer un dégradé au texte */
-.texte-dégradé {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* Sous-titre */
 .sous-titre {
   text-align: center;
-  color: #666;
+  color: #ffffff;
   font-size: 1.2rem;
   margin-bottom: 40px;
+  line-height: 1.6;
 }
 
-/* Styles pour l'indicateur de progression */
+/* Indicateur de progression */
 .conteneur-progression {
   margin-bottom: 40px;
 }
@@ -356,9 +366,14 @@ h1 {
 }
 
 .etapes-progression {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes égales */
+  gap: 15px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .etape {
@@ -410,7 +425,6 @@ h1 {
   color: #28a745;
 }
 
-/* Styles pour les étapes du formulaire */
 .etape-formulaire {
   display: none;
   animation: fadeIn 0.3s ease-in-out;
@@ -431,50 +445,21 @@ h1 {
   }
 }
 
-/* Container pour organiser les sections du formulaire (invisible ici, car chaque étape a son propre conteneur) */
 .form-container {
   display: grid;
   gap: 30px;
 }
 
-/* Styles pour les sections du formulaire */
-.section-formulaire.aisance {
-  background: linear-gradient(135deg, #f5f3ff 0%, #e3f2fd 100%);
-  border-left-color: #ab47bc;
-}
-
-/* Style de base pour chaque section du formulaire */
 .section-formulaire {
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.05);
   padding: 25px;
   border-radius: 15px;
-  border-left: 5px solid #667eea;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
-/* Variantes de couleurs pour différentes sections */
-.section-formulaire.succes {
-  background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
-  border-left-color: #4caf50;
-}
-
-.section-formulaire.fil {
-  background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%);
-  border-left-color: #ff9800;
-}
-
-.section-formulaire.corps {
-  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-  border-left-color: #2196f3;
-}
-
-.section-formulaire.bras {
-  background: linear-gradient(135deg, #fff8e1 0%, #f1f8e9 100%);
-  border-left-color: #ff5722;
-}
-
-/* Titres des sections avec icônes */
 .section-formulaire h2 {
-  color: #333;
+  color: #ffffff;
   font-size: 1.4rem;
   margin-bottom: 20px;
   display: flex;
@@ -482,100 +467,81 @@ h1 {
   gap: 10px;
 }
 
-/* Taille des icônes dans les titres */
 .icone-section {
   font-size: 1.5rem;
 }
 
-/* Layout en deux colonnes pour certaines sections */
 .deux-colonnes {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-/* Classe pour faire qu'un élément occupe toute la largeur */
 .pleine-largeur {
   grid-column: 1 / -1;
 }
 
-/* Style de base pour les labels */
 label {
   display: block;
   margin-bottom: 15px;
 }
 
-/* Texte principal du label */
 .texte-label {
   display: block;
   font-weight: 600;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 5px;
 }
 
-/* Texte d'aide sous les labels */
 .texte-aide {
-  display: block;
   font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.7);
   font-style: italic;
+  margin-bottom: 8px;
 }
 
-/* Style pour les messages d'erreur */
-.message-erreur {
-  display: block;
-  color: #dc3545;
-  font-size: 0.8rem;
-  margin-top: 5px;
-  min-height: 16px;
-}
-
-/* Style uniforme pour tous les champs de saisie pertinents */
 input[type="number"], select {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 
-/* Effet focus pour les champs */
 input:focus, select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
-/* Style quand un champ est en erreur */
 input.erreur, select.erreur {
   border-color: #dc3545;
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
 }
 
-/* Container pour les groupes de boutons radio */
 .groupe-radio {
   display: grid;
   gap: 10px;
   margin-top: 10px;
 }
 
-/* Style pour chaque option radio */
 .option-radio {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px;
-  border: 2px solid #e0e0e0;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .option-radio:hover {
-  border-color: #667eea;
-  background: #f5f7ff;
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .option-radio input[type="radio"] {
@@ -583,22 +549,21 @@ input.erreur, select.erreur {
   margin: 0;
 }
 
-/* Style du label quand l'option radio est sélectionnée */
 .option-radio input[type="radio"]:checked + .etiquette-radio {
-  color: #667eea;
+  color: #ffffff;
   font-weight: 600;
 }
 
-/* Styles pour les boutons de navigation */
 .boutons-navigation {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
   margin-top: 30px;
-  gap: 20px;
+  width: 100%;
 }
 
 .bouton-navigation {
+  width: 100%;
   padding: 15px 30px;
   border: none;
   border-radius: 12px;
@@ -606,56 +571,46 @@ input.erreur, select.erreur {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 140px;
-}
-
-.bouton-primaire {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  color: white;
-}
-
-.bouton-primaire:hover {
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
-.bouton-secondaire {
-  background: #6c757d;
-  color: white;
+.bouton-navigation:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
 }
 
-.bouton-secondaire:hover {
-  background: #5a6268;
-  transform: translateY(-1px);
-}
-
-/* Bouton de soumission principal (reste optionnel) */
 button[type="submit"] {
   width: 100%;
   padding: 18px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  color: white;
-  border: none;
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 12px;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 30px;
-}
-
-button[type="submit"]:hover {
-  transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
-/* Container pour centrer les boutons d'action */
+button[type="submit"]:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
 .boutons-action {
   text-align: center;
   margin-top: 20px;
 }
 
-/* Zone d'affichage des messages de retour */
 #message {
   margin-top: 20px;
   padding: 15px;
@@ -665,25 +620,24 @@ button[type="submit"]:hover {
   display: none;
 }
 
-/* Style pour les messages de succès */
 #message.success {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background: rgba(40, 167, 69, 0.2);
+  color: #d4edda;
+  border: 1px solid #28a745;
 }
 
-/* Style pour les messages d'erreur */
 #message.error {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background: rgba(220, 53, 69, 0.2);
+  color: #f8d7da;
+  border: 1px solid #dc3545;
 }
 
-/* Zone d'affichage des résultats */
 #résultat {
   margin-top: 30px;
   padding: 20px;
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   white-space: pre-wrap;
   font-family: 'Courier New', monospace;
@@ -692,36 +646,41 @@ button[type="submit"]:hover {
   overflow-y: auto;
 }
 
+#message:empty,
+#résultat:empty {
+  display: none;
+}
+
 /* Styles responsive pour les écrans mobiles */
 @media (max-width: 768px) {
   .conteneur {
     padding: 20px;
   }
-  
+
   .deux-colonnes {
     grid-template-columns: 1fr;
   }
-  
+
   h1 {
     font-size: 2rem;
   }
-  
+
   .etapes-progression {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les étapes */
     gap: 15px;
-    justify-content: center;
+    justify-items: center;
   }
-  
+
   .etape {
-    flex: 0 0 calc(50% - 15px);
-    min-width: 120px;
+    min-width: 100px;
   }
-  
+
   .boutons-navigation {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .bouton-navigation {
     width: 100%;
   }

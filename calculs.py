@@ -37,30 +37,31 @@ class Calculs(ABC):
         rangs_restants = rows
         augmentations_effectuees = 0
         augmentations_restantes = increases
-        if (math.floor(rows/2) < increases):
-            while (augmentations_restantes > (rangs_restants/2)):
-                rang_en_cours = rang_en_cours + 1
-                rangs_restants = rangs_restants - 1
-                augmentations_effectuees = augmentations_effectuees + 1
-                augmentations_restantes = augmentations_restantes - 1
+        if ((increases*2) > rows):
+            while ((augmentations_restantes * 2) >= rangs_restants):
+                rang_en_cours+=1
+                rangs_restants-=1
+                augmentations_effectuees+=1
+                augmentations_restantes-=1
             self.augmentations_raglan['tous_les_rangs'] = augmentations_effectuees
             self.augmentations_raglan['tous_les_2_rangs'] = augmentations_restantes
 
-        elif (math.floor(rows/3) < increases):
-            while (augmentations_restantes > (rangs_restants/3)):
-                rang_en_cours = rang_en_cours + 1
-                rangs_restants = rangs_restants - 1
-                augmentations_effectuees = augmentations_effectuees + 1
-                augmentations_restantes = augmentations_restantes - 1
+        elif ((increases*3) > rows):
+            while ((augmentations_restantes * 3) >= rangs_restants):
+                rang_en_cours+=1
+                rangs_restants-=1
+                augmentations_effectuees+=1
+                augmentations_restantes-=1
+                print(augmentations_effectuees, augmentations_restantes)
             self.augmentations_raglan['tous_les_rangs'] = augmentations_effectuees
             self.augmentations_raglan['tous_les_3_rangs'] = augmentations_restantes
 
         else:
-            while(augmentations_restantes > (rangs_restants/4)):
-                rang_en_cours = rang_en_cours + 2
-                rangs_restants = rangs_restants - 2
-                augmentations_effectuees = augmentations_effectuees + 1
-                augmentations_restantes = augmentations_restantes - 1
+            while((augmentations_restantes * 4) >= rangs_restants):
+                rang_en_cours+=2
+                rangs_restants-=2
+                augmentations_effectuees+=2
+                augmentations_restantes-=2
             self.augmentations_raglan['tous_les_2_rangs'] = augmentations_effectuees
             self.augmentations_raglan['tous_les_4_rangs'] = augmentations_restantes
 

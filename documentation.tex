@@ -1,0 +1,202 @@
+\documentclass{article}
+
+% ================== PACKAGES ===================
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, left=2.6cm, right=2.6cm, top=2.5cm, bottom=3.1cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,      % Colorie le texte des liens (au lieu de boîtes)
+	linkcolor=blue,       % Couleur des liens internes (sommaire, refs)
+	citecolor=blue,       % Couleur des citations
+	urlcolor=blue,        % Couleur des URL
+	pdfborder={0 0 0}     % Supprime les cadres autour des liens
+}
+
+\usepackage{setspace}
+\usepackage{tocloft}
+\usepackage{parskip}
+\usepackage{fontawesome}
+\setstretch{1.5}
+\definecolor{bluemar}{RGB}{0, 51, 102} % Bleu marine personnalisé
+
+
+% ========== SOMMAIRE PERSONNALISÉ ==========
+\cftsetindents{section}{0em}{2.5em}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\contentsname}{Sommaire}
+
+% ================== DÉBUT DOCUMENT ===================
+\begin{document}
+	
+\subsection*{Membres de l’équipe: \textbf{Maxime, Liubov, Mathilde}}
+\subsection*{Cours : \textbf{Réalisation de Programme}}
+\subsection*{Projet : \textbf{Générateur de Patrons de Pull}}
+
+	\newpage
+	\tableofcontents
+	
+	\newpage % Début du contenu
+
+
+	\section{Introduction}
+	\subsection{Objectifs et motivations du projet}
+	
+	Ce projet a pour objectif de développer un site web capable de générer automatiquement des instructions de tricot personnalisées pour un pull, à partir des mesures fournies par l’utilisateur. L’idée centrale est de proposer un outil accessible permettant une véritable personnalisation, bien au-delà des tailles standards (S, M, L, etc.).
+	
+	Le site permet à l’utilisateur de définir précisément les dimensions de son pull, qu’il souhaite un ajustement spécifique — par exemple au niveau des bras, de la taille — ou, au contraire, une coupe plus ample selon ses préférences. Chacun peut ainsi concevoir un modèle qui correspond pleinement à ses attentes, tant sur le plan esthétique que morphologique.
+	
+	Les calculs habituellement réalisés manuellement dans la création de patrons sont ici automatisés, ce qui rend la conception de pulls tricotés accessible même aux débutants. L’objectif est de faciliter la pratique du tricot, quel que soit le niveau de compétence, grâce à des instructions claires et précises.
+	
+	\subsection{État de la question et projets similaires}
+	Il existe actuellement quelques outils en ligne qui proposent la génération de patrons de tricot, comme [Nom de l’outil 1] ou [Nom de l’outil 2]. Cependant, ces services se basent généralement sur des tailles standards prédéfinies (S, M, L) et ne permettent pas de personnalisation réelle en fonction des mensurations précises de l’utilisateur. Par ailleurs, l’ergonomie de ces sites est souvent limitée, avec des interfaces peu intuitives ou peu adaptées à un public débutant, et souvent payantes ou uniquement disponibles en anglais.
+	
+	Notre projet se distingue par plusieurs éléments :
+	\begin{itemize}
+	\item une interface claire, simple d’utilisation, pensée pour être accessible à tous ;
+	\item une version entièrement en français ;
+	\item un haut niveau de personnalisation, basé sur des mesures détaillées pour chaque partie du corps (tour de poitrine, longueur du buste, manches, etc.).
+	\item des calculs automatisés pour générer un patron sur mesure en quelques clics ;
+	\item la possibilité d’exporter et de sauvegarder le patron au format PDF.
+	\end{itemize}
+	
+	\section{Contexte et contraintes}
+	\subsection{Contraintes et choix techniques}
+	
+
+	\subsection*{5W – Analyse des choix}
+	\begin{itemize}
+		\item \textbf{Qui :} Trois étudiants en Licence 2, dans le cadre du cours \textit{Réalisation de Programme}.
+		
+		\item \textbf{Quoi :} Générateur de patrons de pull personnalisés.
+		
+		\item \textbf{Quand :} Réalisé en \textcolor{red}{X} semaines.  \textcolor{red}{(ajouter le nombre de semaines)}
+		
+		\item \textbf{Où :} Travail collaboratif effectué à distance, à l’aide de GitHub et d’ordinateurs personnels.
+		
+		\item \textbf{Pourquoi :} Mettre en pratique, de manière concrète, les compétences acquises en deuxième année de licence, notamment la maîtrise des langages JavaScript, Python, HTML et CSS, le développement d’un projet de A à Z, ainsi que le travail collaboratif au sein d’une équipe.
+	\end{itemize}
+
+	
+	\subsection*{Contraintes principales}
+	\begin{itemize}
+		\item Disponibilité variable des membres de l’équipe pour le développement du projet
+		\item Conception d’une interface intuitive, accessible même aux débutants en tricot
+		\item Mise en place de calculs fiables pour une personnalisation complète
+	\end{itemize}
+
+	
+	\subsection{Budget}
+	
+	Tous les outils utilisés sont open source. Cependant :
+	
+	\begin{itemize}
+		\item \textbf{Matériel informatique :}  
+		Chaque membre de l’équipe a utilisé son ordinateur personnel pour ce projet. Bien que nos ordinateurs n’aient pas été achetés spécifiquement pour ce travail, ils sont essentiels à sa réalisation. Le coût d'achat initial d'un ordinateur est de 650 euros (il s’agit d’un investissement préexistant, et non d’un coût direct lié au projet).
+		
+		\item \textbf{Connexion Internet :}  
+		L’accès à Internet était indispensable pour effectuer des recherches, développer et tester le programme, suivre et partager l’avancement du développement, ainsi qu’organiser des appels pour les points d’avancement. Les frais estimés pour une semaine d’utilisation s’élèvent à environ 7 euros.
+		
+		\item \textbf{Outils et logiciels :}  
+		Pour la réalisation du projet, nous avons utilisé des outils gratuits, notamment  \textcolor{red}{(ajouter d'autres outils)}:
+		\begin{itemize}
+			\item GitHub (pour les contributions et le suivi de l’avancement)
+			\item Visual Studio Code (éditeur de code)
+			\item Discord (pour les appels hebdomadaires, une fois par semaine)
+		\end{itemize}
+		
+		\item \textbf{Coûts de maintenance / mise à jour :}  
+		Les coûts de maintenance et de mise à jour du site Générateur de Patron de Pull dépendront de la fréquence et de la complexité des évolutions futures.
+		
+	\end{itemize}
+	
+	\subsection{Temps estimé}
+	
+	Nous avons consacré environ \textcolor{red}{X} semaines à ce projet. Cela comprend les recherches, la consultation de tutoriels et le développement du programme. \textcolor{red}{(ajouter le nombre de semaines.)}
+	
+	Le temps estimé par personne est de \textcolor{red}{X} heures par semaine. \textcolor{red}{(ajouter le nombre des heures.)} Avec une heure d’appel par semaine pour les points d’avancement.
+
+
+	
+	\section{Méthodologie et langages}
+	
+	Nous avons commencé par nous mettre d’accord sur une définition claire du projet, en précisant les objectifs et ce que le site devait accomplir. Ensuite, nous avons mis en place une liste des fonctionnalités attendues. Puis, nous avons réparti les rôles et les responsabilités au sein de l’équipe.
+	
+	Nous avons prévu des appels hebdomadaires (une fois par semaine) pour faire le point sur l’avancement, ainsi qu’un groupe Discord pour communiquer quotidiennement.
+	
+	Le travail a débuté par le développement des calculs côté back-end. Nous avons choisi Python pour sa simplicité et sa puissance, et avons décidé d’organiser la structure du code en classes. En parallèle, nous avons commencé à travailler sur le front-end, notamment la mise en page HTML et CSS.
+	
+	Ensuite, nous avons entamé le développement en JavaScript pour assurer la liaison entre la page HTML et le moteur de calculs en Python...... \textcolor{red}{(continuer)}
+	
+	\vspace{0.4cm}
+	\textbf{Langages utilisés :}
+	\begin{itemize}
+		\item \textbf{HTML / CSS} : pour créer la structure des pages web et définir leur mise en forme visuelle.
+		\item \textbf{JavaScript} : pour rendre l’interface interactive et gérer la dynamique côté client (navigateur).
+		\item \textbf{Python (Flask)} : pour les calculs et l’API backend
+	\end{itemize}
+	
+	\subsection{Identification des tâches}\textcolor{red}{(à modifier les semaines)}
+	
+	\begin{tabular}{|c|p{10cm}|}
+		\hline
+		\textbf{Semaine} & \textbf{Tâches principales} \\
+		\hline
+		1--2 & Recherche initiale et définition précise du projet \\
+		3 -- X & Création et modification de la structure HTML/CSS \\
+		3--X & Développement du script Python pour les calculs \\
+		5--X & Intégration entre JavaScript et Python \\
+		X & Génération du PDF \\
+		7--X & Phase de tests et corrections \\
+		X--X & Implémentation et déploiement sur l’hébergeur \\
+		X--X & Tests unitaires \\
+		X & Rédaction de la documentation \\
+		\hline
+	\end{tabular}
+
+	
+	\subsection*{Tâches détaillées}
+	
+	\begin{itemize}
+		\item \textbf{Frontend (HTML/CSS)} : création du formulaire, mise en page et gestion de l’interface utilisateur.
+		\item \textbf{Backend (Python avec Flask)} : développement du serveur et gestion des requêtes API.
+		\item \textbf{Calculs (Python)} : implémentation des calculs.
+		\item \textbf{Communication API} : utilisation de JavaScript (fetch, JSON) pour échanger des données entre le frontend et le backend.
+	\end{itemize}
+
+	
+	\section{Réalisation}
+	\textcolor{red}{(Ajouter les codes backend et frontend, en expliquant le fonctionnement de chaque partie)}
+	
+	
+	\section{Tests et gestion des erreurs}
+	
+	\textcolor{red}{(Ajouter 3 exemples d’utilisation + 2 gestions d’erreurs (explications + captures d’écran))}
+	
+	\section{Prolongements possibles}
+	
+	\begin{itemize}
+		\item Ajout d'une base de données 
+		\item Traduction multilingue.
+		\item Génération de schémas.
+	\end{itemize}
+	
+	\section{Difficultés rencontrées}
+	Pour les membres de notre équipe, il s’agissait du premier projet collaboratif. Nous avons dû apprendre à organiser et gérer de manière autonome toutes les étapes du projet. Les principaux défis étaient liés au travail à distance, comme la gestion des différences de fuseaux horaires et des emplois du temps variés.... 	\textcolor{red}{(Continuer)}\\
+	\section{Apports du projet}
+	
+	\begin{itemize}
+		\item Acquisition et renforcement des compétences en développement web avec Python, JavaScript, HTML et CSS.
+		\item Expérience concrète de travail collaboratif en équipe sur un projet commun.
+		\item Apprentissage de la structuration de projet, organisation du travail, répartition des tâches et entraide entre membres.
+	\end{itemize}
+
+	\section{Conclusion et perspectives}
+	\textcolor{red}{(Ajouter)}
+
+	
+\end{document}

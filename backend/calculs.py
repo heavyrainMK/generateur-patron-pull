@@ -52,7 +52,6 @@ class Calculs(ABC):
                 rangs_restants-=1
                 augmentations_effectuees+=1
                 augmentations_restantes-=1
-                print(augmentations_effectuees, augmentations_restantes)
             self.augmentations_raglan['tous_les_rangs'] = augmentations_effectuees
             self.augmentations_raglan['tous_les_3_rangs'] = augmentations_restantes
 

@@ -3,7 +3,7 @@
 # Nom ......... : index.html
 # Rôle ........ : Interface utilisateur pour la génération de patrons de pull personnalisés
 # Auteurs ..... : M, L, M
-# Version ..... : V2.1.0 du 23/05/2025
+# Version ..... : V2.2.1 du 21/06/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Formulaire web interactif permettant de saisir les mesures corporelles
 #                 et spécifications techniques pour générer un patron de tricot personnalisé
@@ -19,20 +19,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Générateur de Patron de Pull Professionnel</title>
-    <!-- Lien vers la feuille de style CSS externe -->
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <!-- Conteneur principal de l'application -->
+    <!-- Éléments décoratifs -->
+    <div class="floating-element float-1"><img src="images/measurement.png" alt="Image" class="icone-blanche"></div>
+    <div class="floating-element float-2"><img src="images/fashion-design.png" alt="Image" class="icone-blanche"></div>
+    <div class="floating-element float-3"><img src="images/sweatshirt.png" alt="Image" class="icone-blanche"></div>
+    <div class="floating-element float-4"><img src="images/buttons.png" alt="Image" class="icone-blanche"></div>
+    <div class="floating-element float-5"><img src="images/knitting.png" alt="Image" class="icone-blanche"></div>
+    <div class="floating-element float-6"><img src="images/pattern.png" alt="Image" class="icone-blanche"></div>
+
     <div class="conteneur">
-      <!-- En-tête avec titre principal et sous-titre -->
       <h1>
         <span class="emoji">🧶</span>
         <span class="texte-dégradé">Générateur de Patron de Pull</span>
       </h1>
       <p class="sous-titre">Créez des patrons de pulls personnalisés et professionnels</p>
 
-      <!-- Indicateur de progression -->
       <div class="conteneur-progression">
         <div class="barre-progression">
           <div class="remplissage-progression" id="remplissageProgression"></div>
@@ -40,27 +44,62 @@
         <div class="etapes-progression">
           <div class="etape active" data-etape="1">
             <span class="numero-etape">1</span>
-            <span class="etiquette-etape">Spécifications</span>
+            <span class="etiquette-etape">Aisance</span>
           </div>
           <div class="etape" data-etape="2">
             <span class="numero-etape">2</span>
-            <span class="etiquette-etape">Mesures corps</span>
+            <span class="etiquette-etape">Spécifications</span>
           </div>
           <div class="etape" data-etape="3">
             <span class="numero-etape">3</span>
-            <span class="etiquette-etape">Mesures bras</span>
+            <span class="etiquette-etape">Mesures corps</span>
           </div>
           <div class="etape" data-etape="4">
             <span class="numero-etape">4</span>
+            <span class="etiquette-etape">Mesures bras</span>
+          </div>
+          <div class="etape" data-etape="5">
+            <span class="numero-etape">5</span>
             <span class="etiquette-etape">Style</span>
           </div>
         </div>
       </div>
 
-      <!-- Formulaire principal pour saisir toutes les mesures et paramètres -->
       <form id="formulaire">
-        <!-- ÉTAPE 1: Spécifications techniques -->
+        <!-- ÉTAPE 1: Choix du mode d'aisance -->
         <div class="etape-formulaire active" data-etape="1">
+          <div class="section-formulaire aisance">
+            <h2>
+              <span class="icone-section">🧵</span> Choix de l’aisance
+            </h2>
+            <label class="pleine-largeur">
+              <span class="texte-label">Sélectionnez un mode d’aisance :</span>
+              <select id="mode_aisance" name="mode_aisance" required>
+                <option value="">-- Choisissez --</option>
+                <option value="tres_ajuste">Très ajusté (−2,5 cm)</option>
+                <option value="ajuste">Ajusté (+7,5 cm)</option>
+                <option value="standard">Standard (+17,5 cm)</option>
+                <option value="large">Large (+27,5 cm)</option>
+                <option value="personnalise">Personnalisé</option>
+              </select>
+              <span class="message-erreur"></span>
+            </label>
+            <div id="containerAisancePerso" style="display: none;">
+              <label>
+                <span class="texte-label">Aisance personnalisée (cm) :</span>
+                <input type="number" id="aisance" name="aisance" step="0.5" min="-5" max="30" value="10" />
+                <span class="texte-aide">Entrez une valeur comprise entre -5 et 30 cm.</span>
+                <span class="message-erreur"></span>
+              </label>
+            </div>
+            <p class="texte-aide" style="margin-top: 12px;">
+              <b>Astuce :</b> Les mesures taille, hanches, hauteur nuque-taille et coude ne sont demandées qu'en mode très ajusté ou ajusté.
+            </p>
+          </div>
+        </div>
+
+        <!-- ÉTAPE 2: Spécifications techniques -->
+        <div class="etape-formulaire" data-etape="2">
           <div class="section-formulaire fil">
             <h2>
               <span class="icone-section">🧶</span> Spécifications techniques
@@ -90,8 +129,8 @@
           </div>
         </div>
 
-        <!-- ÉTAPE 2: Mesures du corps -->
-        <div class="etape-formulaire" data-etape="2">
+        <!-- ÉTAPE 3: Mesures du corps -->
+        <div class="etape-formulaire" data-etape="3">
           <div class="section-formulaire corps">
             <h2>
               <span class="icone-section">👤</span> Mesures corporelles
@@ -107,25 +146,25 @@
                 <span class="texte-aide">Mesurer au point le plus large</span>
                 <input type="number" id="tour_poitrine" name="tour_poitrine" step="0.5" min="60" max="150" required /><span class="message-erreur"></span>
               </label>
-              <label>
+              <label class="champ-ajuste">
                 <span class="texte-label">📏 Tour de taille (cm)</span>
                 <span class="texte-aide">À la taille naturelle</span>
-                <input type="number" id="tour_taille" name="tour_taille" step="0.5" min="50" max="130" required /><span class="message-erreur"></span>
+                <input type="number" id="tour_taille" name="tour_taille" step="0.5" min="50" max="130" /><span class="message-erreur"></span>
               </label>
               <label>
                 <span class="texte-label">📏 Hauteur nuque-taille (cm)</span>
                 <span class="texte-aide">De la nuque à la taille naturelle</span>
-                <input type="number" id="hauteur_nuque_taille" name="hauteur_nuque_taille" step="0.5" min="30" max="70" required /><span class="message-erreur"></span>
+                <input type="number" id="hauteur_nuque_taille" name="hauteur_nuque_taille" step="0.5" min="30" max="70" /><span class="message-erreur champ-ajuste"></span>
               </label>
               <label>
                 <span class="texte-label">📏 Tour de hanches (cm)</span>
                 <span class="texte-aide">Au point le plus large</span>
-                <input type="number" id="tour_hanches" name="tour_hanches" step="0.5" min="60" max="150" required /><span class="message-erreur"></span>
+                <input type="number" id="tour_hanches" name="tour_hanches" step="0.5" min="60" max="150" /><span class="message-erreur champ-ajuste"></span>
               </label>
               <label>
-                <span class="texte-label">📏 Largeur d'épaules (cm)</span>
-                <span class="texte-aide">D'une épaule à l'autre</span>
-                <input type="number" id="largeur_epaules" name="largeur_epaules" step="0.5" min="30" max="60" required /><span class="message-erreur"></span>
+                <span class="texte-label">📏 Largeur arrière de la nuque (cm)</span>
+                <span class="texte-aide">Mesurer de la base gauche à la base droite de la nuque, juste entre les épaules</span>
+                <input type="number" id="largeur_nuque" name="largeur_nuque" step="0.5" min="8" max="25" required /><span class="message-erreur"></span>
               </label>
               <label>
                 <span class="texte-label">📏 Hauteur d'emmanchure (cm)</span>
@@ -141,8 +180,8 @@
           </div>
         </div>
 
-        <!-- ÉTAPE 3: Mesures des bras pour les manches -->
-        <div class="etape-formulaire" data-etape="3">
+        <!-- ÉTAPE 4: Mesures des bras -->
+        <div class="etape-formulaire" data-etape="4">
           <div class="section-formulaire bras">
             <h2>
               <span class="icone-section">💪</span> Mesures des bras
@@ -163,25 +202,21 @@
                 <span class="texte-aide">À la base de la main</span>
                 <input type="number" id="tour_poignet" name="tour_poignet" step="0.5" min="12" max="25" required /><span class="message-erreur"></span>
               </label>
-              <label>
+              <label class="champ-ajuste">
                 <span class="texte-label">📏 Tour de coude (cm)</span>
                 <span class="texte-aide">Au coude fléchi</span>
-                <input type="number" id="tour_coude" name="tour_coude" step="0.5" min="18" max="35" required /><span class="message-erreur"></span>
+                <input type="number" id="tour_coude" name="tour_coude" step="0.5" min="18" max="35" /><span class="message-erreur"></span>
               </label>
             </div>
           </div>
         </div>
 
-        <!-- ÉTAPE 4: Style et finitions -->
-        <div class="etape-formulaire" data-etape="4">
+        <!-- ÉTAPE 5: Style et finitions -->
+        <div class="etape-formulaire" data-etape="5">
           <div class="section-formulaire succes">
             <h2>
               <span class="icone-section">✨</span> Style et finitions
             </h2>
-            <label>
-              <span class="texte-label">Aisance (cm) :</span>
-              <input type="number" id="aisance" name="aisance" step="0.5" min="-2" max="25" value="10" required /><span class="texte-aide">Exemples : Très ajusté (-5 à 0 cm), Ajusté (5-10 cm), Standard (15-20 cm), Large (25-30 cm)</span><span class="message-erreur"></span>
-            </label>
             <label>
               <span class="texte-label">Appliquer l'aisance à :</span>
               <div class="groupe-radio">
@@ -233,20 +268,14 @@
         </div>
       </form>
 
-      <!-- Boutons d'action supplémentaires -->
       <div class="boutons-action">
-        <!-- Bouton de téléchargement PDF (masqué initialement) -->
         <button type="button" class="bouton-secondaire" onclick="telechargerPDF()" style="display: none;" id="boutonTelecharger">
           📄 Télécharger en PDF
         </button>
       </div>
-
-      <!-- Zones d'affichage des messages et résultats -->
-      <div id="message"></div>     <!-- Pour les messages d'erreur ou de statut -->
-      <div id="résultat"></div>    <!-- Pour afficher le patron généré -->
+      <div id="message"></div>
+      <div id="résultat"></div>
     </div>
-
-    <!-- Lien vers le fichier JavaScript qui gère la logique -->
     <script src="script.js"></script>
   </body>
 </html>

@@ -1,0 +1,687 @@
+/*
+# *******************************************************
+# Nom ......... : style.css
+# Rôle ........ : Feuille de style pour le générateur de patrons de pulls
+# Auteurs ..... : M, L, M
+# Version ..... : V3.2.1 du 21/06/2025
+# Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
+# Description . : Styles CSS modernes avec dégradés, animations et design responsive
+#                 pour l'interface du générateur de patrons de pulls
+# Fonctionnalités : Design responsive, dégradés, animations de transition,
+#                  sections colorées thématiques, interface utilisateur moderne
+# Compatibilité : Navigateurs modernes (Chrome, Firefox, Safari, Edge)
+# *******************************************************
+*/
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --text-white: #ffffff;
+  --text-gray: rgba(255, 255, 255, 0.8);
+}
+
+/* Réinitialisation globale : supprime les marges et paddings par défaut */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/*
+
+STYLES PAGE D'ACCUEIL
+
+*/ 
+body.accueil {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #85b1b7 50%, #3650c7 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  min-height: 100vh;
+  color: var(--text-white);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gradient pour le fond d'écran */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Conteneur principal centré */
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.hero {
+  text-align: center;
+  max-width: 800px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  padding: 55px 45px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Titre principal */
+.hero h1 {
+  color: #ffffff;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+/* Paragraphe principal */
+.hero p {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Bouton "Commencer maintenant" */
+.start-button {
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 20px 40px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+/* Bouton au survol de la souris */
+.start-button:hover {
+  background: rgba(255, 255, 255, 0.8);  
+  color: #000000;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);  
+  transform: translateY(-2px); 
+}
+
+/* Pied de page */
+.footer {
+  padding: 30px 40px;
+  text-align: center;
+  margin-top: -30px;
+}
+
+/* Bouton "Qui sommes-nous" */
+.about-button { 
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.654);
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+}
+
+/* Bouton "Qui sommes-nous" au survol */
+.about-button:hover {
+  background: rgba(255, 255, 255, 0.8); 
+  color: #000000;                       
+  border-color: rgba(255, 255, 255, 0.6); 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px); 
+}
+
+/* Icônes flottants en arrière-plan */
+.floating-element {
+  position: absolute;
+  opacity: 0.6;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Animation de flottement */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(var(--rotation));  }
+  50% { transform: translateY(-20px) rotate(var(--rotation));  }
+}
+
+/* Positionnement des éléments flottants */
+.float-1 { top: 15%; right: 6%; animation-delay: 0s;--rotation: 35deg;  }
+.float-2 { bottom: 12%; right: 90%; animation-delay: 0s;--rotation: -20deg; }
+.float-3 { top: 15%; left: 6%; animation-delay: 0s;--rotation: -15deg; }
+.float-4 { top: 50%; left: 80%; animation-delay: 0s;--rotation: 20deg; }
+.float-5 { top: 46%; right: 82%; animation-delay: 0s;--rotation: 20deg;  }
+.float-6 { bottom: 12%; right: 5%; animation-delay: 0s;--rotation: 50deg; }
+
+
+/* Fenêtre "Qui sommes-nous" */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Activation de la fenêtre */
+.about-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Conteneur "Qui sommes-nous" */
+.about-content {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px) brightness(1.4);
+  border-radius: 25px;
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+/* En-tête de section */
+.about-header {
+  margin-bottom: 30px;
+}
+
+.about-header h2 {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Boîte de membre d'équipe */
+.team-member {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Emoji du membre */
+.member-emoji {
+  font-size: 2rem;
+  margin-right: 15px;
+}
+
+/* Prénoms des membres */
+.member-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/*Description en bas de prenoms*/
+.about-description {
+  color: #ffffff;
+  line-height: 1.6;
+  margin: 25px 0;
+  font-size: 1rem;
+}
+
+/* Bouton de fermeture */
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+/* Inversion des couleurs des images */
+.icone-blanche {
+  filter: invert(1) brightness(1.2) contrast(1.2);
+  width: 70px;   /* adapte selon ton design */
+  height: auto;
+}
+
+
+/* Flou d’arrière-plan sur le contenu */
+.blur-background {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+
+/*
+
+STYLES FORMULAIRE
+
+*/ 
+
+/* Style du body principal avec dégradé de fond */
+body:not(.accueil) {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #85b1b7 50%, #3650c7 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  min-height: 100vh;
+  padding: 60px 20px;
+  color: var(--text-white);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Conteneur principal centré avec design harmonisé */
+.conteneur {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px);
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  padding: 55px 45px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-white);
+}
+
+/* Titre principal */
+h1 {
+  color: #ffffff;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Sous-titre */
+.sous-titre {
+  text-align: center;
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Indicateur de progression */
+.conteneur-progression {
+  margin-bottom: 40px;
+}
+
+.barre-progression {
+  width: 100%;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.remplissage-progression {
+  height: 100%;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  width: 25%;
+  transition: width 0.3s ease;
+  border-radius: 3px;
+}
+
+.etapes-progression {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 colonnes égales */
+  gap: 15px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.etape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.numero-etape {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.etiquette-etape {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.etape.active .numero-etape {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+}
+
+.etape.active .etiquette-etape {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.etape.terminee .numero-etape {
+  background: #28a745;
+  color: white;
+}
+
+.etape.terminee .etiquette-etape {
+  color: #28a745;
+}
+
+.etape-formulaire {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.etape-formulaire.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-container {
+  display: grid;
+  gap: 30px;
+}
+
+.section-formulaire {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.section-formulaire h2 {
+  color: #ffffff;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icone-section {
+  font-size: 1.5rem;
+}
+
+.deux-colonnes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pleine-largeur {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.texte-label {
+  display: block;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.texte-aide {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+input[type="number"], select {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+input.erreur, select.erreur {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.groupe-radio {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.option-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-radio:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.option-radio input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.option-radio input[type="radio"]:checked + .etiquette-radio {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.boutons-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.bouton-navigation {
+  width: 100%;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.bouton-navigation:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+button[type="submit"]:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.boutons-action {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#message {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  display: none;
+}
+
+#message.success {
+  background: rgba(40, 167, 69, 0.2);
+  color: #d4edda;
+  border: 1px solid #28a745;
+}
+
+#message.error {
+  background: rgba(220, 53, 69, 0.2);
+  color: #f8d7da;
+  border: 1px solid #dc3545;
+}
+
+#résultat {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+  line-height: 1.6;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+#message:empty,
+#résultat:empty {
+  display: none;
+}
+
+/* Styles responsive pour les écrans mobiles */
+@media (max-width: 768px) {
+  .conteneur {
+    padding: 20px;
+  }
+
+  .deux-colonnes {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .etapes-progression {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les étapes */
+    gap: 15px;
+    justify-items: center;
+  }
+
+  .etape {
+    min-width: 100px;
+  }
+
+  .boutons-navigation {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .bouton-navigation {
+    width: 100%;
+  }
+}

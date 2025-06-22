@@ -3,7 +3,7 @@ from front import Front
 from back import Back
 from swatch import Swatch
 from calculs import Calculs
-from instructions import montage
+from instructions import montage, rangsAplat
 import math
 import io
 
@@ -66,10 +66,25 @@ def main():
     #la profondeur d'emmanchure est la meme pour le devant, le dos et les manches, on fait le calcul une seule fois
     my_back.setRowsToUnderarm(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getArmholeDepth()))
 
-    my_back.augmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
+    my_back.setAugmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
 
-    my_sleeve.augmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
+    my_sleeve.setAugmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
+    rangs_a_plat = 0
+    x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
+    y = my_back.getNeckStitches()
+    while (x != y):
+        while (rangs_a_plat <= my_back.getAugmentationsRapides()):
+            rangs_a_plat+= my_back.getRythmeRapide()
+            x+=4
+            y+=2
+        rangs_a_plat+= my_back.getRythmeLent()
+        x+=4
+        y+=2
+    
+    a_plat = rangsAplat(rangs_a_plat)
+    print(a_plat)
+    fichier_a_telecharger.write(a_plat)
 
 
     #separation du corps et des

@@ -70,24 +70,30 @@ def main():
 
     my_sleeve.setAugmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
-    rangs_a_plat = 0
-    x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
-    y = my_back.getNeckStitches()
-    while (x != y):
-        while (rangs_a_plat <= my_back.getAugmentationsRapides()):
-            rangs_a_plat+= my_back.getRythmeRapide()
-            x+=4
-            y+=2
-        rangs_a_plat+= my_back.getRythmeLent()
-        x+=4
-        y+=2
-    
-    a_plat = rangsAplat(rangs_a_plat)
-    print(a_plat)
-    fichier_a_telecharger.write(a_plat)
+    rangs_a_plat = 1
+    x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches() 
+    y = my_back.getNeckStitches() + 2
+    while (x <= y):
+        if (rangs_a_plat <= ((my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) + 1)):
+            if ((rangs_a_plat - 1) % my_back.getRythmeRapide() == 0):
+                x+=4
+                y+=2
+                rangs_a_plat+=1
+            else:
+                x+=2
+                rangs_a_plat+=1
+        else:
+            if ((rangs_a_plat - (my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) - 1) % my_back.getRythmeLent() == 0):
+                x+=4
+                y+=2
+                rangs_a_plat+=1
+            else:
+                x+=2
+                rangs_a_plat+=1
 
+    print("il faut tricoter a plat sur " + str(rangs_a_plat) + " rangs")
+    print("nb augmentations rapides : " + str(my_back.getAugmentationsRapides()) + " tous les " + str(my_back.getRythmeRapide()) + "rangs, nb augmentations lentes : " + str(my_back.getAugmentationsLentes()) + " tous les " + str(my_back.getRythmeLent()) + " rangs")
 
-    #separation du corps et des
 
     fichier_a_telecharger.close()
 

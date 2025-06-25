@@ -148,9 +148,6 @@ def calculer_patron():
         except Exception as e:
             texte_rangs_plat = "Erreur dans le calcul des rangs à plat : " + str(e) + "\n"
 
-        # Phrase façon knit.py
-        instruction_rangs = rangsAplat(rangs_a_plat)
-
         # --- Résumé final + instructions ---
         patron = ""
         patron += debut

@@ -36,7 +36,7 @@ source venv/bin/activate  # Sur Windows : venv\Scripts\activate
 pip install -r requirements.txt
 
 # 3. Lancer le backend Flask (si nécessaire)
-python3 backend/app.py
+python3 -m backend.app
 ```
 
 ## 🚧 Fonctionnalités futures

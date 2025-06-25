@@ -154,7 +154,7 @@ def calculer_patron():
         # --- Résumé final + instructions ---
         patron = ""
         patron += debut
-        patron += instruction_rangs
+        patron += texte_rangs_plat
         patron += (
             f"Aisance corps : {aisance_corps} cm | Aisance manches : {aisance_manches} cm\n"
             f"Montage dos : {my_back.getNeckStitches()} mailles\n"

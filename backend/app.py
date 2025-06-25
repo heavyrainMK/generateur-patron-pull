@@ -2,7 +2,7 @@
 # Nom ......... : app.py
 # Rôle ........ : Serveur Flask pour le générateur de patrons de tricot
 # Auteurs ..... : M, L, M
-# Version ..... : V2.0.1 du 20/06/2025
+# Version ..... : V2.0.2 du 25/06/2025
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.
@@ -26,90 +26,115 @@ from backend.front import Front
 from backend.sleeve import Sleeve
 
 app = Flask(__name__)
-CORS(app)  # Autorise les requêtes depuis le frontend
+CORS(app)
 
 @app.route('/api/calculer-patron', methods=['POST'])
 def calculer_patron():
     try:
-        data = request.json
+        data = request.get_json()
         print("✅ Données reçues :", data)
 
-        # Extraction des données
+        if data is None:
+            return jsonify({"error": "Aucune donnée JSON reçue."}), 400
+
+        # --- Extraction des mesures utilisateur ---
+        mailles_10cm = float(data.get('mailles_10cm', 0))
+        rangs_10cm = float(data.get('rangs_10cm', 0))
+        tour_poitrine = float(data.get('tour_poitrine', 0))
+        longueur_totale = float(data.get('longueur_totale', 0))
+        largeur_nuque = float(data.get('largeur_nuque', 0))
+        hauteur_emmanchure = float(data.get('hauteur_emmanchure', 0))
+        longueur_manches = float(data.get('longueur_manches', 0))
+        tour_bras = float(data.get('tour_bras', 0))
+        tour_poignet = float(data.get('tour_poignet', 0))
+
+        # --- Aisance ---
         mode_aisance = data.get('mode_aisance')
-        aisance = float(data['aisance']) if 'aisance' in data and data['aisance'] else None
+        appliquer_aisance = data.get('appliquer_aisance', 'corps_seulement')
 
-        mailles_10cm = float(data['mailles_10cm'])
-        rangs_10cm = float(data['rangs_10cm'])
-        taille_aig_corps = float(data['taille_aig_corps'])
-        taille_aig_cotes = float(data['taille_aig_cotes'])
+        # Table de correspondance pour les aisances prédéfinies
+        table_aisance = {
+            'tres_ajuste': -2.5,
+            'ajuste': 7.5,
+            'standard': 17.5,
+            'large': 27.5,
+        }
 
-        tour_cou = float(data['tour_cou'])
-        tour_poitrine = float(data['tour_poitrine'])
-        largeur_nuque = float(data['largeur_nuque'])
-        hauteur_emmanchure = float(data['hauteur_emmanchure'])
-        longueur_totale = float(data['longueur_totale'])
-
-        tour_taille = float(data['tour_taille']) if data.get('tour_taille') else None
-        hauteur_nuque_taille = float(data['hauteur_nuque_taille']) if data.get('hauteur_nuque_taille') else None
-        tour_hanches = float(data['tour_hanches']) if data.get('tour_hanches') else None
-
-        longueur_manches = float(data['longueur_manches'])
-        tour_bras = float(data['tour_bras'])
-        tour_poignet = float(data['tour_poignet'])
-        tour_coude = float(data['tour_coude']) if data.get('tour_coude') else None
-
-        appliquer_aisance = data.get('appliquer_aisance')
-        encolure = data.get('encolure')
-        cotes_bas = float(data['cotes_bas'])
-        cotes_poignets = float(data['cotes_poignets'])
-
-        # Application de l’aisance
-        if mode_aisance == "personnalise":
-            aisance_corps = aisance if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = aisance if appliquer_aisance == "corps_et_manches" else 0
-        elif mode_aisance == "tres_ajuste":
-            aisance_corps = -2.5 if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = -2.5 if appliquer_aisance == "corps_et_manches" else 0
-        elif mode_aisance == "ajuste":
-            aisance_corps = 7.5 if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = 7.5 if appliquer_aisance == "corps_et_manches" else 0
-        elif mode_aisance == "standard":
-            aisance_corps = 17.5 if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = 17.5 if appliquer_aisance == "corps_et_manches" else 0
-        elif mode_aisance == "large":
-            aisance_corps = 27.5 if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = 27.5 if appliquer_aisance == "corps_et_manches" else 0
+        if mode_aisance == 'personnalise':
+            valeur_aisance = float(data.get('aisance', 0))
+            aisance_corps = valeur_aisance if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
+            aisance_manches = valeur_aisance if appliquer_aisance == "corps_et_manches" else 0
         else:
-            aisance_corps = 10
-            aisance_manches = 0
+            valeur = table_aisance.get(mode_aisance, 10)  # 10cm par défaut
+            aisance_corps = valeur if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
+            aisance_manches = valeur if appliquer_aisance == "corps_et_manches" else 0
 
-        # Création des objets
+        # --- Création des objets comme dans knit.py ---
         swatch = Swatch(mailles_10cm, rangs_10cm)
-        my_back = Back(largeur_nuque, tour_poitrine, hauteur_emmanchure, longueur_totale)
         my_front = Front(tour_poitrine, longueur_totale)
+        my_back = Back(largeur_nuque, tour_poitrine, hauteur_emmanchure, longueur_totale)
         my_sleeve = Sleeve(tour_bras, tour_poignet, longueur_manches)
 
-        # Calculs
-        nb_de_mailles_aisselle = my_back.calculStitchesNeeded(swatch.getStitches(), 3, 0)
-
+        # --- Calculs identiques à knit.py ---
         my_back.setNeckStitches(my_back.calculStitchesNeeded(swatch.getStitches(), my_back.getNeckWidth(), 0))
         my_sleeve.setTopSleeveStitches(my_sleeve.calculStitchesNeeded(swatch.getStitches(), my_sleeve.getTopSleeveWidth(), 0))
+
+        nb_de_mailles_aisselle = my_back.calculStitchesNeeded(swatch.getStitches(), 3, 0)
 
         my_front.setChestStitches(my_front.calculStitchesNeeded(swatch.getStitches(), (my_front.getChestWidth() / 2), aisance_corps))
         my_back.setChestStitches(my_back.calculStitchesNeeded(swatch.getStitches(), (my_back.getChestWidth() / 2), aisance_corps))
         my_sleeve.setUpperarmStitches(my_sleeve.calculStitchesNeeded(swatch.getStitches(), my_sleeve.getUpperArmCircumference(), aisance_manches))
 
-        nb_augmentations_dos = math.ceil((my_back.calculIncreases(my_back.getNeckStitches(), my_back.getChestStitches()) - nb_de_mailles_aisselle - 2) / 2)
+        nb_augmentations_dos = math.ceil(
+            (my_back.calculIncreases(my_back.getNeckStitches(), my_back.getChestStitches()) - nb_de_mailles_aisselle - 2) / 2
+        )
         my_back.setChestStitches(my_back.getNeckStitches() + nb_augmentations_dos * 2 + 2 + nb_de_mailles_aisselle)
         my_front.setChestStitches(my_back.getChestStitches())
-        nb_augmentations_manches = math.ceil((my_sleeve.calculIncreases(my_sleeve.getTopSleeveStitches(), my_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle)  / 2)
+
+        nb_augmentations_manches = math.ceil(
+            (my_sleeve.calculIncreases(my_sleeve.getTopSleeveStitches(), my_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle) / 2
+        )
         my_sleeve.setUpperarmStitches(my_sleeve.getTopSleeveStitches() + nb_augmentations_manches * 2 + nb_de_mailles_aisselle)
 
         my_back.setRowsToUnderarm(my_back.calculRowsNeeded(swatch.getRows(), my_back.getArmholeDepth()))
-        my_back.augmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
-        my_sleeve.augmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
-        # Patron résumé
+        # Raglan : appelle la méthode seulement si elle existe (compatibilité knit.py/app.py)
+        if hasattr(my_back, "setAugmentationsRaglan"):
+            my_back.setAugmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
+        if hasattr(my_sleeve, "setAugmentationsRaglan"):
+            my_sleeve.setAugmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
+
+        # --- Calcul "tricot à plat" (boucle knit.py) ---
+        rangs_a_plat = 1
+        try:
+            x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
+            y = my_back.getNeckStitches() + 2
+            while (x <= y):
+                if (rangs_a_plat <= ((my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) + 1)):
+                    if ((rangs_a_plat - 1) % my_back.getRythmeRapide() == 0):
+                        x += 4
+                        y += 2
+                        rangs_a_plat += 1
+                    else:
+                        x += 2
+                        rangs_a_plat += 1
+                else:
+                    if ((rangs_a_plat - (my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) - 1) % my_back.getRythmeLent() == 0):
+                        x += 4
+                        y += 2
+                        rangs_a_plat += 1
+                    else:
+                        x += 2
+                        rangs_a_plat += 1
+            texte_rangs_plat = (
+                f"Il faut tricoter à plat sur {rangs_a_plat} rangs.\n"
+                f"Nombre d'augmentations rapides : {my_back.getAugmentationsRapides()} tous les {my_back.getRythmeRapide()} rangs, "
+                f"nombre d'augmentations lentes : {my_back.getAugmentationsLentes()} tous les {my_back.getRythmeLent()} rangs."
+            )
+        except Exception as e:
+            texte_rangs_plat = "Erreur dans le calcul des rangs à plat : " + str(e)
+
+        # --- Résumé ---
         patron = ""
         patron += f"Dos : {my_back}\n"
         patron += f"Devant : {my_front}\n"
@@ -119,8 +144,9 @@ def calculer_patron():
         patron += f"Montage manches : {my_sleeve.getTopSleeveStitches()} mailles\n"
         patron += f"Après augmentations, dos : {my_back.getChestStitches()} mailles | manches : {my_sleeve.getUpperarmStitches()} mailles\n"
         patron += f"Nombre de rangs avant aisselle : {my_back.getRowsToUnderarm()}\n"
-        patron += f"Augmentations raglan dos : {my_back.augmentations_raglan}\n"
-        patron += f"Augmentations raglan manches : {my_sleeve.augmentations_raglan}\n"
+        patron += f"Augmentations raglan dos : {getattr(my_back, 'augmentations_raglan', 'N/A')}\n"
+        patron += f"Augmentations raglan manches : {getattr(my_sleeve, 'augmentations_raglan', 'N/A')}\n"
+        patron += texte_rangs_plat + "\n"
 
         return jsonify({"patron": patron})
 
@@ -128,7 +154,6 @@ def calculer_patron():
         print("❌ Erreur dans calculer_patron() :", e)
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
 
 @app.route('/')
 def accueil():
@@ -138,7 +163,6 @@ def accueil():
 def static_proxy(path):
     return send_from_directory('../frontend', path)
 
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Render fournit le port via la variable d'environnement PORT
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)

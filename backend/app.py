@@ -2,7 +2,7 @@
 # Nom ......... : app.py
 # Rôle ........ : Serveur Flask pour le générateur de patrons de tricot
 # Auteurs ..... : M, L, M
-# Version ..... : V2.0.2 du 25/06/2025
+# Version ..... : V2.0.3 du 25/06/2025
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.
@@ -24,6 +24,7 @@ from backend.swatch import Swatch
 from backend.back import Back
 from backend.front import Front
 from backend.sleeve import Sleeve
+from backend.instructions import montage, rangsAplat
 
 app = Flask(__name__)
 CORS(app)
@@ -79,15 +80,27 @@ def calculer_patron():
         my_back.setNeckStitches(my_back.calculStitchesNeeded(swatch.getStitches(), my_back.getNeckWidth(), 0))
         my_sleeve.setTopSleeveStitches(my_sleeve.calculStitchesNeeded(swatch.getStitches(), my_sleeve.getTopSleeveWidth(), 0))
 
+        # Instructions de montage
+        debut = montage(
+            my_front.getRightFrontStitches(),
+            my_sleeve.getTopSleeveStitches(),
+            my_back.getNeckStitches(),
+            my_front.getLeftFrontStitches()
+        )
+
+        # Calcul des mailles d'aisselle
         nb_de_mailles_aisselle = my_back.calculStitchesNeeded(swatch.getStitches(), 3, 0)
 
+        # Calcul des mailles avant séparation des manches et du corps (avec aisance)
         my_front.setChestStitches(my_front.calculStitchesNeeded(swatch.getStitches(), (my_front.getChestWidth() / 2), aisance_corps))
         my_back.setChestStitches(my_back.calculStitchesNeeded(swatch.getStitches(), (my_back.getChestWidth() / 2), aisance_corps))
         my_sleeve.setUpperarmStitches(my_sleeve.calculStitchesNeeded(swatch.getStitches(), my_sleeve.getUpperArmCircumference(), aisance_manches))
 
+        # Calcul des augmentations nécessaires
         nb_augmentations_dos = math.ceil(
             (my_back.calculIncreases(my_back.getNeckStitches(), my_back.getChestStitches()) - nb_de_mailles_aisselle - 2) / 2
         )
+        # Actualisation des mailles après augmentations
         my_back.setChestStitches(my_back.getNeckStitches() + nb_augmentations_dos * 2 + 2 + nb_de_mailles_aisselle)
         my_front.setChestStitches(my_back.getChestStitches())
 
@@ -96,15 +109,16 @@ def calculer_patron():
         )
         my_sleeve.setUpperarmStitches(my_sleeve.getTopSleeveStitches() + nb_augmentations_manches * 2 + nb_de_mailles_aisselle)
 
+        # Calcul du nombre de rangs pour arriver jusqu'à l'emmanchure
         my_back.setRowsToUnderarm(my_back.calculRowsNeeded(swatch.getRows(), my_back.getArmholeDepth()))
 
-        # Raglan : appelle la méthode seulement si elle existe (compatibilité knit.py/app.py)
+        # Raglan
         if hasattr(my_back, "setAugmentationsRaglan"):
             my_back.setAugmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
         if hasattr(my_sleeve, "setAugmentationsRaglan"):
             my_sleeve.setAugmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
-        # --- Calcul "tricot à plat" (boucle knit.py) ---
+        # --- Calcul "tricot à plat" (identique knit.py) ---
         rangs_a_plat = 1
         try:
             x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
@@ -129,24 +143,28 @@ def calculer_patron():
             texte_rangs_plat = (
                 f"Il faut tricoter à plat sur {rangs_a_plat} rangs.\n"
                 f"Nombre d'augmentations rapides : {my_back.getAugmentationsRapides()} tous les {my_back.getRythmeRapide()} rangs, "
-                f"nombre d'augmentations lentes : {my_back.getAugmentationsLentes()} tous les {my_back.getRythmeLent()} rangs."
+                f"nombre d'augmentations lentes : {my_back.getAugmentationsLentes()} tous les {my_back.getRythmeLent()} rangs.\n"
             )
         except Exception as e:
-            texte_rangs_plat = "Erreur dans le calcul des rangs à plat : " + str(e)
+            texte_rangs_plat = "Erreur dans le calcul des rangs à plat : " + str(e) + "\n"
 
-        # --- Résumé ---
+        # Phrase façon knit.py
+        instruction_rangs = rangsAplat(rangs_a_plat)
+
+        # --- Résumé final + instructions ---
         patron = ""
-        patron += f"Dos : {my_back}\n"
-        patron += f"Devant : {my_front}\n"
-        patron += f"Manches : {my_sleeve}\n"
-        patron += f"Aisance corps : {aisance_corps} cm | Aisance manches : {aisance_manches} cm\n"
-        patron += f"Montage dos : {my_back.getNeckStitches()} mailles\n"
-        patron += f"Montage manches : {my_sleeve.getTopSleeveStitches()} mailles\n"
-        patron += f"Après augmentations, dos : {my_back.getChestStitches()} mailles | manches : {my_sleeve.getUpperarmStitches()} mailles\n"
-        patron += f"Nombre de rangs avant aisselle : {my_back.getRowsToUnderarm()}\n"
-        patron += f"Augmentations raglan dos : {getattr(my_back, 'augmentations_raglan', 'N/A')}\n"
-        patron += f"Augmentations raglan manches : {getattr(my_sleeve, 'augmentations_raglan', 'N/A')}\n"
-        patron += texte_rangs_plat + "\n"
+        patron += debut
+        patron += texte_rangs_plat
+        patron += instruction_rangs
+        patron += (
+            f"Aisance corps : {aisance_corps} cm | Aisance manches : {aisance_manches} cm\n"
+            f"Montage dos : {my_back.getNeckStitches()} mailles\n"
+            f"Montage manches : {my_sleeve.getTopSleeveStitches()} mailles\n"
+            f"Après augmentations, dos : {my_back.getChestStitches()} mailles | manches : {my_sleeve.getUpperarmStitches()} mailles\n"
+            f"Nombre de rangs avant aisselle : {my_back.getRowsToUnderarm()}\n"
+            f"Augmentations raglan dos : {getattr(my_back, 'augmentations_raglan', 'N/A')}\n"
+            f"Augmentations raglan manches : {getattr(my_sleeve, 'augmentations_raglan', 'N/A')}\n"
+        )
 
         return jsonify({"patron": patron})
 

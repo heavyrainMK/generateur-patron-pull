@@ -4,10 +4,12 @@ import math
 
 class Calculs(ABC):
     def __init__(self):
-        rythme_rapide = 0
-        rythme_lent = 0 
-        augmentations_rapides = 0
-        augmentations_lentes = 0
+        self.rythme_rapide = 0
+        self.rythme_lent = 0 
+        self.augmentations_rapides = 0
+        self.augmentations_lentes = 0
+        self.numero_rangs_augmentation_rapide = []
+        self.numero_rangs_augmentation_lent = []
 
     def setRythmeRapide(self, frequence):
         self.rythme_rapide = frequence
@@ -32,6 +34,18 @@ class Calculs(ABC):
 
     def getAugmentationsLentes(self):
         return self.augmentations_lentes
+
+    def setNumeroRangsAugmentationRapide(self, num):
+        self.numero_rangs_augmentation_rapide.append(num)
+
+    def GetNumeroRangsAugmentationRapide(self):
+        return self.numero_rangs_augmentation_rapide
+
+    def setNumeroRangsAugmentationLent(self, num):
+        self.numero_rangs_augmentation_lent.append(num)
+
+    def GetNumeroRangsAugmentationLent(self):
+        return self.numero_rangs_augmentation_lent
 
     #don't forget to round up the numbers
     #c'est aussi plus facile de travailler avec des nombres pairs
@@ -69,10 +83,17 @@ class Calculs(ABC):
                 rangs_restants-=1
                 augmentations_effectuees+=1
                 augmentations_restantes-=1
+                self.setNumeroRangsAugmentationRapide(rang_en_cours)
             self.setRythmeRapide(1) 
             self.setRythmeLent(2)
             self.setAugemntationsRapides(augmentations_effectuees)
             self.setAugemntationsLentes(augmentations_restantes)
+            rang_en_cours = (self.getAugmentationsRapides() * self.getRythmeRapide()) + 1
+            while (rang_en_cours <= rows):
+                self.setNumeroRangsAugmentationLent(rang_en_cours)
+                rang_en_cours+= self.getRythmeLent()
+            print(self.GetNumeroRangsAugmentationRapide())
+            print(self.GetNumeroRangsAugmentationLent())
 
         elif ((increases*3) > rows):
             while ((augmentations_restantes * 3) >= rangs_restants):
@@ -80,19 +101,34 @@ class Calculs(ABC):
                 rangs_restants-=1
                 augmentations_effectuees+=1
                 augmentations_restantes-=1
+                self.setNumeroRangsAugmentationRapide(rang_en_cours)
             self.setRythmeRapide(1) 
             self.setRythmeLent(3)
             self.setAugemntationsRapides(augmentations_effectuees)
             self.setAugemntationsLentes(augmentations_restantes)
+            rang_en_cours = (self.getAugmentationsRapides() * self.getRythmeRapide()) + 1
+            while (rang_en_cours <= rows):
+                self.setNumeroRangsAugmentationLent(rang_en_cours)
+                rang_en_cours+= self.getRythmeLent()
+            print(self.GetNumeroRangsAugmentationRapide())
+            print(self.GetNumeroRangsAugmentationLent())
 
         else:
             while((augmentations_restantes * 4) >= rangs_restants):
                 rang_en_cours+=2
                 rangs_restants-=2
-                augmentations_effectuees+=2
-                augmentations_restantes-=2
+                augmentations_effectuees+=1
+                augmentations_restantes-=1
+                self.setNumeroRangsAugmentationRapide(rang_en_cours)
             self.setRythmeRapide(2) 
             self.setRythmeLent(4)
             self.setAugemntationsRapides(augmentations_effectuees)
             self.setAugemntationsLentes(augmentations_restantes)
+            rang_en_cours = (self.getAugmentationsRapides() * self.getRythmeRapide()) + 1
+            while (rang_en_cours <= rows):
+                self.setNumeroRangsAugmentationLent(rang_en_cours)
+                rang_en_cours+= self.getRythmeLent()
+            print(self.GetNumeroRangsAugmentationRapide())
+            print(self.GetNumeroRangsAugmentationLent())
+            
 

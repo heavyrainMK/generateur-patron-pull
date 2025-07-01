@@ -3,7 +3,7 @@
 # Nom ......... : style.css
 # Rôle ........ : Feuille de style pour le générateur de patrons de pulls
 # Auteurs ..... : M, L, M
-# Version ..... : V3.2.1 du 21/06/2025
+# Version ..... : V3.3.1 du 01/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Styles CSS modernes avec dégradés, animations et design responsive
 #                 pour l'interface du générateur de patrons de pulls
@@ -361,7 +361,7 @@ h1 {
   height: 100%;
   background: linear-gradient(45deg, #667eea, #764ba2);
   width: 25%;
-  transition: width 0.3s ease;
+  transition: width 0.5s cubic-bezier(.77,.07,.63,.93);
   border-radius: 3px;
 }
 
@@ -409,6 +409,13 @@ h1 {
 .etape.active .numero-etape {
   background: linear-gradient(45deg, #667eea, #764ba2);
   color: white;
+  animation: stepPulse 0.45s;
+}
+
+@keyframes stepPulse {
+  0% { box-shadow: 0 0 0 0 #764ba233;}
+  40% { box-shadow: 0 0 0 8px #764ba244;}
+  100% { box-shadow: 0 0 0 0 #764ba200;}
 }
 
 .etape.active .etiquette-etape {
@@ -520,6 +527,16 @@ input:focus, select:focus {
 input.erreur, select.erreur {
   border-color: #dc3545;
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  animation: shake 0.28s linear;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  22% { transform: translateX(-6px); }
+  45% { transform: translateX(6px); }
+  67% { transform: translateX(-4px);}
+  89% { transform: translateX(4px);}
+  100% { transform: translateX(0);}
 }
 
 .groupe-radio {
@@ -570,17 +587,32 @@ input.erreur, select.erreur {
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s cubic-bezier(.75,.02,.53,.92);
   background: rgba(255, 255, 255, 0.53);
   color: #111;
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
+.bouton-navigation:active {
+  transform: scale(0.97);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
+}
+
+.bouton-navigation.glow {
+  animation: boutonGlow 0.5s;
+}
+
+@keyframes boutonGlow {
+  0% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
+  40% { box-shadow: 0 0 16px 10px #fff8, 0 0 36px 18px #764ba255; }
+  100% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
+}
+
 .bouton-navigation:hover {
   background: rgba(255, 255, 255, 0.8);
   color: #000000;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.025);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
 }
 
@@ -602,7 +634,7 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background: rgba(255, 255, 255, 0.8);
   color: #000000;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.025);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
 }
 
@@ -618,6 +650,22 @@ button[type="submit"]:hover {
   text-align: center;
   font-weight: 600;
   display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+#message.success,
+#message.error,
+#message.info {
+  display: block;
+  opacity: 1;
+  animation: messageFadeIn 0.6s;
+}
+
+@keyframes messageFadeIn {
+  0% { opacity: 0; transform: translateY(14px);}
+  80% { opacity: 1;}
+  100% { opacity: 1; transform: translateY(0);}
 }
 
 #message.success {
@@ -644,11 +692,45 @@ button[type="submit"]:hover {
   line-height: 1.6;
   max-height: 600px;
   overflow-y: auto;
+  transition: box-shadow 0.3s;
+}
+
+#résultat:not(:empty) {
+  box-shadow: 0 8px 30px #667eea33;
+  animation: fadeIn 0.8s;
 }
 
 #message:empty,
 #résultat:empty {
   display: none;
+}
+
+#loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 28px;
+  animation: fadeIn 0.3s;
+}
+
+.pelote-anim {
+  font-size: 2.3rem;
+  display: inline-block;
+  animation: peloteSpin 1s linear infinite;
+  filter: drop-shadow(0 2px 8px #764ba288);
+}
+
+@keyframes peloteSpin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+.loader-text {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #fff;
+  letter-spacing: 0.02em;
 }
 
 /* Styles responsive pour les écrans mobiles */

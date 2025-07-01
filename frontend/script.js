@@ -3,7 +3,7 @@
 # Nom ......... : script.js
 # Rôle ........ : Navigation multi-étapes, validations et gestion de l’envoi de données pour le générateur de patrons
 # Auteurs ..... : M, L, M
-# Version ..... : V2.0.1 du 19/06/2025
+# Version ..... : V2.1.1 du 01/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Gestion de la navigation en 5 étapes, validation côté client des champs,
 #                 récupération des données et préparation de l’envoi JSON au backend
@@ -105,6 +105,9 @@ function initialiserNavigationEtapes() {
     
     boutonSuivant.addEventListener('click', function() {
         if (validerEtapeCourante()) {
+            boutonSuivant.classList.add('glow');
+            setTimeout(() => boutonSuivant.classList.remove('glow'), 500);
+
             if (etapeCourante < nombreEtapes) {
                 etapeCourante++;
                 mettreAJourAffichageEtape();
@@ -112,10 +115,14 @@ function initialiserNavigationEtapes() {
                 mettreAJourBoutonsNavigation();
                 mettreAJourIndicateursEtapes();
             }
+        } else {
+            // Si erreur sur un champ, le shake se fait automatiquement via le CSS .erreur
         }
     });
     boutonPrecedent.addEventListener('click', function() {
         if (etapeCourante > 1) {
+            boutonPrecedent.classList.add('glow');
+            setTimeout(() => boutonPrecedent.classList.remove('glow'), 500);
             etapeCourante--;
             mettreAJourAffichageEtape();
             mettreAJourBarreProgression();
@@ -381,12 +388,32 @@ function afficherMessage(message, type = 'info') {
     elementMessage.textContent = message;
     elementMessage.className = type;
     elementMessage.style.display = 'block';
+    elementMessage.style.opacity = "1";
     elementMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    if (type === 'success' || type === 'error' || type === 'info') {
+        setTimeout(() => {
+            elementMessage.style.opacity = "0";
+            setTimeout(() => {
+                elementMessage.style.display = "none";
+                elementMessage.className = "";
+            }, 600);
+        }, 3500);
+    }
 }
 
 // Génère le patron de tricot en envoyant les données au serveur
 async function genererPatron() {
     try {
+        // Affiche le loader
+        document.getElementById('loader').style.display = 'flex';
+        document.getElementById('résultat').style.display = 'none';
+        document.getElementById('message').style.display = 'none';
+
+        // Désactive le bouton "Générer le patron"
+        const boutonSoumettre = document.getElementById('boutonSoumettre');
+        if (boutonSoumettre) boutonSoumettre.disabled = true;
+
         const donneesForm = new FormData(document.getElementById('formulaire'));
         const donnees = Object.fromEntries(donneesForm.entries());
         // Conversion des valeurs numériques
@@ -417,14 +444,21 @@ async function genererPatron() {
             },
             body: JSON.stringify(donnees),
         });
-        if (!reponse.ok) {
-            throw new Error('Erreur lors de la communication avec le serveur');
-        }
+        if (!reponse.ok) throw new Error('Erreur lors de la communication avec le serveur');
         const resultat = await reponse.json();
+
+        // Cache loader, affiche résultat
+        document.getElementById('loader').style.display = 'none';
         document.getElementById('résultat').textContent = resultat.patron;
+        document.getElementById('résultat').style.display = '';
         document.getElementById('boutonTelecharger').style.display = 'inline-block';
+        if (boutonSoumettre) boutonSoumettre.disabled = false;
         afficherMessage('Patron généré avec succès !', 'success');
     } catch (erreur) {
+        document.getElementById('loader').style.display = 'none';
+        if (document.getElementById('boutonSoumettre')) {
+            document.getElementById('boutonSoumettre').disabled = false;
+        }
         console.error('Erreur lors de la génération du patron :', erreur);
         afficherMessage('Erreur lors de la génération du patron. Veuillez réessayer plus tard.', 'error');
     }

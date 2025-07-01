@@ -3,7 +3,7 @@
 # Nom ......... : index.html
 # Rôle ........ : Interface utilisateur pour la génération de patrons de pull personnalisés
 # Auteurs ..... : M, L, M
-# Version ..... : V2.2.1 du 21/06/2025
+# Version ..... : V2.2.2 du 01/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Formulaire web interactif permettant de saisir les mesures corporelles
 #                 et spécifications techniques pour générer un patron de tricot personnalisé
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <form id="formulaire">
+      <form id="formulaire" autocomplete="off">
         <!-- ÉTAPE 1: Choix du mode d'aisance -->
         <div class="etape-formulaire active" data-etape="1">
           <div class="section-formulaire aisance">
@@ -275,6 +275,10 @@
       </div>
       <div id="message"></div>
       <div id="résultat"></div>
+      <div id="loader" style="display:none;">
+        <span class="pelote-anim">🧶</span>
+        <span class="loader-text">Génération du patron en cours...</span>
+      </div>
     </div>
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

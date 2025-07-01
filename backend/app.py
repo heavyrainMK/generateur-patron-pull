@@ -2,7 +2,7 @@
 # Nom ......... : app.py
 # Rôle ........ : Serveur Flask pour le générateur de patrons de tricot
 # Auteurs ..... : M, L, M
-# Version ..... : V2.0.3 du 25/06/2025
+# Version ..... : V2.0.4 du 1/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.
@@ -24,7 +24,7 @@ from backend.swatch import Swatch
 from backend.back import Back
 from backend.front import Front
 from backend.sleeve import Sleeve
-from backend.instructions import montage, rangsAplat
+from backend.instructions import montage, rangsAplat, miseAJourDesRangs
 
 app = Flask(__name__)
 CORS(app)
@@ -148,10 +148,21 @@ def calculer_patron():
         except Exception as e:
             texte_rangs_plat = "Erreur dans le calcul des rangs à plat : " + str(e) + "\n"
 
+        # --- Mise à jour des rangs d'augmentations lentes ---
+        try:
+            liste_modifiee = miseAJourDesRangs(
+                my_back.GetNumeroRangsAugmentationLent(),
+                my_sleeve.GetNumeroRangsAugmentationLent()
+            )
+            texte_liste_modifiee = f"Liste des rangs d’augmentations lentes (ajustée) : {liste_modifiee}\n"
+        except Exception as e:
+            texte_liste_modifiee = f"Erreur lors du calcul de la liste modifiée des rangs : {e}\n"
+
         # --- Résumé final + instructions ---
         patron = ""
         patron += debut
         patron += texte_rangs_plat
+        patron += texte_liste_modifiee
         patron += (
             f"Aisance corps : {aisance_corps} cm | Aisance manches : {aisance_manches} cm\n"
             f"Montage dos : {my_back.getNeckStitches()} mailles\n"

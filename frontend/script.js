@@ -429,3 +429,43 @@ async function genererPatron() {
         afficherMessage('Erreur lors de la génération du patron. Veuillez réessayer plus tard.', 'error');
     }
 }
+
+// Fonction pour télécharger le patron en PDF
+function telechargerPDF() {
+    const resultatDiv = document.getElementById('résultat');
+    if (!resultatDiv || !resultatDiv.textContent.trim()) {
+        afficherMessage("Aucun patron à télécharger !", "error");
+        return;
+    }
+
+    const titre = "Patron de pull généré";
+    const date = new Date().toLocaleDateString();
+    const textePatron = resultatDiv.textContent.trim();
+    const texteFinal = `${titre}\n${date}\n\n${textePatron}`;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+    });
+
+    // Header stylé
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text(titre, 105, 22, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.text(date, 105, 30, { align: "center" });
+
+    // Séparateur
+    doc.setLineWidth(0.5);
+    doc.line(20, 35, 190, 35);
+
+    // Texte du patron
+    doc.setFont("Courier", "normal");
+    doc.setFontSize(11);
+    const lignes = doc.splitTextToSize(textePatron, 170);
+    doc.text(lignes, 20, 45);
+
+    doc.save(`patron_pull_${date.replaceAll("/", "-")}.pdf`);
+}

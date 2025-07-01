@@ -3,11 +3,10 @@
 # Nom ......... : script.js
 # Rôle ........ : Navigation multi-étapes, validations et gestion de l’envoi de données pour le générateur de patrons
 # Auteurs ..... : M, L, M
-# Version ..... : V2.1.1 du 01/07/2025
+# Version ..... : V2.1.3 du 01/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Gestion de la navigation en 5 étapes, validation côté client des champs,
 #                 récupération des données et préparation de l’envoi JSON au backend
-#                 (en attente d’implémentation serveur).
 #
 # Technologies  : JavaScript
 # Dépendances . : index.html, style.css, knit.py
@@ -28,6 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initialiserAisance();
     // Gère l'affichage dynamique des champs "ajusté"
     initialiserChampsAjustes();
+
+    // Patch compatibilité bouton "Générer le patron" en barre flottante
+    const boutonSoumettre = document.getElementById('boutonSoumettre');
+    const formulaire = document.getElementById('formulaire');
+    if (boutonSoumettre && formulaire) {
+        boutonSoumettre.type = "button"; // évite le submit natif hors formulaire
+        boutonSoumettre.addEventListener('click', function(e) {
+            formulaire.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        });
+    }
 });
 
 function initialiserAisance() {
@@ -115,8 +124,6 @@ function initialiserNavigationEtapes() {
                 mettreAJourBoutonsNavigation();
                 mettreAJourIndicateursEtapes();
             }
-        } else {
-            // Si erreur sur un champ, le shake se fait automatiquement via le CSS .erreur
         }
     });
     boutonPrecedent.addEventListener('click', function() {

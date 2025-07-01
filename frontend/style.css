@@ -3,7 +3,7 @@
 # Nom ......... : style.css
 # Rôle ........ : Feuille de style pour le générateur de patrons de pulls
 # Auteurs ..... : M, L, M
-# Version ..... : V3.3.1 du 01/07/2025
+# Version ..... : V3.3.2 du 01/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Styles CSS modernes avec dégradés, animations et design responsive
 #                 pour l'interface du générateur de patrons de pulls
@@ -571,73 +571,6 @@ input.erreur, select.erreur {
   font-weight: 600;
 }
 
-.boutons-navigation {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 30px;
-  width: 100%;
-}
-
-.bouton-navigation {
-  width: 100%;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(.75,.02,.53,.92);
-  background: rgba(255, 255, 255, 0.53);
-  color: #111;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-}
-
-.bouton-navigation:active {
-  transform: scale(0.97);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
-}
-
-.bouton-navigation.glow {
-  animation: boutonGlow 0.5s;
-}
-
-@keyframes boutonGlow {
-  0% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
-  40% { box-shadow: 0 0 16px 10px #fff8, 0 0 36px 18px #764ba255; }
-  100% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
-}
-
-.bouton-navigation:hover {
-  background: rgba(255, 255, 255, 0.8);
-  color: #000000;
-  transform: translateY(-2px) scale(1.025);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-}
-
-button[type="submit"] {
-  width: 100%;
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.53);
-  color: #111;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 12px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 30px;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-}
-
-button[type="submit"]:hover {
-  background: rgba(255, 255, 255, 0.8);
-  color: #000000;
-  transform: translateY(-2px) scale(1.025);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-}
-
 .boutons-action {
   text-align: center;
   margin-top: 20px;
@@ -757,13 +690,116 @@ button[type="submit"]:hover {
   .etape {
     min-width: 100px;
   }
+}
 
-  .boutons-navigation {
-    flex-direction: column;
-    gap: 15px;
+.barre-navigation-flottante {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100vw;
+  height: 0;
+  pointer-events: none;
+  z-index: 1500;
+}
+
+.barre-navigation-flottante .bouton-navigation {
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%);
+  min-width: 130px;
+  pointer-events: auto;
+  opacity: 0.97;
+  width: auto;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(.75,.02,.53,.92);
+  background: rgba(255, 255, 255, 0.53);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.barre-navigation-flottante .bouton-navigation:active {
+  transform: translateY(-50%) scale(0.97);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
+}
+
+.barre-navigation-flottante .bouton-navigation.glow {
+  animation: boutonGlow 0.5s;
+}
+
+@keyframes boutonGlow {
+  0% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
+  40% { box-shadow: 0 0 16px 10px #fff8, 0 0 36px 18px #764ba255; }
+  100% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
+}
+
+.barre-navigation-flottante .bouton-navigation:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
+  transform: translateY(-50%) scale(1.025);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+#boutonPrecedent {
+  left: 10px;
+}
+#boutonSuivant, #boutonSoumettre {
+  right: 10px;
+}
+
+/* Bouton "Télécharger en PDF" */
+.bouton-secondaire {
+  background: rgba(255, 255, 255, 0.55);
+  color: #222;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 15px 32px;
+  border-radius: 13px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(.75,.02,.53,.92);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.11);
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.bouton-secondaire:hover,
+.bouton-secondaire:focus {
+  background: rgba(255,255,255,0.8);
+  color: #111;
+  transform: scale(1.045);
+  box-shadow: 0 14px 35px rgba(102,126,234,0.17);
+  border-color: #764ba2;
+}
+
+.bouton-secondaire:active {
+  transform: scale(0.97);
+  background: rgba(255,255,255,0.95);
+}
+
+.bouton-secondaire[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .barre-navigation-flottante .bouton-navigation {
+    min-width: 90px;
+    font-size: 0.97rem;
+    padding: 12px;
   }
-
-  .bouton-navigation {
-    width: 100%;
+  #boutonPrecedent {
+    left: 2vw;
+  }
+  #boutonSuivant, #boutonSoumettre {
+    right: 2vw;
   }
 }

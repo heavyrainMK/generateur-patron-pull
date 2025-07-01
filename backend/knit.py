@@ -3,7 +3,7 @@ from .front import Front
 from .back import Back
 from .swatch import Swatch
 from .calculs import Calculs
-from .instructions import montage, rangsAplat
+from .instructions import montage, rangsAplat, miseAJourDesRangs
 import math
 import io
 
@@ -94,6 +94,9 @@ def main():
     print("il faut tricoter a plat sur " + str(rangs_a_plat) + " rangs")
     print("nb augmentations rapides : " + str(my_back.getAugmentationsRapides()) + " tous les " + str(my_back.getRythmeRapide()) + "rangs, nb augmentations lentes : " + str(my_back.getAugmentationsLentes()) + " tous les " + str(my_back.getRythmeLent()) + " rangs")
 
+    liste_modifiee = miseAJourDesRangs(my_back.GetNumeroRangsAugmentationLent(), my_sleeve.GetNumeroRangsAugmentationLent())
+    print(liste_modifiee)
+    
 
     fichier_a_telecharger.close()
 

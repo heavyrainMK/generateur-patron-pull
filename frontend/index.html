@@ -3,7 +3,7 @@
 # Nom ......... : index.html
 # Rôle ........ : Interface utilisateur pour la génération de patrons de pull personnalisés
 # Auteurs ..... : M, L, M
-# Version ..... : V2.2.1 du 21/06/2025
+# Version ..... : V2.2.3 du 01/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Formulaire web interactif permettant de saisir les mesures corporelles
 #                 et spécifications techniques pour générer un patron de tricot personnalisé
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <form id="formulaire">
+      <form id="formulaire" autocomplete="off">
         <!-- ÉTAPE 1: Choix du mode d'aisance -->
         <div class="etape-formulaire active" data-etape="1">
           <div class="section-formulaire aisance">
@@ -163,7 +163,7 @@
               </label>
               <label>
                 <span class="texte-label">📏 Largeur arrière de la nuque (cm)</span>
-                <span class="texte-aide">Mesurer de la base gauche à la base droite de la nuque, juste entre les épaules</span>
+                <span class="texte-aide">Entre les deux bases de la nuque (entre épaules)</span>
                 <input type="number" id="largeur_nuque" name="largeur_nuque" step="0.5" min="8" max="25" required /><span class="message-erreur"></span>
               </label>
               <label>
@@ -171,12 +171,12 @@
                 <span class="texte-aide">De l'épaule à l'aisselle</span>
                 <input type="number" id="hauteur_emmanchure" name="hauteur_emmanchure" step="0.5" min="15" max="30" required /><span class="message-erreur"></span>
               </label>
+              <label>
+                <span class="texte-label">📏 Longueur totale désirée (cm)</span>
+                <span class="texte-aide">Du haut de l'épaule au bas du pull</span>
+                <input type="number" id="longueur_totale" name="longueur_totale" step="0.5" min="30" max="80" required /><span class="message-erreur"></span>
+              </label>
             </div>
-            <label class="pleine-largeur">
-              <span class="texte-label">📏 Longueur totale désirée (cm)</span>
-              <span class="texte-aide">Du haut de l'épaule au bas du pull</span>
-              <input type="number" id="longueur_totale" name="longueur_totale" step="0.5" min="30" max="80" required /><span class="message-erreur"></span>
-            </label>
           </div>
         </div>
 
@@ -253,21 +253,9 @@
             </div>
           </div>
         </div>
-
-        <!-- Boutons de navigation -->
-        <div class="boutons-navigation">
-          <button type="button" id="boutonPrecedent" class="bouton-navigation bouton-secondaire" style="display: none;">
-            ← Précédent
-          </button>
-          <button type="button" id="boutonSuivant" class="bouton-navigation bouton-primaire">
-            Suivant →
-          </button>
-          <button type="submit" id="boutonSoumettre" class="bouton-navigation bouton-primaire" style="display: none;">
-            🧶 Générer le patron
-          </button>
-        </div>
       </form>
 
+      <!-- BOUTONS D'ACTION CENTRAUX (PDF, message, loader) -->
       <div class="boutons-action">
         <button type="button" class="bouton-secondaire" onclick="telechargerPDF()" style="display: none;" id="boutonTelecharger">
           📄 Télécharger en PDF
@@ -275,7 +263,25 @@
       </div>
       <div id="message"></div>
       <div id="résultat"></div>
+      <div id="loader" style="display:none;">
+        <span class="pelote-anim">🧶</span>
+        <span class="loader-text">Génération du patron en cours...</span>
+      </div>
     </div>
+
+    <div class="barre-navigation-flottante">
+      <button type="button" id="boutonPrecedent" class="bouton-navigation bouton-secondaire" style="display: none;">
+        ← Précédent
+      </button>
+      <button type="button" id="boutonSuivant" class="bouton-navigation bouton-primaire">
+        Suivant →
+      </button>
+      <button type="submit" id="boutonSoumettre" class="bouton-navigation bouton-primaire" style="display: none;">
+        🧶 Générer le patron
+      </button>
+    </div>
+
     <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </body>
 </html>

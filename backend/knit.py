@@ -94,9 +94,9 @@ def main():
     print("il faut tricoter a plat sur " + str(rangs_a_plat) + " rangs")
     print("nb augmentations rapides : " + str(my_back.getAugmentationsRapides()) + " tous les " + str(my_back.getRythmeRapide()) + "rangs, nb augmentations lentes : " + str(my_back.getAugmentationsLentes()) + " tous les " + str(my_back.getRythmeLent()) + " rangs")
 
-    liste_modifiee = miseAJourDesRangs(my_back.GetNumeroRangsAugmentationLent(), my_sleeve.GetNumeroRangsAugmentationLent())
-    print(liste_modifiee)
-    
+    miseAJourDesRangs(my_back.GetNumeroRangsAugmentationLent(), my_sleeve.GetNumeroRangsAugmentationLent())
+    print("manches : ", my_sleeve.GetNumeroRangsAugmentationLent())
+    print("corps : ", my_back.GetNumeroRangsAugmentationLent())
 
     fichier_a_telecharger.close()
 

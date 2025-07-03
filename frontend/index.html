@@ -3,7 +3,7 @@
 # Nom ......... : index.html
 # Rôle ........ : Interface utilisateur pour la génération de patrons de pull personnalisés
 # Auteurs ..... : M, L, M
-# Version ..... : V2.2.3 du 01/07/2025
+# Version ..... : V2.2.4 du 03/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Formulaire web interactif permettant de saisir les mesures corporelles
 #                 et spécifications techniques pour générer un patron de tricot personnalisé
@@ -73,8 +73,8 @@
               <span class="icone-section">🧵</span> Choix de l’aisance
             </h2>
             <label class="pleine-largeur">
-              <span class="texte-label">Sélectionnez un mode d’aisance :</span>
-              <select id="mode_aisance" name="mode_aisance" required>
+              <span class="texte-label">Aisance du corps :</span>
+              <select id="mode_aisance_corps" name="mode_aisance_corps" required>
                 <option value="">-- Choisissez --</option>
                 <option value="tres_ajuste">Très ajusté (−2,5 cm)</option>
                 <option value="ajuste">Ajusté (+7,5 cm)</option>
@@ -84,16 +84,38 @@
               </select>
               <span class="message-erreur"></span>
             </label>
-            <div id="containerAisancePerso" style="display: none;">
+            <div id="containerAisancePersoCorps" style="display: none;">
               <label>
-                <span class="texte-label">Aisance personnalisée (cm) :</span>
-                <input type="number" id="aisance" name="aisance" step="0.5" min="-5" max="30" value="10" />
+                <span class="texte-label">Aisance personnalisée pour le corps (cm) :</span>
+                <input type="number" id="aisance_corps" name="aisance_corps" step="0.5" min="-5" max="30" value="10" />
+                <span class="texte-aide">Entrez une valeur comprise entre -5 et 30 cm.</span>
+                <span class="message-erreur"></span>
+              </label>
+            </div>
+
+            <label class="pleine-largeur">
+              <span class="texte-label">Aisance des manches :</span>
+              <select id="mode_aisance_manches" name="mode_aisance_manches" required>
+                <option value="">-- Choisissez --</option>
+                <option value="tres_ajuste">Très ajusté (−2,5 cm)</option>
+                <option value="ajuste">Ajusté (+7,5 cm)</option>
+                <option value="standard">Standard (+17,5 cm)</option>
+                <option value="large">Large (+27,5 cm)</option>
+                <option value="personnalise">Personnalisé</option>
+              </select>
+              <span class="message-erreur"></span>
+            </label>
+            <div id="containerAisancePersoManches" style="display: none;">
+              <label>
+                <span class="texte-label">Aisance personnalisée pour les manches (cm) :</span>
+                <input type="number" id="aisance_manches" name="aisance_manches" step="0.5" min="-5" max="30" value="10" />
                 <span class="texte-aide">Entrez une valeur comprise entre -5 et 30 cm.</span>
                 <span class="message-erreur"></span>
               </label>
             </div>
             <p class="texte-aide" style="margin-top: 12px;">
-              <b>Astuce :</b> Les mesures taille, hanches, hauteur nuque-taille et coude ne sont demandées qu'en mode très ajusté ou ajusté.
+              <b>Astuce :</b> Vous pouvez choisir une aisance différente pour le corps et les manches selon vos préférences.  
+              Les mesures taille, hanches, hauteur nuque-taille et coude ne sont demandées qu'en mode très ajusté ou ajusté.
             </p>
           </div>
         </div>
@@ -217,17 +239,6 @@
             <h2>
               <span class="icone-section">✨</span> Style et finitions
             </h2>
-            <label>
-              <span class="texte-label">Appliquer l'aisance à :</span>
-              <div class="groupe-radio">
-                <label class="option-radio">
-                  <input type="radio" id="appliquer_aisance_corps" name="appliquer_aisance" value="corps_seulement" checked /><span class="etiquette-radio">Corps seulement</span>
-                </label>
-                <label class="option-radio">
-                  <input type="radio" id="appliquer_aisance_total" name="appliquer_aisance" value="corps_et_manches" /><span class="etiquette-radio">Corps et manches</span>
-                </label>
-              </div>
-            </label>
             <label>
               <span class="texte-label">Type d'encolure :</span>
               <select id="encolure" name="encolure" required>

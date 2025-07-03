@@ -24,7 +24,7 @@ from backend.swatch import Swatch
 from backend.back import Back
 from backend.front import Front
 from backend.sleeve import Sleeve
-from backend.instructions import montage, rangsAplat, miseAJourDesRangs
+from backend.instructions import montage, rangsAplat, synchronisationDesRangs
 
 app = Flask(__name__)
 CORS(app)
@@ -50,8 +50,8 @@ def calculer_patron():
         tour_poignet = float(data.get('tour_poignet', 0))
 
         # --- Aisance ---
-        mode_aisance = data.get('mode_aisance')
-        appliquer_aisance = data.get('appliquer_aisance', 'corps_seulement')
+        mode_aisance_corps = data.get('mode_aisance_corps')
+        mode_aisance_manches = data.get('mode_aisance_manches')
 
         # Table de correspondance pour les aisances prédéfinies
         table_aisance = {
@@ -61,14 +61,17 @@ def calculer_patron():
             'large': 27.5,
         }
 
-        if mode_aisance == 'personnalise':
-            valeur_aisance = float(data.get('aisance', 0))
-            aisance_corps = valeur_aisance if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = valeur_aisance if appliquer_aisance == "corps_et_manches" else 0
+        # Corps
+        if mode_aisance_corps == 'personnalise':
+            aisance_corps = float(data.get('aisance_corps', 0))
         else:
-            valeur = table_aisance.get(mode_aisance, 10)  # 10cm par défaut
-            aisance_corps = valeur if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = valeur if appliquer_aisance == "corps_et_manches" else 0
+            aisance_corps = table_aisance.get(mode_aisance_corps, 10)  # 10cm par défaut
+
+        # Manches
+        if mode_aisance_manches == 'personnalise':
+            aisance_manches = float(data.get('aisance_manches', 0))
+        else:
+            aisance_manches = table_aisance.get(mode_aisance_manches, 10)
 
         # --- Création des objets comme dans knit.py ---
         swatch = Swatch(mailles_10cm, rangs_10cm)
@@ -150,7 +153,7 @@ def calculer_patron():
 
         # --- Mise à jour des rangs d'augmentations lentes ---
         try:
-            liste_modifiee = miseAJourDesRangs(
+            liste_modifiee = synchronisationDesRangs(
                 my_back.GetNumeroRangsAugmentationLent(),
                 my_sleeve.GetNumeroRangsAugmentationLent()
             )

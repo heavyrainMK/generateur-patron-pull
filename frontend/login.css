@@ -1,0 +1,243 @@
+
+/*
+# *******************************************************
+# Nom ......... : login.css
+# Rôle ........ : Feuille de style pour la page de login de générateur de patrons de pulls
+# Auteurs ..... : M, L, M
+# Version ..... : V1 du 01/07/2025
+# Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
+# Description . : Styles CSS pour la page de login
+# Fonctionnalités : 
+# Compatibilité : Navigateurs modernes (Chrome, Firefox, Safari, Edge)
+# *******************************************************
+*/
+
+
+/* Conteneur principal du formulaire de login */
+.login-container {
+  max-width: 450px;
+  width: 100%;
+  background: var(--glass-bg);
+  background: rgba(20, 7, 60, 0.151);
+  backdrop-filter: blur(30px);
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  padding: 45px 40px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.358);
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+}
+
+
+/* En-tête du formulaire */
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-header h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.login-header p {
+  color: var(--text-gray);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+
+/* Groupe de champs de formulaire */
+.form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label de champ */
+.form-label {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+
+/* Champ de saisie */
+.form-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 16px 20px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+
+/* Input avec erreur */
+.form-input.error {
+  border-color: var(--error-color);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Input valide */
+.form-input.success {
+  border-color: var(--success-color);
+}
+
+
+/* Message d'erreur sous un champ */
+.error-message {
+  color: var(--error-color);
+  font-size: 0.85rem;
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+/* Affichage du message d'erreur */
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Options du formulaire "se souvenir de moi", "mot de passe oublié" */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+/* Case à cocher "se souvenir de moi" */
+.remember-me {
+  display: flex;
+  transform: translateY(7px);
+  gap: 8px;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+/* Style de la checkbox */
+.remember-me input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: rgba(255, 255, 255, 0.8);
+
+}
+
+/* Mot de passe oublié */
+.forgot-password {
+  color: var(--text-gray);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: #ffffff;
+}
+
+/* Bouton de connexion */
+.login-button {
+  background: rgba(255, 255, 255, 0.598);
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.598);
+  padding: 18px 40px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Pied de page */
+.footer-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Lien vers l'inscription */
+.register-link {
+  color: var(--text-gray);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+
+/* Bouton pour retourner à la page d'accueil */
+.back-home {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.back-home:hover {
+  background: rgba(255, 255, 255, 0.406);
+  transform: translateY(-2px);
+}
+
+/* Boîtes d’alerte pour succès ou erreur */
+.alert {
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease;
+}
+
+.alert.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Alerte d'erreur */
+.alert.error {
+  background: rgba(253, 54, 54, 0.569);
+  border: 1px solid rgba(255, 107, 107, 0.5);
+  color: #ffffff;
+}
+
+
+/* Alerte de succès */
+.alert.success {
+  background: rgba(92, 255, 119, 0.613);
+  border: 1px solid rgba(81, 207, 102, 0.5);
+  color: #fcfcfc;
+}

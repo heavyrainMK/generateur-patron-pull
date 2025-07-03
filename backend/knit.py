@@ -3,13 +3,13 @@ from .front import Front
 from .back import Back
 from .swatch import Swatch
 from .calculs import Calculs
-from .instructions import montage, rangsAplat, miseAJourDesRangs
+from .instructions import montage, rangsAplat, synchronisationDesRangs
 import math
 import io
 
 def main():
 
-    fichier_a_telecharger = open("instructions_pull_sur_mesure.txt", "a")
+    fichier_a_telecharger = open("instructions_pull_sur_mesure.txt", "w")
     #il faut construire les objets avec les mesures fournis par l'utilisateur
     my_front = Front(92, 30)
     my_back = Back(21, 92, 25, 30)
@@ -28,10 +28,6 @@ def main():
     my_back.setNeckStitches(my_back.calculStitchesNeeded(my_swatch.getStitches(), my_back.getNeckWidth(), 0))
     my_sleeve.setTopSleeveStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getTopSleeveWidth(), 0))
 
-    
-    debut = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
-    print(debut)
-    fichier_a_telecharger.write(debut)
     
     #calcul des mailles avant separation des manche et du corps
     #bien penser a prendre en compte l'aisance souhaitee
@@ -91,12 +87,17 @@ def main():
                 x+=2
                 rangs_a_plat+=1
 
-    print("il faut tricoter a plat sur " + str(rangs_a_plat) + " rangs")
-    print("nb augmentations rapides : " + str(my_back.getAugmentationsRapides()) + " tous les " + str(my_back.getRythmeRapide()) + "rangs, nb augmentations lentes : " + str(my_back.getAugmentationsLentes()) + " tous les " + str(my_back.getRythmeLent()) + " rangs")
+    synchronisationDesRangs(my_back.GetNumeroRangsAugmentationLent(), my_sleeve.GetNumeroRangsAugmentationLent())
 
-    miseAJourDesRangs(my_back.GetNumeroRangsAugmentationLent(), my_sleeve.GetNumeroRangsAugmentationLent())
-    print("manches : ", my_sleeve.GetNumeroRangsAugmentationLent())
-    print("corps : ", my_back.GetNumeroRangsAugmentationLent())
+    impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
+    print(impression)
+    impression = rangsAplat(rangs_a_plat)
+    print(impression)
+
+    # for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
+    #     if (rang_en_cours in my_back.GetNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.GetNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.GetNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.GetNumeroRangsAugmentationLent()) or (rang_en_cours in my_back.GetNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.GetNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.GetNumeroRangsAugmentationLent() et my_sleeve.GetNumeroRangsAugmentationLent()):
+    #         impression = augmentationsCo
+            
 
     fichier_a_telecharger.close()
 

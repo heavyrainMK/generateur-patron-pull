@@ -92,8 +92,6 @@ class Calculs(ABC):
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours+= self.getRythmeLent()
-            print(self.GetNumeroRangsAugmentationRapide())
-            print(self.GetNumeroRangsAugmentationLent())
 
         elif ((increases*3) > rows):
             while ((augmentations_restantes * 3) >= rangs_restants):
@@ -110,8 +108,6 @@ class Calculs(ABC):
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours+= self.getRythmeLent()
-            print(self.GetNumeroRangsAugmentationRapide())
-            print(self.GetNumeroRangsAugmentationLent())
 
         else:
             while((augmentations_restantes * 4) >= rangs_restants):
@@ -128,7 +124,5 @@ class Calculs(ABC):
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours+= self.getRythmeLent()
-            print(self.GetNumeroRangsAugmentationRapide())
-            print(self.GetNumeroRangsAugmentationLent())
             
 

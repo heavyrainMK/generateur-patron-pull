@@ -162,6 +162,15 @@ body.accueil {
   z-index: 1;
 }
 
+.floating-active {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0.6;
+  animation: float 6s ease-in-out infinite;
+  transition: transform 1s ease;
+  z-index: 1;
+}
+
 
 /* Animation de flottement */
 @keyframes float {
@@ -310,6 +319,7 @@ body:not(.accueil) {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  
 }
 
 /* Conteneur principal centré */

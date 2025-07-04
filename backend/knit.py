@@ -1,9 +1,9 @@
-from .sleeve import Sleeve
-from .front import Front
-from .back import Back
-from .swatch import Swatch
-from .calculs import Calculs
-from .instructions import montage, rangsAplat, synchronisationDesRangs
+from sleeve import Sleeve
+from front import Front
+from back import Back
+from swatch import Swatch
+from calculs import Calculs
+from instructions import montage, rangsAplat, synchronisationDesRangs
 import math
 import io
 

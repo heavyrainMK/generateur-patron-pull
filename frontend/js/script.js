@@ -3,14 +3,14 @@
 # Nom ......... : script.js
 # Rôle ........ : Navigation multi-étapes, validations et gestion de l’envoi de données pour le générateur de patrons
 # Auteurs ..... : M, L, M
-# Version ..... : V2.1.3 du 01/07/2025
+# Version ..... : V2.2.4 du 03/07/2025 (modif aisance corps + manches)
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Gestion de la navigation en 5 étapes, validation côté client des champs,
 #                 récupération des données et préparation de l’envoi JSON au backend
 #
 # Technologies  : JavaScript
-# Dépendances . : index.html, style.css, knit.py
-# Usage ....... : Ouvrir index.html dans un navigateur, remplir le formulaire étape par étape ;
+# Dépendances . : formulaire.html, style.css, knit.py
+# Usage ....... : Ouvrir formulaire.html dans un navigateur, remplir le formulaire étape par étape ;
 #                 genererPatron() prépare un POST JSON vers /api/calculer-patron.
 # *******************************************************
 */
@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mettreAJourBarreProgression();
     mettreAJourAffichageEtape();
     mettreAJourBoutonsNavigation();
-    initialiserAisance();
-    // Gère l'affichage dynamique des champs "ajusté"
+    initialiserAisances();
     initialiserChampsAjustes();
 
     // Patch compatibilité bouton "Générer le patron" en barre flottante
@@ -39,35 +38,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function initialiserAisance() {
-    const modeAisance = document.getElementById('mode_aisance');
-    const containerAisancePerso = document.getElementById('containerAisancePerso');
-    const champAisance = document.getElementById('aisance');
-    function updateAisanceField() {
-        if (modeAisance.value === 'personnalise') {
-            containerAisancePerso.style.display = 'block';
-            champAisance.required = true;
+function initialiserAisances() {
+    // Corps
+    const modeAisanceCorps = document.getElementById('mode_aisance_corps');
+    const containerPersoCorps = document.getElementById('containerAisancePersoCorps');
+    const champAisanceCorps = document.getElementById('aisance_corps');
+    function updateAisanceCorps() {
+        if (modeAisanceCorps.value === 'personnalise') {
+            containerPersoCorps.style.display = 'block';
+            champAisanceCorps.required = true;
         } else {
-            containerAisancePerso.style.display = 'none';
-            champAisance.required = false;
-            champAisance.value = '';
+            containerPersoCorps.style.display = 'none';
+            champAisanceCorps.required = false;
+            champAisanceCorps.value = '';
         }
-        // Mets à jour aussi l'affichage des champs ajustés quand le mode change
-        afficherMasquerChampsAjustes(modeAisance.value);
+        afficherMasquerChampsAjustes(modeAisanceCorps.value); // optionnel
     }
-    modeAisance.addEventListener('change', updateAisanceField);
-    updateAisanceField();
+    modeAisanceCorps.addEventListener('change', updateAisanceCorps);
+    updateAisanceCorps();
+
+    // Manches
+    const modeAisanceManches = document.getElementById('mode_aisance_manches');
+    const containerPersoManches = document.getElementById('containerAisancePersoManches');
+    const champAisanceManches = document.getElementById('aisance_manches');
+    function updateAisanceManches() {
+        if (modeAisanceManches.value === 'personnalise') {
+            containerPersoManches.style.display = 'block';
+            champAisanceManches.required = true;
+        } else {
+            containerPersoManches.style.display = 'none';
+            champAisanceManches.required = false;
+            champAisanceManches.value = '';
+        }
+    }
+    modeAisanceManches.addEventListener('change', updateAisanceManches);
+    updateAisanceManches();
 }
 
 function initialiserChampsAjustes() {
-    // On affiche/masque selon la valeur initiale au chargement
-    afficherMasquerChampsAjustes(document.getElementById('mode_aisance').value);
-    // Mais aussi chaque fois qu'on change le mode
-    document.getElementById('mode_aisance').addEventListener('change', function() {
+    // Affiche/masque selon la valeur initiale
+    afficherMasquerChampsAjustes(document.getElementById('mode_aisance_corps').value);
+    document.getElementById('mode_aisance_corps').addEventListener('change', function() {
         afficherMasquerChampsAjustes(this.value);
     });
 }
 
+// Affichage des champs "ajustés" en fonction du mode d'aisance du CORPS
 function afficherMasquerChampsAjustes(mode) {
     // Champs de classe champ-ajuste
     const champsAjuste = document.querySelectorAll('.champ-ajuste');
@@ -78,7 +94,7 @@ function afficherMasquerChampsAjustes(mode) {
             const input = label.querySelector('input');
             if (input) input.required = true;
         });
-        // Les champs "hauteur_nuque_taille" et "tour_hanches" n'ont pas toujours la classe, on force l'affichage ici aussi :
+        // Les champs "hauteur_nuque_taille" et "tour_hanches" n'ont pas toujours la classe, on force ici aussi :
         const champsSpecials = ["hauteur_nuque_taille", "tour_hanches", "tour_coude"];
         champsSpecials.forEach(id => {
             const input = document.getElementById(id);
@@ -91,7 +107,7 @@ function afficherMasquerChampsAjustes(mode) {
             const input = label.querySelector('input');
             if (input) {
                 input.required = false;
-                input.value = ''; // On efface la valeur si le champ n'est pas utilisé
+                input.value = '';
             }
         });
         // On masque/retire aussi ceux qui n'avaient pas la classe sur le label
@@ -177,8 +193,7 @@ function mettreAJourAffichageEtape() {
     if (elementEtapeCourante) {
         elementEtapeCourante.classList.add('active');
     }
-    // Pour chaque changement d'étape, on met à jour l'affichage des champs ajustés (si user revient en arrière ou avance)
-    afficherMasquerChampsAjustes(document.getElementById('mode_aisance').value);
+    afficherMasquerChampsAjustes(document.getElementById('mode_aisance_corps').value);
 }
 
 function mettreAJourBarreProgression() {
@@ -284,21 +299,38 @@ function effacerMessagesErreur(elementEtape) {
 }
 
 function validerAisanceEtape1() {
-    const modeAisance = document.getElementById('mode_aisance');
-    if (!modeAisance.value) return false;
-    if (modeAisance.value === "personnalise") {
-        const champAisance = document.getElementById('aisance');
-        const valeur = parseFloat(champAisance.value);
-        if (champAisance.value === "" || isNaN(valeur)) {
-            afficherErreurChamp(champAisance, champAisance.parentElement.querySelector('.message-erreur'), 'Valeur obligatoire');
-            return false;
+    let estValide = true;
+    // Corps
+    const modeAisanceCorps = document.getElementById('mode_aisance_corps');
+    if (!modeAisanceCorps.value) estValide = false;
+    if (modeAisanceCorps.value === "personnalise") {
+        const champAisanceCorps = document.getElementById('aisance_corps');
+        const valeur = parseFloat(champAisanceCorps.value);
+        if (champAisanceCorps.value === "" || isNaN(valeur)) {
+            afficherErreurChamp(champAisanceCorps, champAisanceCorps.parentElement.querySelector('.message-erreur'), 'Valeur obligatoire');
+            estValide = false;
         }
-        if (valeur < parseFloat(champAisance.min) || valeur > parseFloat(champAisance.max)) {
-            afficherErreurChamp(champAisance, champAisance.parentElement.querySelector('.message-erreur'), `L'aisance doit être entre ${champAisance.min} et ${champAisance.max} cm`);
-            return false;
+        if (valeur < parseFloat(champAisanceCorps.min) || valeur > parseFloat(champAisanceCorps.max)) {
+            afficherErreurChamp(champAisanceCorps, champAisanceCorps.parentElement.querySelector('.message-erreur'), `L'aisance doit être entre ${champAisanceCorps.min} et ${champAisanceCorps.max} cm`);
+            estValide = false;
         }
     }
-    return true;
+    // Manches
+    const modeAisanceManches = document.getElementById('mode_aisance_manches');
+    if (!modeAisanceManches.value) estValide = false;
+    if (modeAisanceManches.value === "personnalise") {
+        const champAisanceManches = document.getElementById('aisance_manches');
+        const valeur = parseFloat(champAisanceManches.value);
+        if (champAisanceManches.value === "" || isNaN(valeur)) {
+            afficherErreurChamp(champAisanceManches, champAisanceManches.parentElement.querySelector('.message-erreur'), 'Valeur obligatoire');
+            estValide = false;
+        }
+        if (valeur < parseFloat(champAisanceManches.min) || valeur > parseFloat(champAisanceManches.max)) {
+            afficherErreurChamp(champAisanceManches, champAisanceManches.parentElement.querySelector('.message-erreur'), `L'aisance doit être entre ${champAisanceManches.min} et ${champAisanceManches.max} cm`);
+            estValide = false;
+        }
+    }
+    return estValide;
 }
 
 function validerEtape2() {
@@ -316,6 +348,7 @@ function validerEtape2() {
     }
     return estValide;
 }
+
 function validerEtape3() {
     const tourBras    = parseFloat(document.getElementById('tour_bras').value);
     const tourPoignet = parseFloat(document.getElementById('tour_poignet').value);
@@ -429,21 +462,26 @@ async function genererPatron() {
             'tour_cou', 'tour_poitrine', 'tour_taille', 'hauteur_nuque_taille',
             'tour_hanches', 'largeur_nuque', 'hauteur_emmanchure', 'longueur_totale',
             'longueur_manches', 'tour_bras', 'tour_poignet', 'tour_coude',
-            'aisance', 'cotes_bas', 'cotes_poignets'
+            'aisance_corps', 'aisance_manches', 'cotes_bas', 'cotes_poignets'
         ];
         identifiantsIds.forEach(champ => {
             if (donnees[champ]) {
                 donnees[champ] = parseFloat(donnees[champ]);
             }
         });
-        // Si le mode n’est pas personnalisé, enlève 'aisance' du JSON
-        if (donnees['mode_aisance'] !== 'personnalise') {
-            delete donnees['aisance'];
+
+        // Nettoyage : si l’un des modes n’est pas "personnalisé", on retire la valeur personnalisée correspondante
+        if (donnees['mode_aisance_corps'] !== 'personnalise') {
+            delete donnees['aisance_corps'];
         }
-        // Supprime les champs non affichés/non demandés si mode standard, large, personnalisé
-        if (!['tres_ajuste', 'ajuste'].includes(donnees['mode_aisance'])) {
+        if (donnees['mode_aisance_manches'] !== 'personnalise') {
+            delete donnees['aisance_manches'];
+        }
+        // Supprime les champs non affichés/non demandés si mode standard, large, personnalisé (pour le corps !)
+        if (!['tres_ajuste', 'ajuste'].includes(donnees['mode_aisance_corps'])) {
             ['tour_taille','tour_hanches','hauteur_nuque_taille','tour_coude'].forEach(cle => delete donnees[cle]);
         }
+
         const reponse = await fetch('/api/calculer-patron', {
             method: 'POST',
             headers: {

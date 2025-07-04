@@ -1,0 +1,106 @@
+<!--
+*******************************************************
+Nom          : login.html
+Rôle         : Interface utilisateur de connexion
+Auteurs      : M, L, M
+Version      : V1.0 (26/05/2025)
+Licence      : Réalisé dans le cadre du cours de Réalisation de Programmes
+Description  : Formulaire de connexion pour accéder à la page utilisateur
+Technologies : HTML5, CSS3, JavaScript
+Dépendances  : style.css, script2.js
+Usage        : Ouvrir dans un navigateur web moderne
+*******************************************************
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Générateur de Patron de Pull</title>
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="accueil">
+    <!-- Éléments décoratifs -->
+    <div class="floating-active float-1"><img src="images/measurement.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-2"><img src="images/fashion-design.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-3"><img src="images/sweatshirt.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-4"><img src="images/buttons.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-5"><img src="images/knitting.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-6"><img src="images/pattern.png" alt="Image" class="icone-blanche" /></div>
+
+    <!-- Bouton retour-->
+    <a href="page_accueille.html" class="back-home">← Retour</a>
+
+    <!-- Contenu principal -->
+    <div class="main-content" id="main-container">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Connexion</h1>
+                <p>Connectez-vous à votre compte pour accéder à vos patrons</p>
+            </div>
+
+            <!-- Messages d'alerte -->
+            <div id="alert-container"></div>
+
+            <!-- Champ pour l'adresse e-mail -->
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Adresse e-mail</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="votre@email.com"
+                        required
+                        autocomplete="off"
+                    />
+                    <div class="error-message" id="email-error"></div>
+                </div>
+
+                <!-- Champ pour le mot de passe -->
+                <div class="form-group">
+                    <label class="form-label" for="password">Mot de passe</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-input"
+                        placeholder="Votre mot de passe"
+                        required
+                        autocomplete="new-password"
+                    />
+                    <div class="error-message" id="password-error"></div>
+                </div>
+
+                <!-- Options de connexion : se souvenir + mot de passe oublié -->
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" name="remember" />
+                        <span>Se souvenir de moi</span>
+                    </label>
+                    <a href="password_reset.html" class="forgot-password">Mot de passe oublié ?</a>
+                </div>
+
+                <!-- Bouton se connecter -->
+                <button type="submit" class="login-button" id="submitBtn">
+                    Se connecter
+                </button>
+            </form>
+            <!-- Pied de page : lien vers la création de compte -->
+            <div class="login-footer">
+                <p>
+                    <span class="footer-text">Pas encore de compte ? </span>
+                    <a href="register.html" class="register-link">Créer un compte</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/script2.js"></script>
+    <script src="node-backend/server.js"></script>
+</body>
+</html>

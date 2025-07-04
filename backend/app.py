@@ -6,7 +6,6 @@
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.
-#                 Sert également les fichiers statiques frontend (HTML/CSS/JS).
 #
 # Technologies  : Python, Flask
 # Dépendances . : flask, flask-cors, gunicorn
@@ -14,17 +13,17 @@
 #                 Le frontend est accessible à la racine du site (/).
 # *******************************************************
 
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import math
 import traceback
 
-from backend.swatch import Swatch
-from backend.back import Back
-from backend.front import Front
-from backend.sleeve import Sleeve
-from backend.instructions import montage, rangsAplat, miseAJourDesRangs
+from swatch import Swatch
+from back import Back
+from front import Front
+from sleeve import Sleeve
+from instructions import montage, rangsAplat, synchronisationDesRangs
 
 app = Flask(__name__)
 CORS(app)
@@ -50,8 +49,8 @@ def calculer_patron():
         tour_poignet = float(data.get('tour_poignet', 0))
 
         # --- Aisance ---
-        mode_aisance = data.get('mode_aisance')
-        appliquer_aisance = data.get('appliquer_aisance', 'corps_seulement')
+        mode_aisance_corps = data.get('mode_aisance_corps')
+        mode_aisance_manches = data.get('mode_aisance_manches')
 
         # Table de correspondance pour les aisances prédéfinies
         table_aisance = {
@@ -61,14 +60,17 @@ def calculer_patron():
             'large': 27.5,
         }
 
-        if mode_aisance == 'personnalise':
-            valeur_aisance = float(data.get('aisance', 0))
-            aisance_corps = valeur_aisance if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = valeur_aisance if appliquer_aisance == "corps_et_manches" else 0
+        # Corps
+        if mode_aisance_corps == 'personnalise':
+            aisance_corps = float(data.get('aisance_corps', 0))
         else:
-            valeur = table_aisance.get(mode_aisance, 10)  # 10cm par défaut
-            aisance_corps = valeur if appliquer_aisance in ["corps_seulement", "corps_et_manches"] else 0
-            aisance_manches = valeur if appliquer_aisance == "corps_et_manches" else 0
+            aisance_corps = table_aisance.get(mode_aisance_corps, 10)  # 10cm par défaut
+
+        # Manches
+        if mode_aisance_manches == 'personnalise':
+            aisance_manches = float(data.get('aisance_manches', 0))
+        else:
+            aisance_manches = table_aisance.get(mode_aisance_manches, 10)
 
         # --- Création des objets comme dans knit.py ---
         swatch = Swatch(mailles_10cm, rangs_10cm)
@@ -150,7 +152,7 @@ def calculer_patron():
 
         # --- Mise à jour des rangs d'augmentations lentes ---
         try:
-            liste_modifiee = miseAJourDesRangs(
+            liste_modifiee = synchronisationDesRangs(
                 my_back.GetNumeroRangsAugmentationLent(),
                 my_sleeve.GetNumeroRangsAugmentationLent()
             )
@@ -179,14 +181,6 @@ def calculer_patron():
         print("❌ Erreur dans calculer_patron() :", e)
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
-@app.route('/')
-def accueil():
-    return send_from_directory('../frontend', 'page_accueille.html')
-
-@app.route('/<path:path>')
-def static_proxy(path):
-    return send_from_directory('../frontend', path)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))

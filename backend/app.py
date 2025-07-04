@@ -6,7 +6,6 @@
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.
-#                 Sert également les fichiers statiques frontend (HTML/CSS/JS).
 #
 # Technologies  : Python, Flask
 # Dépendances . : flask, flask-cors, gunicorn
@@ -14,7 +13,7 @@
 #                 Le frontend est accessible à la racine du site (/).
 # *******************************************************
 
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 import math
@@ -182,14 +181,6 @@ def calculer_patron():
         print("❌ Erreur dans calculer_patron() :", e)
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
-@app.route('/')
-def accueil():
-    return send_from_directory('../frontend', 'page_accueille.html')
-
-@app.route('/<path:path>')
-def static_proxy(path):
-    return send_from_directory('../frontend', path)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))

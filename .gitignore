@@ -1,3 +1,36 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# VSCode
+.vscode/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# MacOS/Linux
+.DS_Store
+Thumbs.db
+
+# Environnements (parfois utilisés)
+.env
+.env.*
+
+# Autres fichiers potentiellement générés
+*.log
+*.bak
+*.swp
+*.tmp
+*.swo
+
+# Distribution / build
+dist/
+build/
+coverage/
+*.egg-info/

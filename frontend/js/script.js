@@ -9,8 +9,8 @@
 #                 récupération des données et préparation de l’envoi JSON au backend
 #
 # Technologies  : JavaScript
-# Dépendances . : index.html, style.css, knit.py
-# Usage ....... : Ouvrir index.html dans un navigateur, remplir le formulaire étape par étape ;
+# Dépendances . : formulaire.html, style.css, knit.py
+# Usage ....... : Ouvrir formulaire.html dans un navigateur, remplir le formulaire étape par étape ;
 #                 genererPatron() prépare un POST JSON vers /api/calculer-patron.
 # *******************************************************
 */

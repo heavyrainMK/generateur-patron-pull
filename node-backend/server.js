@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Servir les fichiers statiques 
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Connexion MongoDB
 mongoose.connect('mongodb+srv://pull:b7SOBeu4HqfABfct@cluster.puhrkui.mongodb.net/?retryWrites=true&w=majority&appName=Cluster')
@@ -117,15 +117,15 @@ app.get('/api/utilisateurs', async (req, res) => {
 
 // Routes pour servir les pages HTML
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'page_accueille.html'));
+    res.sendFile(path.join(__dirname, '../frontend/page_accueille.html'));
 });
 
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'));
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/login.html'));
 });
 
-app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'register.html'));
+app.get('/register.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/register.html'));
 });
 
 // Lancement du serveur

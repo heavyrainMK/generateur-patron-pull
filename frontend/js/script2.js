@@ -8,7 +8,7 @@
 # Description . : Script  pour le pages login.html, page_accueille.html
 #
 # Technologies  : JavaScript
-# Dépendances . : index.html, login.html, page_accueille.html, style.css
+# Dépendances . : formulaire.html, login.html, page_accueille.html, style.css
 # Usage ....... : Ouvrir page_accueille.html dans un navigateur 
 # *******************************************************
 */

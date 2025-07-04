@@ -19,11 +19,11 @@ import os
 import math
 import traceback
 
-from backend.swatch import Swatch
-from backend.back import Back
-from backend.front import Front
-from backend.sleeve import Sleeve
-from backend.instructions import montage, rangsAplat, synchronisationDesRangs
+from swatch import Swatch
+from back import Back
+from front import Front
+from sleeve import Sleeve
+from instructions import montage, rangsAplat, synchronisationDesRangs
 
 app = Flask(__name__)
 CORS(app)

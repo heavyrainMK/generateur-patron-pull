@@ -710,7 +710,7 @@ input.erreur, select.erreur {
 
 .barre-navigation-flottante {
   position: fixed;
-  top: 50%;
+  top: 0;
   left: 0;
   width: 100vw;
   height: 0;
@@ -720,52 +720,44 @@ input.erreur, select.erreur {
 
 .barre-navigation-flottante .bouton-navigation {
   position: absolute;
-  top: 0;
-  transform: translateY(-50%);
-  min-width: 130px;
-  pointer-events: auto;
-  opacity: 0.97;
-  width: auto;
-  padding: 15px 30px;
-  border: none;
+  top: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 20px;
   border-radius: 12px;
-  font-size: 1.1rem;
   font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(.75,.02,.53,.92);
-  background: rgba(255, 255, 255, 0.53);
-  color: #111;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  pointer-events: auto;
+  text-decoration: none;
+  min-width: 130px;
+  opacity: 0.97;
+  box-shadow: none; /* facultatif, enlève la shadow si tu veux strictement comme back-home */
 }
 
-.barre-navigation-flottante .bouton-navigation:active {
-  transform: translateY(-50%) scale(0.97);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
-}
-
-.barre-navigation-flottante .bouton-navigation.glow {
-  animation: boutonGlow 0.5s;
-}
-
-@keyframes boutonGlow {
-  0% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
-  40% { box-shadow: 0 0 16px 10px #fff8, 0 0 36px 18px #764ba255; }
-  100% { box-shadow: 0 0 0 0 #fff8, 0 0 0 0 #764ba2; }
-}
-
-.barre-navigation-flottante .bouton-navigation:hover {
-  background: rgba(255, 255, 255, 0.8);
-  color: #000000;
-  transform: translateY(-50%) scale(1.025);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-}
-
+/* Bouton "Précédent" à gauche */
 #boutonPrecedent {
-  left: 10px;
+  left: 20px;
 }
+
+/* Bouton "Suivant" & "Soumettre" à droite */
 #boutonSuivant, #boutonSoumettre {
-  right: 10px;
+  right: 20px;
+}
+
+/* Hover comme back-home */
+.barre-navigation-flottante .bouton-navigation:hover {
+  background: rgba(255, 255, 255, 0.406);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Animation clic (comme bouton retour login) */
+.barre-navigation-flottante .bouton-navigation:active {
+  transform: scale(0.97);
 }
 
 /* Bouton "Télécharger en PDF" */

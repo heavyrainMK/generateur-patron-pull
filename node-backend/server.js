@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 
@@ -126,6 +127,24 @@ app.get('/login.html', (req, res) => {
 
 app.get('/register.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/register.html'));
+});
+
+// Route proxy pour calculer le patron via Flask
+app.post('/api/calculer-patron', async (req, res) => {
+    try {
+        // Appelle le Flask API déployé
+        const flaskRes = await axios.post(
+            'https://patron-flask-api.onrender.com/api/calculer-patron',
+            req.body,
+            { headers: { 'Content-Type': 'application/json' } }
+        );
+        res.status(flaskRes.status).json(flaskRes.data);
+    } catch (error) {
+        console.error('Erreur proxy calcul patron:', error?.response?.data || error);
+        res.status(error?.response?.status || 500).json(
+            error?.response?.data || { message: 'Erreur côté BFF/Flask' }
+        );
+    }
 });
 
 // Lancement du serveur

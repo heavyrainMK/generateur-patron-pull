@@ -38,13 +38,13 @@ class Calculs(ABC):
     def setNumeroRangsAugmentationRapide(self, num):
         self.numero_rangs_augmentation_rapide.append(num)
 
-    def GetNumeroRangsAugmentationRapide(self):
+    def getNumeroRangsAugmentationRapide(self):
         return self.numero_rangs_augmentation_rapide
 
     def setNumeroRangsAugmentationLent(self, num):
         self.numero_rangs_augmentation_lent.append(num)
 
-    def GetNumeroRangsAugmentationLent(self):
+    def getNumeroRangsAugmentationLent(self):
         return self.numero_rangs_augmentation_lent
 
     #don't forget to round up the numbers
@@ -124,5 +124,6 @@ class Calculs(ABC):
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours+= self.getRythmeLent()
+
             
 

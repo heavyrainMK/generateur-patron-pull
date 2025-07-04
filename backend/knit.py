@@ -3,7 +3,7 @@ from .front import Front
 from .back import Back
 from .swatch import Swatch
 from .calculs import Calculs
-from .instructions import montage, rangsAplat, synchronisationDesRangs
+from .instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter
 import math
 import io
 
@@ -87,16 +87,29 @@ def main():
                 x+=2
                 rangs_a_plat+=1
 
-    synchronisationDesRangs(my_back.GetNumeroRangsAugmentationLent(), my_sleeve.GetNumeroRangsAugmentationLent())
+    synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
     impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
     print(impression)
     impression = rangsAplat(rangs_a_plat)
     print(impression)
 
-    # for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
-    #     if (rang_en_cours in my_back.GetNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.GetNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.GetNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.GetNumeroRangsAugmentationLent()) or (rang_en_cours in my_back.GetNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.GetNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.GetNumeroRangsAugmentationLent() et my_sleeve.GetNumeroRangsAugmentationLent()):
-    #         impression = augmentationsCo
+    for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
+        if (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and my_sleeve.getNumeroRangsAugmentationLent()):
+            impression = augmentationsCorpsEtManches(rang_en_cours)
+            print(impression)
+
+        elif rang_en_cours in my_back.getNumeroRangsAugmentationRapide() or rang_en_cours in my_back.getNumeroRangsAugmentationLent():
+            impression = augmentationsCorps(rang_en_cours)
+            print(impression)
+
+        elif rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide() or rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent():
+            impression = augmentationsManches(rang_en_cours)
+            print(impression)
+
+        else:
+            impression = tricoter(rang_en_cours)
+            print(impression)
             
 
     fichier_a_telecharger.close()

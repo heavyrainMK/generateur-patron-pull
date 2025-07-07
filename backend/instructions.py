@@ -22,17 +22,19 @@ def synchronisationDesRangs(liste_1, liste_2):
         i = 0
         while (liste_1[0] not in liste_2):
             i+=1
-            liste_1[0] += i
+            liste_1[0] += 1
         for n in range (1, len(liste_1)):
             liste_1[n] += i
+        print(f"apres modification : {liste_1}, {liste_2}")
 
     else:
         i = 0
         while (liste_2[0] not in liste_1):
             i+=1
-            liste_2[0] += i
+            liste_2[0] += 1
         for n in range (1, len(liste_2)):
             liste_2[n] += i
+        print(f"apres modification : {liste_1}, {liste_2}")
 
 def augmentationsCorps(rang):
     return f"Rang {rang} : tricoter jusqu'a 1m avant M, 1aug, GM, 1m, GM, tricoter jusqu'au M suivant, GM, 1m, GM, 1aug, tricoter jusqu'a 1m avant M, 1aug, GM, 1m, GM, tricoter jusqu'au M suivant, GM, 1m, GM, 1aug, tricoter jusqu'a la fin du rang. (4 augmentations)"

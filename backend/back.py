@@ -1,4 +1,4 @@
-from calculs import Calculs
+from .calculs import Calculs
 
 class Back(Calculs):
     
@@ -48,6 +48,11 @@ class Back(Calculs):
 
     def getRowsToHem(self):
         return self.rows_to_hem
+
+    def setAugmentationsRaglan(self, increases, rows):
+        print("le corps")
+        super().setAugmentationsRaglan(increases, rows)
+        
 
     def __str__(self):
         return f"Le dos mesure {self.armhole_depth}CM depuis l'encolure jusqu'a l'aisselle et {self.underarm_to_hem_length}CM de l'aisselle jusqu'a l'ourlet. Le tour de poitrine est {self.chest_width}"

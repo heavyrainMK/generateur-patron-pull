@@ -1,4 +1,4 @@
-from calculs import Calculs
+from .calculs import Calculs
 
 class Sleeve(Calculs):
     
@@ -49,6 +49,10 @@ class Sleeve(Calculs):
 
     def getSleeveRowsToWrist(self):
         return self.rows_to_wrist
+
+    def setAugmentationsRaglan(self, increases, rows):
+        print("la manche")
+        super().setAugmentationsRaglan(increases, rows)
 
     def __str__(self):
         return f"La manche mesure CM depuis l'encolure jusqu'a l'aisselle et {self.underarm_to_hem_length}CM de l'aisselle jusqu'a l'ourlet. Le bras a une circonference de {self.upperarm_circumference}CM au biceps et {self.wrist_circumference}CM au poignet."

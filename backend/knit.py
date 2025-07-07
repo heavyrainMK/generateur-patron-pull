@@ -18,7 +18,7 @@ def main():
 
     my_swatch = Swatch(27, 35)
     aisance_corps = 5
-    aisance_manches = 2
+    aisance_manches = 5
 
     #je ne mets pas les mailles d'aisselle dans une classe car elles sont communes a la manches et au corps, reparties sur le devant et le dos
     nb_de_mailles_aisselle = 0

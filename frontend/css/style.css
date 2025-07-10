@@ -708,6 +708,35 @@ input.erreur, select.erreur {
   }
 }
 
+/* Boutons navigation (Suivant, Précédent, Générer) et bouton Retour à l'accueil */
+.btn-nav, .back-home {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  min-width: 110px;
+  max-width: 260px;
+  text-align: center;
+  box-shadow: none;
+  display: inline-block;
+  z-index: 100;
+}
+.btn-nav:hover, .back-home:hover {
+  background: rgba(255, 255, 255, 0.406);
+  transform: translateY(-2px);
+}
+.btn-nav:active, .back-home:active {
+  transform: scale(0.97);
+}
+
+/* Positionnement fixe des boutons de navigation en haut */
 .barre-navigation-flottante {
   position: fixed;
   top: 0;
@@ -717,121 +746,29 @@ input.erreur, select.erreur {
   pointer-events: none;
   z-index: 1500;
 }
-
-.barre-navigation-flottante .bouton-navigation {
+#boutonPrecedent, #boutonSuivant, #boutonSoumettre {
   position: absolute;
   top: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
   pointer-events: auto;
-  text-decoration: none;
-  min-width: 130px;
-  opacity: 0.97;
-  box-shadow: none; /* facultatif, enlève la shadow si tu veux strictement comme back-home */
 }
-
-/* Bouton "Précédent" à gauche */
-#boutonPrecedent {
-  left: 20px;
-}
-
-/* Bouton "Suivant" & "Soumettre" à droite */
-#boutonSuivant, #boutonSoumettre {
-  right: 20px;
-}
-
-/* Hover comme back-home */
-.barre-navigation-flottante .bouton-navigation:hover {
-  background: rgba(255, 255, 255, 0.406);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-/* Animation clic (comme bouton retour login) */
-.barre-navigation-flottante .bouton-navigation:active {
-  transform: scale(0.97);
-}
-
-/* Bouton "Télécharger en PDF" */
-.bouton-secondaire {
-  background: rgba(255, 255, 255, 0.55);
-  color: #222;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 15px 32px;
-  border-radius: 13px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(.75,.02,.53,.92);
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.11);
-  margin: 0 auto;
-  margin-top: 10px;
-}
-
-.bouton-secondaire:hover,
-.bouton-secondaire:focus {
-  background: rgba(255,255,255,0.8);
-  color: #111;
-  transform: scale(1.045);
-  box-shadow: 0 14px 35px rgba(102,126,234,0.17);
-  border-color: #764ba2;
-}
-
-.bouton-secondaire:active {
-  transform: scale(0.97);
-  background: rgba(255,255,255,0.95);
-}
-
-.bouton-secondaire[disabled] {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .barre-navigation-flottante .bouton-navigation {
-    min-width: 90px;
-    font-size: 0.97rem;
-    padding: 12px;
-  }
-  #boutonPrecedent {
-    left: 2vw;
-  }
-  #boutonSuivant, #boutonSoumettre {
-    right: 2vw;
-  }
-}
+#boutonPrecedent { left: 20px; }
+#boutonSuivant, #boutonSoumettre { right: 20px; }
 
 /* Bouton retour à l'accueil */
 .back-home {
   position: absolute;
   top: 20px;
   left: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  padding: 12px 20px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  z-index: 100;
 }
 
-.back-home:hover {
-  background: rgba(255, 255, 255, 0.406);
-  transform: translateY(-2px);
+/* Responsive (mobile) */
+@media (max-width: 768px) {
+  .btn-nav, .back-home {
+    min-width: 80px;
+    max-width: 160px;
+    font-size: 0.97rem;
+    padding: 12px;
+  }
+  #boutonPrecedent { left: 2vw; top: 14px;}
+  #boutonSuivant, #boutonSoumettre { right: 2vw; top: 14px;}
 }

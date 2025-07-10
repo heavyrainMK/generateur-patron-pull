@@ -4,7 +4,7 @@ from front import Front
 from back import Back
 from swatch import Swatch
 from calculs import Calculs
-from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter, joindre
+from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter, joindre, separationManchesEtCorps
 import math
 import io
 
@@ -14,11 +14,11 @@ def main():
     #il faut construire les objets avec les mesures fournis par l'utilisateur
     my_front = Front(92, 30)
     my_back = Back(21, 92, 25, 30)
-    my_sleeve = Sleeve(28, 18.5, 45)
+    my_sleeve = Sleeve(31, 18.5, 45)
 
-    my_swatch = Swatch(27, 35)
+    my_swatch = Swatch(20, 39)
     aisance_corps = 5
-    aisance_manches = 5
+    aisance_manches = 0
 
     #je ne mets pas les mailles d'aisselle dans une classe car elles sont communes a la manches et au corps, reparties sur le devant et le dos
     nb_de_mailles_aisselle = 0
@@ -96,9 +96,10 @@ def main():
     print(impression)
 
     for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
-        if rang_en_cours == rangs_a_plat:
+        if rang_en_cours == rangs_a_plat + 1:
             impression = joindre(rang_en_cours)
-            
+            print(impression)
+
         if (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and my_sleeve.getNumeroRangsAugmentationLent()):
             impression = augmentationsCorpsEtManches(rang_en_cours)
             print(impression)
@@ -114,7 +115,9 @@ def main():
         else:
             impression = tricoter(rang_en_cours)
             print(impression)
-            
+
+    impression = separationManchesEtCorps(rang_en_cours + 1, nb_de_mailles_aisselle, my_sleeve.getUpperarmStitches(), my_back.getChestStitches())
+    print(impression)
 
     fichier_a_telecharger.close()
 

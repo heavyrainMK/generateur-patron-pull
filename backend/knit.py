@@ -69,7 +69,7 @@ def main():
 
     rangs_a_plat = 1
     x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches() 
-    y = my_back.getNeckStitches() + 2
+    y = my_back.getNeckStitches()
     while (x <= y):
         if (rangs_a_plat <= ((my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) + 1)):
             if ((rangs_a_plat - 1) % my_back.getRythmeRapide() == 0):

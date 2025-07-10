@@ -1,49 +1,119 @@
-# 🧶 Générateur de Patrons de Tricot - Pull sur Mesure
+# 🧶 Générateur de Patrons de Tricot – Pull sur Mesure
 
-Ce projet permet de générer automatiquement un patron de tricot personnalisé pour un pull, à partir des mesures fournies par l'utilisateur. Conçu pour être accessible via une interface web simple et intuitive, ce générateur guide les utilisateurs pas à pas dans la création de leur pull.
+Ce projet génère automatiquement un patron de tricot personnalisé pour un pull, à partir des mesures fournies par l’utilisateur, avec gestion d’authentification, sauvegarde de profils, et génération intelligente d’instructions.  
+Accessible via une interface web moderne, il guide les utilisateurs pas à pas dans la création de leur pull idéal.
 
-## ✨ Fonctionnalités
+---
 
-- Interface web conviviale pour saisir les mesures du pull (en cm).
-- Génération automatique d'instructions de tricot personnalisées.
-- Téléchargement du patron au format PDF.
-- Traitement des données côté serveur via Python pour des calculs précis.
-- Structure permettant une extension future (ex : base de données).
+## ✨ Fonctionnalités principales
 
-## 💡 Comment ça fonctionne
+- **Inscription / Connexion utilisateur** avec enregistrement en base MongoDB.
+- **Interface web** pour saisir toutes les mesures et options du pull.
+- **Génération automatique** d’instructions de tricot, 100 % personnalisées.
+- **Téléchargement du patron** généré au format PDF.
+- **Sauvegarde en base de données** (MongoDB) des profils et historiques utilisateurs.
+- **Déploiement facile** en local ou sur le web (API Node.js, API Python déportée).
+- **Mode debug** pour consulter la liste des utilisateurs (à désactiver en prod).
 
-1. L'utilisateur ouvre la page `index.html`.
-2. Il renseigne ses mesures (tour de poitrine, longueur, manches, etc.).
-3. Un script en JavaScript envoie ces données au backend Python.
-4. Python calcule les instructions détaillées pour tricoter un pull sur mesure.
-5. Le texte généré s'affiche dans la page et peut être téléchargé en PDF.
+---
 
-## 🛠 Technologies utilisées
+## 🖼️ Aperçu Architecture
 
-- **HTML / CSS** : Interface utilisateur et mise en page.
-- **JavaScript** : Liaison entre le frontend et le backend.
-- **Python** : Moteur de calculs pour générer les instructions
-- *(Optionnel)* **Base de données** : Sauvegarde des patrons générés.
+```
+[ Frontend HTML/CSS/JS ]
+            │
+            ▼
+[ Backend Node.js/Express ] <───────┐
+     (API REST & BFF)               │
+            │                       │
+            ▼                       │
+   [ MongoDB – Sauvegarde           │
+      utilisateurs ]                │
+            │                       │
+            ▼                       │
+[ Proxy vers API Flask (Python) – Calcul Patron ]
+```
 
-## 🔧 Installation (en local)
+---
+
+## 💡 Comment ça fonctionne ?
+
+1. L’utilisateur ouvre la page d’accueil ou de connexion.
+2. Il s’inscrit (profil enregistré sur MongoDB) ou se connecte.
+3. Il saisit ses mesures et options de pull via l’interface web.
+4. Le **backend Node.js** reçoit la demande, la transmet à l’API Python (Flask) dédiée au calcul du patron.
+5. L’API Flask retourne les instructions de tricot détaillées.
+6. L’utilisateur obtient son patron personnalisé, avec possibilité de téléchargement PDF.
+7. L’historique des patrons générés et les profils utilisateurs sont sauvegardés dans MongoDB.
+
+---
+
+## 🛠️ Technologies utilisées
+
+- **Frontend** : HTML5, CSS3, JavaScript ES6
+- **Backend** : Node.js + Express (API REST & BFF)
+- **Base de données** : MongoDB Atlas (hébergé)
+- **API Calcul Patron** : Python (Flask), microservice séparé (peut être hébergé à part)
+- **PDF** : Génération côté frontend
+- **Libs** : Axios, body-parser, cors, mongoose, etc.
+
+---
+
+## 🚀 Installation & Lancement local
+
+### 1. Backend Node.js/Express
 
 ```bash
-# 1. Créer un environnement virtuel (recommandé)
-python3 -m venv venv
-source venv/bin/activate  # Sur Windows : venv\Scripts\activate
-
-# 2. Installer les dépendances nécessaires
-pip install -r requirements.txt
-
-# 3. Lancer le backend Flask (si nécessaire)
-python3 -m backend.app
+cd node-backend
+npm install
+npm start
 ```
+
+- Par défaut, le serveur écoute sur [http://localhost:3000](http://localhost:3000).
+
+### 2. API Flask (Python)
+
+Assure-toi d’avoir Python 3.9+ et pip.
+
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+
+- Par défaut, l’API Flask écoute sur le port 5000 ou selon config Render.
+
+### 3. Frontend
+
+- Les fichiers statiques sont servis automatiquement par Node.js (voir `/frontend`).
+
+---
+
+## 🔐 Configuration & Sécurité
+
+- Les identifiants MongoDB sont à placer dans une variable d’environnement ou un fichier `.env` (jamais en dur en production !).
+- Pour la prod, désactiver la route de debug `/api/utilisateurs`.
+
+---
+
+## 🛣️ Déploiement
+
+- **Local** : Démarrer les deux backends (Node.js et Flask).
+- **Cloud** : Possibilité d’héberger le backend Node.js (API + frontend) sur Render, Vercel, Heroku, etc., et l’API Flask sur un service cloud (Render, PythonAnywhere, etc.).
+- **MongoDB Atlas** : recommandé pour une BDD partagée et sécurisée.
+
+---
 
 ## 🚧 Fonctionnalités futures
 
-- Intégration complète en ligne via un hébergement web.
-- *(Optionnel)* Ajout d'une base de données pour sauvegarder et consulter les patrons.
-- *(Optionnel)*  Personnalisation avancée: d’autres types de cols (col en V, col bateau, ras du cou)
+- **Personnalisation avancée** : types de cols, motifs, manches, etc.
+- **Gestion avancée des historiques utilisateurs** (profils multiples, favoris…).
+- **Refonte UI/UX** pour une expérience encore plus fluide.
+- **Ajout d’un assistant tricot pas-à-pas** (notifications, étapes animées).
+
+---
 
 ## 👩‍💻 Équipe de développement
 
@@ -52,10 +122,10 @@ Projet réalisé par :
 - Liubov
 - Mathilde
 
-Dans le cadre d’un projet étudiant L2.
+Dans le cadre du cours universitaire "Réalisation de programmes" (L2).
+
+---
 
 ## 📄 Licence
 
-Ce projet a été réalisé dans le cadre du cours *Réalisation de programme* à des fins éducatives.  
-Il est destiné à l'apprentissage et au développement de compétences en programmation.
-
+Ce projet a été conçu à des fins pédagogiques, pour l’apprentissage du développement fullstack.

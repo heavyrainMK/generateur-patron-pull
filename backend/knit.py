@@ -4,7 +4,7 @@ from front import Front
 from back import Back
 from swatch import Swatch
 from calculs import Calculs
-from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter
+from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter, joindre
 import math
 import io
 
@@ -96,6 +96,9 @@ def main():
     print(impression)
 
     for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
+        if rang_en_cours == rangs_a_plat:
+            impression = joindre(rang_en_cours)
+            
         if (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and my_sleeve.getNumeroRangsAugmentationLent()):
             impression = augmentationsCorpsEtManches(rang_en_cours)
             print(impression)

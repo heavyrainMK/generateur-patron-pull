@@ -47,3 +47,6 @@ def augmentationsCorpsEtManches(rang):
 
 def tricoter(rang):
     return f"Rang {rang} : Tricoter le rang normalement."
+
+def joindre(rang):
+    return f"Joindre les deux cotes du tricot pour commencer a tricoter en rond. Pour se faire, tricoter la dernier maille du rang ensemble a l'endroit avec la premiere maille du rang. Attention de toujours bien joindre sur un rang endroit. Si le rang en cours est un rang envers, repartez sur un rang endroit (sans faire les augmentations de l'encolure) puis joindre a la fin de ce rang."

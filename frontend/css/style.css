@@ -811,3 +811,27 @@ input.erreur, select.erreur {
     right: 2vw;
   }
 }
+
+/* Bouton retour à l'accueil */
+.back-home {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  z-index: 100;
+}
+
+.back-home:hover {
+  background: rgba(255, 255, 255, 0.406);
+  transform: translateY(-2px);
+}

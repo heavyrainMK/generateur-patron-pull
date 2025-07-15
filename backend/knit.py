@@ -88,7 +88,9 @@ def main():
                 x+=2
                 rangs_a_plat+=1
 
-    synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
+    #on synchronise uniquement si les augmentations se font au meme rythme
+    if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
+        synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
     impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
     print(impression)

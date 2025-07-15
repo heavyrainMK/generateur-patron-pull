@@ -92,11 +92,13 @@ def main():
     if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
         synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
+
     impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
     print(impression)
     impression = rangsAplat(rangs_a_plat)
     print(impression)
 
+    print()
     for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
         if rang_en_cours == rangs_a_plat + 1:
             impression = joindre(rang_en_cours)
@@ -120,6 +122,11 @@ def main():
 
     impression = separationManchesEtCorps(rang_en_cours + 1, nb_de_mailles_aisselle, my_sleeve.getUpperarmStitches(), my_back.getChestStitches())
     print(impression)
+
+    my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
+    print(f"Le corps : \n Rang 1 a {my_back.getRowsToHem()} : tricoter normalement\n")
+
+
 
     fichier_a_telecharger.close()
 

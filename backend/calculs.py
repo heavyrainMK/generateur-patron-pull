@@ -58,7 +58,7 @@ class Calculs(ABC):
     def calculRowsNeeded(self, rows, length):
         return math.ceil(rows / 10 * length)
 
-#les augmentation/diminutions fonctionnent par paires
+#les augmentation/diminutions fonctionnent par paires, il faut donc un nombre pair
     def calculIncreases(self, nb_mailles_1, nb_mailles_2):
         inc = nb_mailles_2 - nb_mailles_1
         if inc % 2 != 0:

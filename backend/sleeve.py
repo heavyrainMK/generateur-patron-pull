@@ -44,10 +44,10 @@ class Sleeve(Calculs):
     def getWristStitches(self):
         return self.wrist_stitches
 
-    def setSleeveRowsToWrist(self, nb_of_rows):
+    def setRowsToWrist(self, nb_of_rows):
         self.rows_to_wrist = nb_of_rows
 
-    def getSleeveRowsToWrist(self):
+    def getRowsToWrist(self):
         return self.rows_to_wrist
 
     def setAugmentationsRaglan(self, increases, rows):

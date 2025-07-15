@@ -16,7 +16,7 @@ def main():
     my_back = Back(21, 92, 25, 30)
     my_sleeve = Sleeve(31, 18.5, 45)
 
-    my_swatch = Swatch(20, 39)
+    my_swatch = Swatch(28, 32)
     aisance_corps = 5
     aisance_manches = 0
 
@@ -126,6 +126,16 @@ def main():
     my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
     print(f"Le corps : \n Rang 1 a {my_back.getRowsToHem()} : tricoter normalement\n")
 
+    #calcul et repartition des diminutions de la manche jusqu'au poignet
+    #ne pas oublier de soustraire les cotes, j'ai mis 5cm pour l'instant
+    my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength() - 5))
+    my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
+    #ne pas oublier de compter les mailles de l'aisselle
+    nb_diminutions_manches = my_sleeve.calculDecreases(my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle, my_sleeve.getWristStitches())
+    print(f"la manche : {my_sleeve.getRowsToWrist()} rangs, {my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle} mailles au biceps, {my_sleeve.getWristStitches()} mailles au poignet, {nb_diminutions_manches} diminutions")
+
+    #print(f"Les manches : \n Rang 1 a {my_back.getR()} : tricoter normalement\n")
+    
 
 
     fichier_a_telecharger.close()

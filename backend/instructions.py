@@ -56,4 +56,4 @@ def separationManchesEtCorps(rang, mailles_aisselle, mailles_manches, maille_cor
     return f"Rang {rang} : Il faut maintenant separer les manches et le corps du pull. Les mailles des raglans s'integrent dans le corps. On peut retirer tous les marqueurs sauf celui qui indique le debut du rang.  Placer {mailles_manches} mailles en attente, monter {mailles_aisselle} mailles, RM, tricoter 1m, RM, tricoter {maille_corps} mailles, RM, tricoter 1m, RM, placer {mailles_manches} mailles en attente, monter {mailles_aisselle} mailles, RM, tricoter 1m, RM, tricoter {maille_corps} mailles, tricoter 1m.\n"
 
 def diminutionDebutEtFinDeRang(rang):
-    return f"Rang {rang} : Tricoter 1m, glisser les 2 mailles suivantes a l'envers puis les tricoter ensemble, tricoter jusqu'a 3m de la fin, tricoter 2m ensemble a l'endroit, tricoter 1m"
+    return f"Rang {rang} : Tricoter 1m, glisser les 2 mailles suivantes a l'envers puis les tricoter ensemble, tricoter jusqu'a 3m de la fin, tricoter 2m ensemble a l'endroit, tricoter 1m.\n"

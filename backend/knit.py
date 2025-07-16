@@ -92,7 +92,7 @@ def main():
     if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
         synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
-
+    print('\033[1m' + 'Montage')
     impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
     print(impression)
     impression = rangsAplat(rangs_a_plat)
@@ -128,7 +128,7 @@ def main():
 
     #calcul et repartition des diminutions de la manche jusqu'au poignet
     #ne pas oublier de soustraire les cotes, j'ai mis 5cm pour l'instant
-    my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength() - 5))
+    my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
     my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
 
     #ne pas oublier de compter les mailles de l'aisselle
@@ -136,19 +136,14 @@ def main():
     nb_diminutions_manches = my_sleeve.calculDecreases(my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle, my_sleeve.getWristStitches()) / 2
     ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-    print(f"la manche : {my_sleeve.getRowsToWrist()} rangs, {my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle} mailles au biceps, {my_sleeve.getWristStitches()} mailles au poignet, {nb_diminutions_manches} diminutions")
+    print(f"la manche : \n")
 
-    for i in range (1, my_sleeve.getRowsToWrist()):
-        if ((i-1) % ratio_diminution_manche == 0):
-            impression = diminutionDebutEtFinDeRang(i)
-            print(impression)
-        else:
-            impression = tricoter(i)
-            print(impression)
-    #print(f"Les manches : \n Rang 1 a {my_back.getR()} : tricoter normalement\n")
+    impression = diminutionDebutEtFinDeRang(1)
+    print(impression)
+    print(f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n Repeter les {math.trunc(ratio_diminution_manche)} rangs precedents {nb_diminutions_manches} fois")
     
-
-
+    
+    
     fichier_a_telecharger.close()
 
 

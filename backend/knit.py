@@ -4,7 +4,7 @@ from front import Front
 from back import Back
 from swatch import Swatch
 from calculs import Calculs
-from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter, joindre, separationManchesEtCorps
+from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter, joindre, separationManchesEtCorps, diminutionDebutEtFinDeRang
 import math
 import io
 
@@ -130,10 +130,21 @@ def main():
     #ne pas oublier de soustraire les cotes, j'ai mis 5cm pour l'instant
     my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength() - 5))
     my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
+
     #ne pas oublier de compter les mailles de l'aisselle
-    nb_diminutions_manches = my_sleeve.calculDecreases(my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle, my_sleeve.getWristStitches())
+    #on divise le resultat par 2 puisque les diminutions vont par paire, comme les augmentations
+    nb_diminutions_manches = my_sleeve.calculDecreases(my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle, my_sleeve.getWristStitches()) / 2
+    ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
+
     print(f"la manche : {my_sleeve.getRowsToWrist()} rangs, {my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle} mailles au biceps, {my_sleeve.getWristStitches()} mailles au poignet, {nb_diminutions_manches} diminutions")
 
+    for i in range (1, my_sleeve.getRowsToWrist()):
+        if ((i-1) % ratio_diminution_manche == 0):
+            impression = diminutionDebutEtFinDeRang(i)
+            print(impression)
+        else:
+            impression = tricoter(i)
+            print(impression)
     #print(f"Les manches : \n Rang 1 a {my_back.getR()} : tricoter normalement\n")
     
 

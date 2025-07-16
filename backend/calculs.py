@@ -135,6 +135,12 @@ class Calculs(ABC):
             print(self.getNumeroRangsAugmentationRapide())
             print(self.getNumeroRangsAugmentationLent())
 
+    # pour l'instant on utilisera cette fonction uniquement pour les manches
+    # mais a l'avenir il est possible que j'en aie besoin pour le corps egalement
+    # je la mets dans la classe "calculs" pour que toutes les autres classes y aient acces
+    def calculRatio(self, rangs, occurences):
+        return math.ceil(rangs / occurences)
+
 
             
 

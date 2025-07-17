@@ -64,7 +64,7 @@ def joindre(rang):
             f"Pour cela, tricoter la dernière maille du rang ensemble à l'endroit avec la première maille du rang. "
             f"Attention de toujours bien joindre sur un rang endroit. "
             f"Si le rang en cours est un rang envers, repartez sur un rang endroit (sans faire les augmentations de l'encolure), puis joignez à la fin de ce rang. "
-            f"Le début du rang se trouve à la pointe du V ; vous allez le déplacer jusqu'au premier raglan de la manche droite (après la maille raglan, de sorte à ce qu'elle soit bien comprise dans le corps et non la manche). "
+            f"Le début du rang se trouve à la pointe du V ; vous allez le déplacer jusqu'au premier raglan de la manche droite (après la maille raglan, de sorte à ce qu'elle soit bien comprise dans le corps et non la manche). "
             f"Il suffit de tricoter jusqu'à cet endroit et d'y placer un marqueur différent des autres.\n")
 
 def separationManchesEtCorps(rang, mailles_aisselle, mailles_manches, maille_corps):

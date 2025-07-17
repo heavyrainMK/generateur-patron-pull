@@ -3,7 +3,7 @@
 # Nom ......... : formulaire.html
 # Rôle ........ : Interface utilisateur pour la génération de patrons de pull personnalisés
 # Auteurs ..... : M, L, M
-# Version ..... : V2.2.4 du 03/07/2025
+# Version ..... : V2.2.5 du 17/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Formulaire web interactif permettant de saisir les mesures corporelles
 #                 et spécifications techniques pour générer un patron de tricot personnalisé
@@ -72,16 +72,17 @@
         <div class="etape-formulaire active" data-etape="1">
           <div class="section-formulaire aisance">
             <h2>
-              <span class="icone-section">🧵</span> Choix de l’aisance
+              <span class="icone-section">🧵</span> Choix de l'aisance
             </h2>
             <label class="pleine-largeur">
               <span class="texte-label">Aisance du corps :</span>
               <select id="mode_aisance_corps" name="mode_aisance_corps" required>
                 <option value="">-- Choisissez --</option>
-                <option value="tres_ajuste">Très ajusté (−2,5 cm)</option>
-                <option value="ajuste">Ajusté (+7,5 cm)</option>
-                <option value="standard">Standard (+17,5 cm)</option>
-                <option value="large">Large (+27,5 cm)</option>
+                <option value="pres_corps">Près du corps (-5 cm)</option>
+                <option value="ajuste">Ajusté (0 cm)</option>
+                <option value="standard">Standard (+5 cm)</option>
+                <option value="large">Large (+10 cm)</option>
+                <option value="tres_large">Très large (+20 cm)</option>
                 <option value="personnalise">Personnalisé</option>
               </select>
               <span class="message-erreur"></span>
@@ -89,8 +90,8 @@
             <div id="containerAisancePersoCorps" style="display: none;">
               <label>
                 <span class="texte-label">Aisance personnalisée pour le corps (cm) :</span>
-                <input type="number" id="aisance_corps" name="aisance_corps" step="0.5" min="-5" max="30" value="10" />
-                <span class="texte-aide">Entrez une valeur comprise entre -5 et 30 cm.</span>
+                <input type="number" id="aisance_corps" name="aisance_corps" step="0.5" min="-5" max="20" value="10" />
+                <span class="texte-aide">Entrez une valeur comprise entre -5 et 20 cm.</span>
                 <span class="message-erreur"></span>
               </label>
             </div>
@@ -99,10 +100,11 @@
               <span class="texte-label">Aisance des manches :</span>
               <select id="mode_aisance_manches" name="mode_aisance_manches" required>
                 <option value="">-- Choisissez --</option>
-                <option value="tres_ajuste">Très ajusté (−2,5 cm)</option>
-                <option value="ajuste">Ajusté (+7,5 cm)</option>
-                <option value="standard">Standard (+17,5 cm)</option>
-                <option value="large">Large (+27,5 cm)</option>
+                <option value="pres_corps">Près du corps (-5 cm)</option>
+                <option value="ajuste">Ajusté (0 cm)</option>
+                <option value="standard">Standard (+5 cm)</option>
+                <option value="large">Large (+10 cm)</option>
+                <option value="tres_large">Très large (+20 cm)</option>
                 <option value="personnalise">Personnalisé</option>
               </select>
               <span class="message-erreur"></span>
@@ -110,14 +112,14 @@
             <div id="containerAisancePersoManches" style="display: none;">
               <label>
                 <span class="texte-label">Aisance personnalisée pour les manches (cm) :</span>
-                <input type="number" id="aisance_manches" name="aisance_manches" step="0.5" min="-5" max="30" value="10" />
-                <span class="texte-aide">Entrez une valeur comprise entre -5 et 30 cm.</span>
+                <input type="number" id="aisance_manches" name="aisance_manches" step="0.5" min="-5" max="20" value="10" />
+                <span class="texte-aide">Entrez une valeur comprise entre -5 et 20 cm.</span>
                 <span class="message-erreur"></span>
               </label>
             </div>
             <p class="texte-aide" style="margin-top: 12px;">
               <b>Astuce :</b> Vous pouvez choisir une aisance différente pour le corps et les manches selon vos préférences.  
-              Les mesures taille, hanches, hauteur nuque-taille et coude ne sont demandées qu'en mode très ajusté ou ajusté.
+              Plus l'aisance est grande, plus le pull sera ample.
             </p>
           </div>
         </div>
@@ -139,16 +141,6 @@
                 <span class="texte-aide">Échantillon en jersey endroit</span>
                 <input type="number" id="rangs_10cm" name="rangs_10cm" step="0.5" min="10" max="80" required /><span class="message-erreur"></span>
               </label>
-              <label>
-                <span class="texte-label">🪡 Taille d'aiguilles (mm)</span>
-                <span class="texte-aide">Pour le corps du pull</span>
-                <input type="number" id="taille_aig_corps" name="taille_aig_corps" step="0.25" min="2" max="12" required /><span class="message-erreur"></span>
-              </label>
-              <label>
-                <span class="texte-label">🪡 Taille d'aiguilles côtes (mm)</span>
-                <span class="texte-aide">Généralement 0,5 mm plus petites</span>
-                <input type="number" id="taille_aig_cotes" name="taille_aig_cotes" step="0.25" min="1.5" max="11" required /><span class="message-erreur"></span>
-              </label>
             </div>
           </div>
         </div>
@@ -167,23 +159,8 @@
               </label>
               <label>
                 <span class="texte-label">📏 Tour de poitrine (cm)</span>
-                <span class="texte-aide">Mesurer au point le plus large</span>
+                <span class="texte-aide">Mesurer juste sous la poitrine</span>
                 <input type="number" id="tour_poitrine" name="tour_poitrine" step="0.5" min="60" max="150" required /><span class="message-erreur"></span>
-              </label>
-              <label class="champ-ajuste">
-                <span class="texte-label">📏 Tour de taille (cm)</span>
-                <span class="texte-aide">À la taille naturelle</span>
-                <input type="number" id="tour_taille" name="tour_taille" step="0.5" min="50" max="130" /><span class="message-erreur"></span>
-              </label>
-              <label>
-                <span class="texte-label">📏 Hauteur nuque-taille (cm)</span>
-                <span class="texte-aide">De la nuque à la taille naturelle</span>
-                <input type="number" id="hauteur_nuque_taille" name="hauteur_nuque_taille" step="0.5" min="30" max="70" /><span class="message-erreur champ-ajuste"></span>
-              </label>
-              <label>
-                <span class="texte-label">📏 Tour de hanches (cm)</span>
-                <span class="texte-aide">Au point le plus large</span>
-                <input type="number" id="tour_hanches" name="tour_hanches" step="0.5" min="60" max="150" /><span class="message-erreur champ-ajuste"></span>
               </label>
               <label>
                 <span class="texte-label">📏 Largeur arrière de la nuque (cm)</span>
@@ -197,7 +174,7 @@
               </label>
               <label>
                 <span class="texte-label">📏 Longueur totale désirée (cm)</span>
-                <span class="texte-aide">Du haut de l'épaule au bas du pull</span>
+                <span class="texte-aide">Depuis l'aisselle jusqu'en bas du pull</span>
                 <input type="number" id="longueur_totale" name="longueur_totale" step="0.5" min="30" max="80" required /><span class="message-erreur"></span>
               </label>
             </div>
@@ -213,7 +190,7 @@
             <div class="deux-colonnes">
               <label>
                 <span class="texte-label">📏 Longueur des manches (cm)</span>
-                <span class="texte-aide">De l'épaule au poignet</span>
+                <span class="texte-aide">De l'aisselle au poignet</span>
                 <input type="number" id="longueur_manches" name="longueur_manches" step="0.5" min="30" max="70" required /><span class="message-erreur"></span>
               </label>
               <label>
@@ -225,11 +202,6 @@
                 <span class="texte-label">📏 Tour de poignet (cm)</span>
                 <span class="texte-aide">À la base de la main</span>
                 <input type="number" id="tour_poignet" name="tour_poignet" step="0.5" min="12" max="25" required /><span class="message-erreur"></span>
-              </label>
-              <label class="champ-ajuste">
-                <span class="texte-label">📏 Tour de coude (cm)</span>
-                <span class="texte-aide">Au coude fléchi</span>
-                <input type="number" id="tour_coude" name="tour_coude" step="0.5" min="18" max="35" /><span class="message-erreur"></span>
               </label>
             </div>
           </div>

@@ -3,7 +3,7 @@
 # Nom ......... : script.js
 # Rôle ........ : Navigation multi-étapes, validations et gestion de l’envoi de données pour le générateur de patrons
 # Auteurs ..... : M, L, M
-# Version ..... : V2.2.4 du 03/07/2025 (modif aisance corps + manches)
+# Version ..... : V2.2.5 du 17/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Gestion de la navigation en 5 étapes, validation côté client des champs,
 #                 récupération des données et préparation de l’envoi JSON au backend
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
     mettreAJourAffichageEtape();
     mettreAJourBoutonsNavigation();
     initialiserAisances();
-    initialiserChampsAjustes();
 
     // Patch compatibilité bouton "Générer le patron" en barre flottante
     const boutonSoumettre = document.getElementById('boutonSoumettre');
@@ -52,7 +51,6 @@ function initialiserAisances() {
             champAisanceCorps.required = false;
             champAisanceCorps.value = '';
         }
-        afficherMasquerChampsAjustes(modeAisanceCorps.value); // optionnel
     }
     modeAisanceCorps.addEventListener('change', updateAisanceCorps);
     updateAisanceCorps();
@@ -73,54 +71,6 @@ function initialiserAisances() {
     }
     modeAisanceManches.addEventListener('change', updateAisanceManches);
     updateAisanceManches();
-}
-
-function initialiserChampsAjustes() {
-    // Affiche/masque selon la valeur initiale
-    afficherMasquerChampsAjustes(document.getElementById('mode_aisance_corps').value);
-    document.getElementById('mode_aisance_corps').addEventListener('change', function() {
-        afficherMasquerChampsAjustes(this.value);
-    });
-}
-
-// Affichage des champs "ajustés" en fonction du mode d'aisance du CORPS
-function afficherMasquerChampsAjustes(mode) {
-    // Champs de classe champ-ajuste
-    const champsAjuste = document.querySelectorAll('.champ-ajuste');
-    if (mode === "tres_ajuste" || mode === "ajuste") {
-        champsAjuste.forEach(label => {
-            label.style.display = '';
-            // Rends les champs obligatoires
-            const input = label.querySelector('input');
-            if (input) input.required = true;
-        });
-        // Les champs "hauteur_nuque_taille" et "tour_hanches" n'ont pas toujours la classe, on force ici aussi :
-        const champsSpecials = ["hauteur_nuque_taille", "tour_hanches", "tour_coude"];
-        champsSpecials.forEach(id => {
-            const input = document.getElementById(id);
-            if (input) input.required = true;
-            if (input && input.parentElement) input.parentElement.style.display = '';
-        });
-    } else {
-        champsAjuste.forEach(label => {
-            label.style.display = 'none';
-            const input = label.querySelector('input');
-            if (input) {
-                input.required = false;
-                input.value = '';
-            }
-        });
-        // On masque/retire aussi ceux qui n'avaient pas la classe sur le label
-        const champsSpecials = ["hauteur_nuque_taille", "tour_hanches", "tour_coude"];
-        champsSpecials.forEach(id => {
-            const input = document.getElementById(id);
-            if (input) {
-                input.required = false;
-                input.value = '';
-                if (input.parentElement) input.parentElement.style.display = 'none';
-            }
-        });
-    }
 }
 
 function initialiserNavigationEtapes() {
@@ -193,7 +143,6 @@ function mettreAJourAffichageEtape() {
     if (elementEtapeCourante) {
         elementEtapeCourante.classList.add('active');
     }
-    afficherMasquerChampsAjustes(document.getElementById('mode_aisance_corps').value);
 }
 
 function mettreAJourBarreProgression() {
@@ -246,8 +195,6 @@ function validerEtapeCourante() {
     // Ajout validation de l’aisance personnalisée si affichée
     if (etapeCourante === 1) {
         estValide = validerAisanceEtape1() && estValide;
-    } else if (etapeCourante === 2) {
-        estValide = validerEtape2() && estValide;
     } else if (etapeCourante === 3) {
         estValide = validerEtape3() && estValide;
     }
@@ -333,26 +280,9 @@ function validerAisanceEtape1() {
     return estValide;
 }
 
-function validerEtape2() {
-    const tailleAigCorps  = parseFloat(document.getElementById('taille_aig_corps').value);
-    const tailleAigCotes  = parseFloat(document.getElementById('taille_aig_cotes').value);
-    let estValide = true;
-    if (tailleAigCotes >= tailleAigCorps) {
-        const elementErreur = document.getElementById('taille_aig_cotes').parentElement.querySelector('.message-erreur');
-        afficherErreurChamp(
-          document.getElementById('taille_aig_cotes'),
-          elementErreur,
-          'Les aiguilles pour les côtes doivent être plus petites que celles du corps'
-        );
-        estValide = false;
-    }
-    return estValide;
-}
-
 function validerEtape3() {
     const tourBras    = parseFloat(document.getElementById('tour_bras').value);
     const tourPoignet = parseFloat(document.getElementById('tour_poignet').value);
-    const tourCoude   = document.getElementById('tour_coude') ? parseFloat(document.getElementById('tour_coude').value) : null;
     let estValide = true;
     if (tourPoignet >= tourBras) {
         const elementErreur = document.getElementById('tour_poignet').parentElement.querySelector('.message-erreur');
@@ -360,17 +290,6 @@ function validerEtape3() {
           document.getElementById('tour_poignet'),
           elementErreur,
           'Le tour de poignet doit être inférieur au tour de bras'
-        );
-        estValide = false;
-    }
-    // Teste tour_coude uniquement s'il est affiché et requis
-    const tourCoudeInput = document.getElementById('tour_coude');
-    if (tourCoudeInput && tourCoudeInput.required && tourCoude >= tourBras) {
-        const elementErreur = tourCoudeInput.parentElement.querySelector('.message-erreur');
-        afficherErreurChamp(
-          tourCoudeInput,
-          elementErreur,
-          'Le tour de coude doit être inférieur au tour de bras'
         );
         estValide = false;
     }
@@ -458,10 +377,9 @@ async function genererPatron() {
         const donnees = Object.fromEntries(donneesForm.entries());
         // Conversion des valeurs numériques
         const identifiantsIds = [
-            'mailles_10cm', 'rangs_10cm', 'taille_aig_corps', 'taille_aig_cotes',
-            'tour_cou', 'tour_poitrine', 'tour_taille', 'hauteur_nuque_taille',
-            'tour_hanches', 'largeur_nuque', 'hauteur_emmanchure', 'longueur_totale',
-            'longueur_manches', 'tour_bras', 'tour_poignet', 'tour_coude',
+            'mailles_10cm', 'rangs_10cm',
+            'tour_cou', 'tour_poitrine', 'largeur_nuque', 'hauteur_emmanchure', 'longueur_totale',
+            'longueur_manches', 'tour_bras', 'tour_poignet',
             'aisance_corps', 'aisance_manches', 'cotes_bas', 'cotes_poignets'
         ];
         identifiantsIds.forEach(champ => {
@@ -476,10 +394,6 @@ async function genererPatron() {
         }
         if (donnees['mode_aisance_manches'] !== 'personnalise') {
             delete donnees['aisance_manches'];
-        }
-        // Supprime les champs non affichés/non demandés si mode standard, large, personnalisé (pour le corps !)
-        if (!['tres_ajuste', 'ajuste'].includes(donnees['mode_aisance_corps'])) {
-            ['tour_taille','tour_hanches','hauteur_nuque_taille','tour_coude'].forEach(cle => delete donnees[cle]);
         }
 
         const reponse = await fetch('/api/calculer-patron', {

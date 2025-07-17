@@ -434,7 +434,7 @@ function telechargerPDF() {
     const titre = "Patron de pull généré";
     const date = new Date().toLocaleDateString();
     const textePatron = resultatDiv.textContent.trim();
-    const texteFinal = `${titre}\n${date}\n\n${textePatron}`;
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
         orientation: "portrait",
@@ -442,23 +442,54 @@ function telechargerPDF() {
         format: "a4"
     });
 
-    // Header stylé
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text(titre, 105, 22, { align: "center" });
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-    doc.text(date, 105, 30, { align: "center" });
+    // Constantes pour positionnement
+    const margeGauche = 20;
+    const margeDroite = 190;
+    const margeHaut = 45;
+    const margeBas = 287; // 297 - 10mm de bas de page
+    const ligneHeight = 7; // ajuster si besoin
 
-    // Séparateur
-    doc.setLineWidth(0.5);
-    doc.line(20, 35, 190, 35);
+    // Pour la gestion du header et pagination
+    let y = margeHaut;
+    let page = 1;
+    let lignes = doc.splitTextToSize(textePatron, margeDroite - margeGauche);
 
-    // Texte du patron
+    function ajouterHeader(doc, page) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text(titre, 105, 22, { align: "center" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        doc.text(date, 105, 30, { align: "center" });
+        doc.setLineWidth(0.5);
+        doc.line(margeGauche, 35, margeDroite, 35);
+    }
+
+    function ajouterFooter(doc, page) {
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(10);
+        doc.text(`Page ${page}`, 105, 292, { align: "center" });
+    }
+
+    ajouterHeader(doc, page);
+
     doc.setFont("Courier", "normal");
     doc.setFontSize(11);
-    const lignes = doc.splitTextToSize(textePatron, 170);
-    doc.text(lignes, 20, 45);
+
+    for (let i = 0; i < lignes.length; i++) {
+        if (y > margeBas) {
+            ajouterFooter(doc, page);
+            doc.addPage();
+            page++;
+            ajouterHeader(doc, page);
+            doc.setFont("Courier", "normal");
+            doc.setFontSize(11);
+            y = margeHaut;
+        }
+        doc.text(lignes[i], margeGauche, y);
+        y += ligneHeight;
+    }
+    ajouterFooter(doc, page); // Footer dernière page
 
     doc.save(`patron_pull_${date.replaceAll("/", "-")}.pdf`);
 }

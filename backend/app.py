@@ -200,7 +200,7 @@ def calculer_patron():
         # --- Corps après séparation ---
         my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
         instructions.append(
-            f"Le corps : \n Rang 1 à {my_back.getRowsToHem()} : tricoter normalement\n"
+            f"Le corps : \nRang 1 à {my_back.getRowsToHem()} : tricoter normalement\n"
         )
 
         # --- Partie manches/diminutions après séparation ---

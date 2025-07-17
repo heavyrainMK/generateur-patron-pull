@@ -19,6 +19,9 @@ def rangsAplat(rangs):
 #par convention, il est preferable de faire en sorte que les augmentations aient lieu en meme temps 
 #dans la mesure du possible, afin de diminuer le risque d'erreur de tricot
 def synchronisationDesRangs(liste_1, liste_2):
+    if not liste_1 or not liste_2:
+        print("synchronisationDesRangs : au moins une des deux listes est vide, aucune synchronisation possible.")
+        return []
     if(len(liste_1) < len(liste_2)):
         i = 0
         while (liste_1[0] not in liste_2):

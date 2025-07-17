@@ -24,7 +24,6 @@ from back import Back
 from front import Front
 from sleeve import Sleeve
 from instructions import (
-    afficher_abreviations,
     montage,
     rangsAplat,
     synchronisationDesRangs,
@@ -156,8 +155,7 @@ def calculer_patron():
 
         # --- Construction des instructions (exact knit.py, mais stockées dans une liste) ---
         instructions = []
-        instructions.append("# Patron de pull raglan top-down\n")
-        instructions.append(afficher_abreviations())
+
         instructions.append(montage(
             my_front.getRightFrontStitches(),
             my_sleeve.getTopSleeveStitches(),
@@ -201,7 +199,9 @@ def calculer_patron():
 
         # --- Corps après séparation ---
         my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
-        instructions.append(f"## Instructions — Corps\n\nRang 1 à {my_back.getRowsToHem()} : tricoter normalement\n")
+        instructions.append(
+            f"Le corps : \nRang 1 à {my_back.getRowsToHem()} : tricoter normalement\n"
+        )
 
         # --- Partie manches/diminutions après séparation ---
         my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
@@ -214,13 +214,13 @@ def calculer_patron():
         ) / 2
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-        instructions.append("## Instructions — Manches\n")
+        instructions.append("La manche :")
         instructions.append(diminutionDebutEtFinDeRang(1))
         instructions.append(
             f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n"
             f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {nb_diminutions_manches} fois"
         )
-        
+
         # --- Retourne toutes les instructions ---
         return jsonify({"patron": "\n".join([str(i) for i in instructions])})
 

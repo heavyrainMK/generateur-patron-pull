@@ -772,3 +772,38 @@ input.erreur, select.erreur {
   #boutonPrecedent { left: 2vw; top: 14px;}
   #boutonSuivant, #boutonSoumettre { right: 2vw; top: 14px;}
 }
+
+.bouton-secondaire {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 15px 34px;
+  border-radius: 14px;
+  font-size: 1.09rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.12);
+  transition: 
+    background 0.3s cubic-bezier(.77,.07,.63,.93),
+    color 0.2s,
+    transform 0.15s,
+    box-shadow 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 0 0;
+  outline: none;
+}
+
+.bouton-secondaire:hover, .bouton-secondaire:focus {
+  background: linear-gradient(90deg, #85b1b7 0%, #3650c7 100%);
+  color: #fff;
+  box-shadow: 0 8px 30px 0 #764ba233;
+  transform: translateY(-2px) scale(1.02);
+  border-color: #fff;
+}
+
+.bouton-secondaire:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px 0 #667eea33;
+}

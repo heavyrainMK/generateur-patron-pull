@@ -214,7 +214,7 @@ def calculer_patron():
         ) / 2
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-        instructions.append("La manche :\n")
+        instructions.append("La manche :")
         instructions.append(diminutionDebutEtFinDeRang(1))
         instructions.append(
             f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n"

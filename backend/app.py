@@ -2,7 +2,7 @@
 # Nom ......... : app.py
 # Rôle ........ : Serveur Flask pour le générateur de patrons de tricot
 # Auteurs ..... : M, L, M
-# Version ..... : V2.0.5 du 10/07/2025
+# Version ..... : V2.1.5 du 17/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.

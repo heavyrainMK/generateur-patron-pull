@@ -65,10 +65,11 @@ def calculer_patron():
 
         # Table de correspondance pour les aisances prédéfinies
         table_aisance = {
-            'tres_ajuste': -2.5,
-            'ajuste': 7.5,
-            'standard': 17.5,
-            'large': 27.5,
+            'pres_corps': -5,
+            'ajuste': 0,
+            'standard': 5,
+            'large': 10,
+            'tres_large': 20,
         }
 
         # Corps

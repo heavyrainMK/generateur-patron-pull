@@ -31,6 +31,9 @@ from instructions import (
     augmentationsManches,
     augmentationsCorpsEtManches,
     tricoter,
+    joindre,
+    separationManchesEtCorps,
+    diminutionDebutEtFinDeRang,
 )
 
 app = Flask(__name__)
@@ -40,7 +43,7 @@ CORS(app)
 def calculer_patron():
     try:
         data = request.get_json()
-        print("✅ Données reçues :", data)
+        print("Données reçues :", data)
 
         if data is None:
             return jsonify({"error": "Aucune donnée JSON reçue."}), 400
@@ -126,7 +129,7 @@ def calculer_patron():
         # --- Calcul des rangs à plat (identique knit.py) ---
         rangs_a_plat = 1
         x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
-        y = my_back.getNeckStitches() + 2
+        y = my_back.getNeckStitches()
         while (x <= y):
             if (rangs_a_plat <= ((my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) + 1)):
                 if ((rangs_a_plat - 1) % my_back.getRythmeRapide() == 0):
@@ -146,7 +149,8 @@ def calculer_patron():
                     rangs_a_plat += 1
 
         # --- Synchronisation des rangs d’augmentation lent ---
-        synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
+        if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
+            synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
         # --- Construction des instructions (exact knit.py, mais stockées dans une liste) ---
         instructions = []
@@ -160,6 +164,9 @@ def calculer_patron():
         instructions.append(rangsAplat(rangs_a_plat))
 
         for rang_en_cours in range(1, my_back.getRowsToUnderarm()):
+            if rang_en_cours == rangs_a_plat + 1:
+                instructions.append(joindre(rang_en_cours))
+
             if (
                 (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or
                 (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()) or
@@ -180,11 +187,44 @@ def calculer_patron():
             else:
                 instructions.append(tricoter(rang_en_cours))
 
+        instructions.append(
+            separationManchesEtCorps(
+                rang_en_cours + 1,
+                nb_de_mailles_aisselle,
+                my_sleeve.getUpperarmStitches(),
+                my_back.getChestStitches()
+            )
+        )
+
+        # --- Corps après séparation ---
+        my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
+        instructions.append(
+            f"Le corps : \n Rang 1 à {my_back.getRowsToHem()} : tricoter normalement\n"
+        )
+
+        # --- Partie manches/diminutions après séparation ---
+        my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
+        my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
+
+        # Diminutions manches
+        nb_diminutions_manches = my_sleeve.calculDecreases(
+            my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle,
+            my_sleeve.getWristStitches()
+        ) / 2
+        ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
+
+        instructions.append("La manche :\n")
+        instructions.append(diminutionDebutEtFinDeRang(1))
+        instructions.append(
+            f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n"
+            f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {nb_diminutions_manches} fois"
+        )
+
         # --- Retourne toutes les instructions ---
         return jsonify({"patron": "\n".join([str(i) for i in instructions])})
 
     except Exception as e:
-        print("❌ Erreur dans calculer_patron() :", e)
+        print("Erreur dans calculer_patron() :", e)
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 

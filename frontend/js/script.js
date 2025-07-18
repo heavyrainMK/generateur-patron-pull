@@ -412,12 +412,8 @@ async function genererPatron() {
 
         // Cache loader, affiche résultat
         document.getElementById('loader').style.display = 'none';
-        const pre = document.getElementById('résultat');
-        pre.textContent = resultat.patron; // d'abord, on met le texte pur
-
-        // Puis on convertit les lignes de séparation en <hr>
-        pre.innerHTML = pre.textContent.replace(/^[-=]{15,}$/gm, '<hr class="ligne-separation">');
-        pre.style.display = '';
+        document.getElementById('résultat').textContent = resultat.patron;
+        document.getElementById('résultat').style.display = '';
         document.getElementById('boutonTelecharger').style.display = 'inline-block';
         if (boutonSoumettre) boutonSoumettre.disabled = false;
         afficherMessage('Patron généré avec succès !', 'success');

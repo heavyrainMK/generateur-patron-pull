@@ -218,7 +218,7 @@ def calculer_patron():
         instructions.append(diminutionDebutEtFinDeRang(1))
         instructions.append(
             f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n"
-            f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {nb_diminutions_manches} fois"
+            f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {int(nb_diminutions_manches)} fois"
         )
 
         # --- Retourne toutes les instructions ---

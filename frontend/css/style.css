@@ -807,11 +807,3 @@ input.erreur, select.erreur {
   transform: scale(0.98);
   box-shadow: 0 2px 8px 0 #667eea33;
 }
-
-.ligne-separation {
-  border: none;
-  border-top: 2px solid #fff;
-  opacity: 0.35;
-  margin: 2em 0 1.2em 0;
-  width: 100%;
-}

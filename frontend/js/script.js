@@ -414,6 +414,7 @@ async function genererPatron() {
         document.getElementById('loader').style.display = 'none';
         document.getElementById('résultat').textContent = resultat.patron;
         document.getElementById('résultat').style.display = '';
+        styliserPatron();
         document.getElementById('boutonTelecharger').style.display = 'inline-block';
         if (boutonSoumettre) boutonSoumettre.disabled = false;
         afficherMessage('Patron généré avec succès !', 'success');
@@ -496,4 +497,27 @@ function telechargerPDF() {
     ajouterFooter(doc, page); // Footer dernière page
 
     doc.save(`patron_pull_${date.replaceAll("/", "-")}.pdf`);
+}
+
+function styliserPatron() {
+    const resultatDiv = document.getElementById('résultat');
+    let html = resultatDiv.textContent;
+
+    // Séparateurs principaux
+    html = html.replace(/={25,}/g, '<div class="sep-principal"></div>');
+
+    // TITRE PRINCIPAL
+    // On capte "Patron de pull raglan top-down" seul sur une ligne et on le remplace par un bloc spécial centré
+    html = html.replace(/^ *Patron de pull raglan top-down *$/m, '<div class="titre-encadre">Patron de pull raglan top-down</div>');
+
+    // Séparateurs secondaires
+    html = html.replace(/-{25,}/g, '<div class="sep-secondaire"></div>');
+
+    // Titres de parties (ex: "1. MONTAGE" en début de ligne)
+    html = html.replace(/^(\d+\. [^\n]+)$/gm, '<span class="titre-patron">$1</span>');
+
+    // Titre Abréviations
+    html = html.replace(/^ABRÉVIATIONS UTILISÉES *:/gm, '<span class="abrev-titre">ABRÉVIATIONS UTILISÉES :</span>');
+
+    resultatDiv.innerHTML = html;
 }

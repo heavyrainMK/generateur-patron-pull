@@ -630,19 +630,102 @@ input.erreur, select.erreur {
 }
 
 #résultat {
-  margin-top: 30px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  background: rgba(255,255,255,0.13);
+  border: 1.5px solid #e9ecef44;
+  color: #fafbfe;
+  border-radius: 16px;
+  font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', 'Courier New', monospace;
+  font-size: 1.07rem;
   white-space: pre-wrap;
-  font-family: 'Courier New', monospace;
-  line-height: 1.6;
-  max-height: 600px;
-  overflow-y: auto;
-  transition: box-shadow 0.3s;
+  line-height: 1.7;
+  box-shadow: 0 8px 32px 0 #667eea33;
+  padding: 38px 32px 24px 32px;
+  margin-top: 25px;
+  transition: box-shadow 0.3s, background 0.4s;
+  position: relative;
+  overflow-x: auto;
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInPatron 1.1s cubic-bezier(.22,.61,.36,1);
 }
+@keyframes fadeInPatron {
+  0% { opacity: 0; transform: translateY(22px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+/* Séparateurs stylisés */
+.sep-principal {
+  border: none;
+  height: 0;
+  margin: 38px 0 30px 0;
+  position: relative;
+  width: 100%;
+  /* Dégradé coloré ! */
+  background: linear-gradient(90deg, #51cf66 0%, #ffd86b 50%, #667eea 100%);
+  height: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 18px 0 #667eea33, 0 1px 3px #51cf6622;
+  opacity: 1;
+}
+
+.sep-secondaire {
+  border: none;
+  height: 0;
+  margin: 25px 0 18px 0;
+  width: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #64b5f6 0 18px,
+    transparent 18px 28px
+  );
+  height: 3px;
+  border-radius: 2px;
+  opacity: 0.8;
+  box-shadow: 0 1px 8px #85b1b744;
+}
+/* Titres de parties */
+.titre-patron {
+  display: block;
+  color: #ffd86b;
+  font-weight: bold;
+  font-size: 1.22em;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+
+.titre-encadre {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #fafbfe;
+  font-weight: 700;
+  font-size: 1.2em;
+  margin: 24px 0 22px 0;
+  position: relative;
+  z-index: 1;
+}
+.titre-encadre::before,
+.titre-encadre::after {
+  content: '';
+  flex: 1;
+  border-bottom: 2px solid #85b1b7;
+  margin: 0 20px;
+  opacity: 0.6;
+}
+
+/* Titre Abréviations */
+.abrev-titre {
+  display: block;
+  color: #64b5f6;
+  font-weight: bold;
+  font-size: 1.14em;
+  margin-top: 12px;
+  margin-bottom: 7px;
+  letter-spacing: 0.04em;
+}
+#résultat ::selection { background: #8fd3fe66; color: #222; }
 
 #résultat:not(:empty) {
   box-shadow: 0 8px 30px #667eea33;

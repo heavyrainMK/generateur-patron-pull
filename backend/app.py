@@ -34,6 +34,7 @@ from instructions import (
     joindre,
     separationManchesEtCorps,
     diminutionDebutEtFinDeRang,
+    abbreviations
 )
 
 app = Flask(__name__)
@@ -153,16 +154,37 @@ def calculer_patron():
         if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
             synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
-        # --- Construction des instructions (exact knit.py, mais stockées dans une liste) ---
+        # --- Construction des instructions (format amélioré) ---
         instructions = []
 
+        # Ajout du header
+        instructions.append("============================================================")
+        instructions.append("                  Patron de pull raglan top-down            ")
+        instructions.append("============================================================\n")
+
+        instructions.append("ABRÉVIATIONS UTILISÉES :")
+        for k, v in abbreviations.items():
+            instructions.append(f"  - {k.ljust(3)}: {v}")
+        instructions.append("\n")
+
+        instructions.append("------------------------------------------------------------")
+        instructions.append("1. MONTAGE")
+        instructions.append("------------------------------------------------------------")
         instructions.append(montage(
             my_front.getRightFrontStitches(),
             my_sleeve.getTopSleeveStitches(),
             my_back.getNeckStitches(),
             my_front.getLeftFrontStitches()
         ))
+
+        instructions.append("\n------------------------------------------------------------")
+        instructions.append("2. FORMATION DE L'ENCOLURE EN V")
+        instructions.append("------------------------------------------------------------")
         instructions.append(rangsAplat(rangs_a_plat))
+
+        instructions.append("\n------------------------------------------------------------")
+        instructions.append("3. AUGMENTATIONS RAGLAN")
+        instructions.append("------------------------------------------------------------")
 
         for rang_en_cours in range(1, my_back.getRowsToUnderarm()):
             if rang_en_cours == rangs_a_plat + 1:
@@ -188,6 +210,9 @@ def calculer_patron():
             else:
                 instructions.append(tricoter(rang_en_cours))
 
+        instructions.append("\n------------------------------------------------------------")
+        instructions.append("4. SÉPARATION MANCHES ET CORPS")
+        instructions.append("------------------------------------------------------------")
         instructions.append(
             separationManchesEtCorps(
                 rang_en_cours + 1,
@@ -195,12 +220,6 @@ def calculer_patron():
                 my_sleeve.getUpperarmStitches(),
                 my_back.getChestStitches()
             )
-        )
-
-        # --- Corps après séparation ---
-        my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
-        instructions.append(
-            f"Le corps : \nRang 1 à {my_back.getRowsToHem()} : tricoter normalement\n"
         )
 
         # --- Partie manches/diminutions après séparation ---
@@ -214,6 +233,14 @@ def calculer_patron():
         ) / 2
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
+        instructions.append("\n------------------------------------------------------------")
+        instructions.append("5. CORPS APRÈS SÉPARATION")
+        instructions.append("------------------------------------------------------------")
+        instructions.append(f"Le corps :\nRang 1 à {my_back.getRowsToHem()} : tricoter normalement\n")
+
+        instructions.append("\n------------------------------------------------------------")
+        instructions.append("6. MANCHES")
+        instructions.append("------------------------------------------------------------")
         instructions.append("La manche :")
         instructions.append(diminutionDebutEtFinDeRang(1))
         instructions.append(
@@ -221,8 +248,10 @@ def calculer_patron():
             f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {int(nb_diminutions_manches)} fois"
         )
 
-        # --- Retourne toutes les instructions ---
-        return jsonify({"patron": "\n".join([str(i) for i in instructions])})
+        instructions.append("\n============================================================")
+
+        # Retourne toutes les instructions joliment concaténées
+        return jsonify({"patron": "\n".join(str(i) for i in instructions)})
 
     except Exception as e:
         print("Erreur dans calculer_patron() :", e)

@@ -155,10 +155,14 @@ function mettreAJourBoutonsNavigation() {
     const boutonSuivant = document.getElementById('boutonSuivant');
     const boutonPrecedent = document.getElementById('boutonPrecedent');
     const boutonSoumettre = document.getElementById('boutonSoumettre');
+    const boutonRetour = document.querySelector('.back-home');
+
     if (etapeCourante === 1) {
         boutonPrecedent.style.display = 'none';
+        if (boutonRetour) boutonRetour.style.display = 'inline-block';
     } else {
         boutonPrecedent.style.display = 'inline-block';
+        if (boutonRetour) boutonRetour.style.display = 'none';
     }
     if (etapeCourante === nombreEtapes) {
         boutonSuivant.style.display = 'none';

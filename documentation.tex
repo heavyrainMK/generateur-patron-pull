@@ -1,202 +1,226 @@
 \documentclass{article}
-
-% ================== PACKAGES ===================
-\usepackage[utf8]{inputenc}
-\usepackage[a4paper, left=2.6cm, right=2.6cm, top=2.5cm, bottom=3.1cm]{geometry}
-\usepackage{xcolor}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{listings}
+\usepackage{graphicx} % Required for inserting images
 \usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{DejaVu Sans}
+\tcbuselibrary{minted}
+\usepackage[margin=0.2in]{geometry}
+\usepackage{adjustbox}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{textcomp} % Pour certains symboles spéciaux
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{pgfgantt}
+
+\titleclass{\subsubsubsection}{straight}[\subsubsection]
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+  {0pt}{0.5em}{0.5em}
+
+\newcommand{\rectangled}[1]{%
+  \tikz[baseline=(char.base)]\node[draw, rectangle, minimum width=4.5em, minimum height=1.2em, anchor=base] (char) {#1};%
+}
+\newcommand{\circled}[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
 \hypersetup{
-	colorlinks=true,      % Colorie le texte des liens (au lieu de boîtes)
-	linkcolor=blue,       % Couleur des liens internes (sommaire, refs)
-	citecolor=blue,       % Couleur des citations
-	urlcolor=blue,        % Couleur des URL
-	pdfborder={0 0 0}     % Supprime les cadres autour des liens
+    colorlinks=true,
+    urlcolor=blue}
+
+\definecolor{codebackground}{HTML}{F5F0F6} % Slightly pinkish tinted white background
+
+\newtcblisting[auto counter, number within=section]{mylisting}[1][]{% 1st parameter for language
+  colframe=black, % No color for the frame
+  colback=codebackground,
+  listing only,
+  minted language=#1,
+  minted options={
+    fontsize=\small,
+    breaklines=true,
+    breaksymbolleft=,
+    breaksymbolright=,
+    fontfamily=\sfdefault, % Use a sans-serif font
+    numbersep=5pt,
+    frame=none, % No frame around the code
+    rulecolor=\color{codebackground}, % Match the background color   
+  },
 }
 
-\usepackage{setspace}
-\usepackage{tocloft}
-\usepackage{parskip}
-\usepackage{fontawesome}
-\setstretch{1.5}
-\definecolor{bluemar}{RGB}{0, 51, 102} % Bleu marine personnalisé
+\title{Générateur de Patrons de Pull}
+\author{Maxime, Liubov, Mathilde}
+\date{\today}
 
-
-% ========== SOMMAIRE PERSONNALISÉ ==========
-\cftsetindents{section}{0em}{2.5em}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-\renewcommand{\cftsecfont}{\bfseries}
-\renewcommand{\contentsname}{Sommaire}
-
-% ================== DÉBUT DOCUMENT ===================
 \begin{document}
-	
-\subsection*{Membres de l’équipe: \textbf{Maxime, Liubov, Mathilde}}
-\subsection*{Cours : \textbf{Réalisation de Programme}}
-\subsection*{Projet : \textbf{Générateur de Patrons de Pull}}
+\maketitle
+\clearpage
+\tableofcontents
+\clearpage
 
-	\newpage
-	\tableofcontents
-	
-	\newpage % Début du contenu
+\section{Introduction}
+\subsection{Objectifs et motivations du projet}
 
+Ce projet a pour objectif de développer un site web capable de générer automatiquement des instructions de tricot personnalisées pour un pull, à partir des mesures fournies par l’utilisateur. L'idée centrale est de proposer un outil accessible permettant une véritable personnalisation, bien au-delà des tailles standards (S, M, L, etc.).
 
-	\section{Introduction}
-	\subsection{Objectifs et motivations du projet}
-	
-	Ce projet a pour objectif de développer un site web capable de générer automatiquement des instructions de tricot personnalisées pour un pull, à partir des mesures fournies par l’utilisateur. L’idée centrale est de proposer un outil accessible permettant une véritable personnalisation, bien au-delà des tailles standards (S, M, L, etc.).
-	
-	Le site permet à l’utilisateur de définir précisément les dimensions de son pull, qu’il souhaite un ajustement spécifique — par exemple au niveau des bras, de la taille — ou, au contraire, une coupe plus ample selon ses préférences. Chacun peut ainsi concevoir un modèle qui correspond pleinement à ses attentes, tant sur le plan esthétique que morphologique.
-	
-	Les calculs habituellement réalisés manuellement dans la création de patrons sont ici automatisés, ce qui rend la conception de pulls tricotés accessible même aux débutants. L’objectif est de faciliter la pratique du tricot, quel que soit le niveau de compétence, grâce à des instructions claires et précises.
-	
-	\subsection{État de la question et projets similaires}
-	Il existe actuellement quelques outils en ligne qui proposent la génération de patrons de tricot, comme [Nom de l’outil 1] ou [Nom de l’outil 2]. Cependant, ces services se basent généralement sur des tailles standards prédéfinies (S, M, L) et ne permettent pas de personnalisation réelle en fonction des mensurations précises de l’utilisateur. Par ailleurs, l’ergonomie de ces sites est souvent limitée, avec des interfaces peu intuitives ou peu adaptées à un public débutant, et souvent payantes ou uniquement disponibles en anglais.
-	
-	Notre projet se distingue par plusieurs éléments :
-	\begin{itemize}
-	\item une interface claire, simple d’utilisation, pensée pour être accessible à tous ;
-	\item une version entièrement en français ;
-	\item un haut niveau de personnalisation, basé sur des mesures détaillées pour chaque partie du corps (tour de poitrine, longueur du buste, manches, etc.).
-	\item des calculs automatisés pour générer un patron sur mesure en quelques clics ;
-	\item la possibilité d’exporter et de sauvegarder le patron au format PDF.
-	\end{itemize}
-	
-	\section{Contexte et contraintes}
-	\subsection{Contraintes et choix techniques}
-	
+Le site permet à l’utilisateur de définir précisément les dimensions de son pull, qu’il souhaite un ajustement spécifique, par exemple au niveau des bras, de la taille ou, au contraire, une coupe plus ample selon ses préférences. Chacun peut ainsi concevoir un modèle qui correspond pleinement à ses attentes, tant sur le plan esthétique que morphologique.
 
-	\subsection*{5W – Analyse des choix}
-	\begin{itemize}
-		\item \textbf{Qui :} Trois étudiants en Licence 2, dans le cadre du cours \textit{Réalisation de Programme}.
-		
-		\item \textbf{Quoi :} Générateur de patrons de pull personnalisés.
-		
-		\item \textbf{Quand :} Réalisé en \textcolor{red}{X} semaines.  \textcolor{red}{(ajouter le nombre de semaines)}
-		
-		\item \textbf{Où :} Travail collaboratif effectué à distance, à l’aide de GitHub et d’ordinateurs personnels.
-		
-		\item \textbf{Pourquoi :} Mettre en pratique, de manière concrète, les compétences acquises en deuxième année de licence, notamment la maîtrise des langages JavaScript, Python, HTML et CSS, le développement d’un projet de A à Z, ainsi que le travail collaboratif au sein d’une équipe.
-	\end{itemize}
+Les calculs habituellement réalisés manuellement dans la création de patrons sont ici automatisés, ce qui rend la conception de pulls tricotés accessible même aux débutants. L’objectif est de faciliter la pratique du tricot, quel que soit le niveau de compétence, grâce à des instructions claires et précises.
 
-	
-	\subsection*{Contraintes principales}
-	\begin{itemize}
-		\item Disponibilité variable des membres de l’équipe pour le développement du projet
-		\item Conception d’une interface intuitive, accessible même aux débutants en tricot
-		\item Mise en place de calculs fiables pour une personnalisation complète
-	\end{itemize}
+\subsection{État de la question et projets similaires}
+Il existe actuellement quelques outils en ligne qui proposent la génération de patrons de tricot, comme \textbf{Kniterate} ou \textbf{Sweaterify}. Cependant, ces services se basent généralement sur des tailles standards prédéfinies (S, M, L) et ne permettent pas de personnalisation réelle en fonction des mensurations précises de l’utilisateur. Par ailleurs, l’ergonomie de ces sites est souvent limitée, avec des interfaces peu intuitives ou peu adaptées à un public débutant, et souvent payantes ou uniquement disponibles en anglais.
 
-	
-	\subsection{Budget}
-	
-	Tous les outils utilisés sont open source. Cependant :
-	
-	\begin{itemize}
-		\item \textbf{Matériel informatique :}  
-		Chaque membre de l’équipe a utilisé son ordinateur personnel pour ce projet. Bien que nos ordinateurs n’aient pas été achetés spécifiquement pour ce travail, ils sont essentiels à sa réalisation. Le coût d'achat initial d'un ordinateur est de 650 euros (il s’agit d’un investissement préexistant, et non d’un coût direct lié au projet).
-		
-		\item \textbf{Connexion Internet :}  
-		L’accès à Internet était indispensable pour effectuer des recherches, développer et tester le programme, suivre et partager l’avancement du développement, ainsi qu’organiser des appels pour les points d’avancement. Les frais estimés pour une semaine d’utilisation s’élèvent à environ 7 euros.
-		
-		\item \textbf{Outils et logiciels :}  
-		Pour la réalisation du projet, nous avons utilisé des outils gratuits, notamment  \textcolor{red}{(ajouter d'autres outils)}:
-		\begin{itemize}
-			\item GitHub (pour les contributions et le suivi de l’avancement)
-			\item Visual Studio Code (éditeur de code)
-			\item Discord (pour les appels hebdomadaires, une fois par semaine)
-		\end{itemize}
-		
-		\item \textbf{Coûts de maintenance / mise à jour :}  
-		Les coûts de maintenance et de mise à jour du site Générateur de Patron de Pull dépendront de la fréquence et de la complexité des évolutions futures.
-		
-	\end{itemize}
-	
-	\subsection{Temps estimé}
-	
-	Nous avons consacré environ \textcolor{red}{X} semaines à ce projet. Cela comprend les recherches, la consultation de tutoriels et le développement du programme. \textcolor{red}{(ajouter le nombre de semaines.)}
-	
-	Le temps estimé par personne est de \textcolor{red}{X} heures par semaine. \textcolor{red}{(ajouter le nombre des heures.)} Avec une heure d’appel par semaine pour les points d’avancement.
+Notre projet se distingue par plusieurs éléments :
+\begin{itemize}
+\item une interface claire, simple d’utilisation, pensée pour être accessible à tous ;
+\item une version entièrement en français ;
+\item un haut niveau de personnalisation, basé sur des mesures détaillées pour chaque partie du corps (tour de poitrine, longueur du buste, manches, etc.).
+\item des calculs automatisés pour générer un patron sur mesure en quelques clics ;
+\item la possibilité d’exporter et de sauvegarder le patron au format PDF.
+\end{itemize}
 
+\section{Contexte et contraintes}
+\subsection{Contraintes et choix techniques}
 
-	
-	\section{Méthodologie et langages}
-	
-	Nous avons commencé par nous mettre d’accord sur une définition claire du projet, en précisant les objectifs et ce que le site devait accomplir. Ensuite, nous avons mis en place une liste des fonctionnalités attendues. Puis, nous avons réparti les rôles et les responsabilités au sein de l’équipe.
-	
-	Nous avons prévu des appels hebdomadaires (une fois par semaine) pour faire le point sur l’avancement, ainsi qu’un groupe Discord pour communiquer quotidiennement.
-	
-	Le travail a débuté par le développement des calculs côté back-end. Nous avons choisi Python pour sa simplicité et sa puissance, et avons décidé d’organiser la structure du code en classes. En parallèle, nous avons commencé à travailler sur le front-end, notamment la mise en page HTML et CSS.
-	
-	Ensuite, nous avons entamé le développement en JavaScript pour assurer la liaison entre la page HTML et le moteur de calculs en Python...... \textcolor{red}{(continuer)}
-	
-	\vspace{0.4cm}
-	\textbf{Langages utilisés :}
-	\begin{itemize}
-		\item \textbf{HTML / CSS} : pour créer la structure des pages web et définir leur mise en forme visuelle.
-		\item \textbf{JavaScript} : pour rendre l’interface interactive et gérer la dynamique côté client (navigateur).
-		\item \textbf{Python (Flask)} : pour les calculs et l’API backend
-	\end{itemize}
-	
-	\subsection{Identification des tâches}\textcolor{red}{(à modifier les semaines)}
-	
-	\begin{tabular}{|c|p{10cm}|}
-		\hline
-		\textbf{Semaine} & \textbf{Tâches principales} \\
-		\hline
-		1--2 & Recherche initiale et définition précise du projet \\
-		3 -- X & Création et modification de la structure HTML/CSS \\
-		3--X & Développement du script Python pour les calculs \\
-		5--X & Intégration entre JavaScript et Python \\
-		X & Génération du PDF \\
-		7--X & Phase de tests et corrections \\
-		X--X & Implémentation et déploiement sur l’hébergeur \\
-		X--X & Tests unitaires \\
-		X & Rédaction de la documentation \\
-		\hline
-	\end{tabular}
+Le projet repose sur une architecture en trois parties : un frontend web interactif, un backend Node.js jouant le rôle d'API Gateway et de gestion des utilisateurs, et une API Python (Flask) chargée des calculs tricot. Nous avons choisi de séparer les responsabilités pour une meilleure modularité et maintenabilité.
 
-	
-	\subsection*{Tâches détaillées}
-	
-	\begin{itemize}
-		\item \textbf{Frontend (HTML/CSS)} : création du formulaire, mise en page et gestion de l’interface utilisateur.
-		\item \textbf{Backend (Python avec Flask)} : développement du serveur et gestion des requêtes API.
-		\item \textbf{Calculs (Python)} : implémentation des calculs.
-		\item \textbf{Communication API} : utilisation de JavaScript (fetch, JSON) pour échanger des données entre le frontend et le backend.
-	\end{itemize}
+\subsection*{5W – Analyse des choix}
+\begin{itemize}
+    \item \textbf{Qui :} Trois étudiants en Licence 2, dans le cadre du cours \textbf{Réalisation de Programme}.
+    \item \textbf{Quoi :} Générateur de patrons de pull personnalisés.
+    \item \textbf{Quand :} Réalisé en 8 semaines.
+    \item \textbf{Où :} Travail collaboratif effectué à distance, à l’aide de GitHub, Discord et d’ordinateurs personnels.
+    \item \textbf{Pourquoi :} Mettre en pratique, de manière concrète, les compétences acquises en deuxième année de licence, notamment la maîtrise des langages JavaScript, Python, HTML et CSS, le développement d’un projet de A à Z, ainsi que le travail collaboratif au sein d’une équipe.
+\end{itemize}
 
-	
-	\section{Réalisation}
-	\textcolor{red}{(Ajouter les codes backend et frontend, en expliquant le fonctionnement de chaque partie)}
-	
-	
-	\section{Tests et gestion des erreurs}
-	
-	\textcolor{red}{(Ajouter 3 exemples d’utilisation + 2 gestions d’erreurs (explications + captures d’écran))}
-	
-	\section{Prolongements possibles}
-	
-	\begin{itemize}
-		\item Ajout d'une base de données 
-		\item Traduction multilingue.
-		\item Génération de schémas.
-	\end{itemize}
-	
-	\section{Difficultés rencontrées}
-	Pour les membres de notre équipe, il s’agissait du premier projet collaboratif. Nous avons dû apprendre à organiser et gérer de manière autonome toutes les étapes du projet. Les principaux défis étaient liés au travail à distance, comme la gestion des différences de fuseaux horaires et des emplois du temps variés.... 	\textcolor{red}{(Continuer)}\\
-	\section{Apports du projet}
-	
-	\begin{itemize}
-		\item Acquisition et renforcement des compétences en développement web avec Python, JavaScript, HTML et CSS.
-		\item Expérience concrète de travail collaboratif en équipe sur un projet commun.
-		\item Apprentissage de la structuration de projet, organisation du travail, répartition des tâches et entraide entre membres.
-	\end{itemize}
+\subsection*{Contraintes principales}
+\begin{itemize}
+    \item Disponibilité variable des membres de l’équipe pour le développement du projet
+    \item Conception d’une interface intuitive, accessible même aux débutants en tricot
+    \item Mise en place de calculs fiables pour une personnalisation complète
+\end{itemize}
 
-	\section{Conclusion et perspectives}
-	\textcolor{red}{(Ajouter)}
+\subsection{Budget}
+Tous les outils utilisés sont open source. Cependant :
+\begin{itemize}
+    \item \textbf{Matériel informatique :}  Chaque membre de l’équipe a utilisé son ordinateur personnel pour ce projet (env. 650€ chacun).
+    \item \textbf{Connexion Internet :} Environ 7€ par semaine pour les dépenses de connexion.
+    \item \textbf{Outils et logiciels :}
+    \begin{itemize}
+        \item GitHub (gestion de versions)
+        \item Visual Studio Code (éditeur de code)
+        \item Discord (communication)
+        \item Render (hébergement backend)
+        \item MongoDB Atlas (base de données)
+    \end{itemize}
+    \item \textbf{Coûts de maintenance :} Variables selon les mises à jour futures.
+\end{itemize}
 
-	
+\subsection{Temps estimé}
+Nous avons consacré environ 8 semaines à ce projet. Le temps estimé par personne est de 8 heures par semaine, soit environ 64 heures par membre.
+
+\section{Méthodologie et langages}
+
+Nous avons commencé par définir les objectifs du projet et les fonctionnalités principales. Puis, nous avons distribué les tâches et mis en place une communication régulière via Discord (une réunion par semaine).
+
+Le backend a été développé en Python avec Flask pour les calculs. Le frontend a été construit avec HTML/CSS et JavaScript. Node.js a été ajouté comme pont (BFF) entre l'interface web et l'API Flask.
+
+\textbf{Langages utilisés :}
+\begin{itemize}
+    \item \textbf{HTML / CSS} : structure et style
+    \item \textbf{JavaScript} : interactivité et logique frontend
+    \item \textbf{Python (Flask)} : logique de calcul
+    \item \textbf{Node.js (Express)} : gestion des utilisateurs, proxy API
+\end{itemize}
+
+\subsection{Identification des tâches}
+\begin{longtable}{|c|p{10cm}|}
+\hline
+\textbf{Semaine} & \textbf{Tâches principales} \\
+\hline
+1--2 & Recherche initiale, structure du projet \\
+3--4 & Développement HTML/CSS, mise en page \\
+3--5 & Backend Flask : logique des calculs tricot \\
+5--6 & Liaison JavaScript $\leftrightarrow$ API Flask \\
+6 & Implémentation du téléchargement PDF \\
+6--7 & Tests d'usage et corrections \\
+7--8 & Intégration, déploiement sur Render \\
+8 & Rédaction de la documentation \\
+\hline
+\end{longtable}
+
+\subsection*{Tâches détaillées}
+\begin{itemize}
+    \item \textbf{Frontend (HTML/CSS)} : formulaire multi-étapes, design réactive
+    \item \textbf{Backend (Python/Flask)} : calcul des instructions tricotées
+    \item \textbf{Backend Node.js} : gestion des utilisateurs, redirection vers Flask
+    \item \textbf{PDF} : export client via jsPDF
+\end{itemize}
+
+\section{Réalisation}
+
+\textbf{Backend (Flask)} : gestion du calcul de patrons personnalisés à partir des objets \texttt{Back}, \texttt{Front}, \texttt{Sleeve}, \texttt{Swatch} et des fonctions du module \texttt{instructions.py}. Chaque mesure est convertie en mailles et rangs en fonction de l'échantillon.
+
+\textbf{Backend Node.js} : authentification, inscription, route proxy vers Flask, base de données MongoDB.
+
+\textbf{Frontend} : formulaire en 5 étapes, validation JS, appel à l'API via \texttt{fetch()}, rendu dans le DOM, stylisation dynamique, génération PDF.
+
+\section{Tests et gestion des erreurs}
+
+\textbf{Exemples d'utilisation :}
+\begin{enumerate}
+    \item Utilisateur saisit toutes les mesures et reçoit un patron PDF personnalisé.
+    \item Utilisateur choisit une aisance personnalisée pour les manches.
+    \item Utilisateur choisit une encolure en V, les instructions changent.
+\end{enumerate}
+
+\textbf{Erreurs gérées :}
+\begin{itemize}
+    \item \textbf{Champ vide} : affichage de messages d'erreur dans le formulaire (côté client).
+    \item \textbf{Erreur de calcul backend} : message d'erreur générique renvoyé et affiché par le frontend.
+\end{itemize}
+
+\section{Prolongements possibles}
+\begin{itemize}
+    \item Ajout d'une base de données pour les historiques de patrons
+    \item Traduction multilingue (anglais, espagnol)
+    \item Génération d'illustrations SVG des parties du pull
+    \item Assistant tricot interactif (tuto pas à pas)
+\end{itemize}
+
+\section{Difficultés rencontrées}
+
+Pour les membres de notre équipe, il s'agissait du premier projet collaboratif. Nous avons dû apprendre à nous organiser, respecter les délais, synchroniser nos avancées sur GitHub et gérer les conflits de fusion. Le développement d'un backend Python relié à une interface HTML via un serveur Node.js a également posé des défis techniques.
+
+Nous avons aussi rencontré des bugs inattendus : erreurs de calcul de mailles, mauvaise synchronisation des rangs d'augmentation, difficultés d'hébergement sur Render, et même des problèmes de compatibilité PDF selon le navigateur.
+
+\section{Apports du projet}
+\begin{itemize}
+    \item Renforcement des compétences en JavaScript, Python, HTML, CSS
+    \item Expérience de gestion de projet à distance
+    \item Maîtrise des API REST et du modèle client–serveur
+    \item Sensibilisation à l'UX/UI (formulaire, validation, accessibilité)
+    \item Introduction aux bases de données NoSQL (MongoDB)
+\end{itemize}
+
+\section{Conclusion et perspectives}
+
+Ce projet nous a permis d'approfondir nos compétences techniques et humaines. Il montre qu'il est possible, en tant qu'étudiants, de réaliser une application web fonctionnelle, utile et adaptée à un besoin concret.
+
+Les prochaines étapes incluraient l'optimisation de la génération PDF, l'amélioration de l'esthétique générale, l'ajout de la gestion d'historique et une interface mobile plus poussée.
+
+Enfin, des tests unitaires et un système d'inscription / sauvegarde avancé pourraient porter le projet à un niveau semi-professionnel.
+
 \end{document}

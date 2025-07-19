@@ -274,7 +274,7 @@ def calculer_patron():
         )
         instructions.append(
             f"\nArrêtez les diminutions lorsque vous atteignez {my_sleeve.getRowsToWrist()} rangs (ou {my_sleeve.getUnderArmToHemLength()} cm) depuis la séparation.\n"
-            f"Arrêtez lorsque la manche mesure {my_sleeve.getUnderArmToHemLength()} cm (ou {my_sleeve.getRowsToWrist()} rangs) depuis l’emmanchure.\n"
+            f"Arrêtez lorsque la manche mesure {my_sleeve.getUnderArmToHemLength()} cm (ou {my_sleeve.getRowsToWrist()} rangs) depuis l'emmanchure.\n"
             f"Terminez la manche en tricotant {cotes_poignets} cm de côtes 1/1, puis rabattez souplement toutes les mailles."
         )
 

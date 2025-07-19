@@ -440,7 +440,15 @@ function telechargerPDF() {
     const date = new Date().toLocaleDateString();
     const textePatron = resultatDiv.textContent.trim();
 
-    const { jsPDF } = window.jspdf;
+    let jsPDF;
+    if (window.jspdf && window.jspdf.jsPDF) {
+        jsPDF = window.jspdf.jsPDF;
+    } else if (window.jsPDF) {
+        jsPDF = window.jsPDF;
+    } else {
+        afficherMessage("Erreur : la librairie jsPDF n'est pas chargée !", "error");
+        return;
+    }
     const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",

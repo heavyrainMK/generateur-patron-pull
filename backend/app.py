@@ -159,8 +159,6 @@ def calculer_patron():
         # --- Construction des instructions (format amélioré) ---
         instructions = []
 
-        instructions.append(f"NB : Ce patron est prévu pour être terminé en côtes 1/1 sur {cotes_bas} cm au bas du corps et {cotes_poignets} cm aux poignets. Vous pouvez ajuster selon vos préférences.\n")
-
         # Ajout du header
         instructions.append("============================================================")
         instructions.append("                  Patron de pull raglan top-down            ")
@@ -182,7 +180,7 @@ def calculer_patron():
         ))
 
         # Ajoute une répartition textuelle claire
-        instructions.append("Répartition : [devant droit] - raglan - [manche droite] - raglan - [dos] - raglan - [manche gauche] - raglan - [devant gauche]")
+        instructions.append("Répartition : [devant droit] - raglan - [manche droite] - raglan - [dos] - raglan - [manche gauche] - raglan - [devant gauche]")
         total_mailles = (
             my_front.getRightFrontStitches() + 1 +
             my_sleeve.getTopSleeveStitches() + 1 +
@@ -190,13 +188,13 @@ def calculer_patron():
             my_sleeve.getTopSleeveStitches() + 1 +
             my_front.getLeftFrontStitches()
         )
-        instructions.append(f"Total mailles au montage : {total_mailles}")
+        instructions.append(f"Total mailles au montage : {total_mailles}")
 
         instructions.append("\n------------------------------------------------------------")
         instructions.append("2. FORMATION DE L'ENCOLURE EN V")
         instructions.append("------------------------------------------------------------")
         instructions.append(rangsAplat(rangs_a_plat))
-        instructions.append("Finitions de l’encolure : Vous pouvez relever des mailles autour de l’encolure en V et tricoter 2 à 4 cm de côtes 1/1 si souhaité.\n")
+        instructions.append("Finitions de l'encolure : Vous pouvez relever des mailles autour de l'encolure en V et tricoter 2 à 4 cm de côtes 1/1 si souhaité.\n")
 
         instructions.append("\n------------------------------------------------------------")
         instructions.append("3. AUGMENTATIONS RAGLAN")
@@ -256,7 +254,7 @@ def calculer_patron():
         my_back.setRowsToHem(
             my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength())
         )
-        instructions.append(f"Le corps :\nRang 1 à {my_back.getRowsToHem()} : tricoter normalement (ou jusqu’à atteindre {my_back.getUnderArmToHemLength()} cm depuis les aisselles).\n")
+        instructions.append(f"Le corps :\nRang 1 à {my_back.getRowsToHem()} : tricoter normalement (ou jusqu'à atteindre {my_back.getUnderArmToHemLength()} cm depuis les aisselles).\n")
 
         instructions.append(
             f"Quand la longueur désirée est atteinte (environ {my_back.getRowsToHem()} rangs ou {my_back.getUnderArmToHemLength()} cm depuis les aisselles), tricotez {cotes_bas} cm de côtes 1/1 pour la bordure du bas, puis rabattez souplement toutes les mailles."

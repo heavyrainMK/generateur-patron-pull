@@ -10,15 +10,30 @@ import io
 
 def main():
 
-    fichier_a_telecharger = open("instructions_pull_sur_mesure.txt", "w")
-    #il faut construire les objets avec les mesures fournis par l'utilisateur
-    my_front = Front(92, 30)
-    my_back = Back(21, 92, 25, 30)
-    my_sleeve = Sleeve(31, 18.5, 45)
-
-    my_swatch = Swatch(28, 32)
     aisance_corps = 5
     aisance_manches = 0
+    mailles_dans_10_cm = 28
+    rangs_dans_10_cm = 32
+    tour_de_poitrine = 92
+    largeur_arriere_nuque = 21
+    hauteur_emmanchure = 25
+    longueur_totale_corps = 30
+    longueur_cotes_corps = 5
+    longueur_corps = longueur_totale_corps - longueur_cotes_corps
+    longueur_totale_manche = 45
+    longueur_cotes_manche = 5
+    longueur_manche = longueur_totale_manche - longueur_cotes_manche
+    tour_de_bras = 31
+    tour_de_poignet = 18.5
+
+    fichier_a_telecharger = open("instructions_pull_sur_mesure.txt", "w")
+    #il faut construire les objets avec les mesures fournis par l'utilisateur
+    my_front = Front(tour_de_poitrine, longueur_corps)
+    my_back = Back(largeur_arriere_nuque, tour_de_poitrine, hauteur_emmanchure, longueur_corps)
+    my_sleeve = Sleeve(tour_de_bras, tour_de_poignet, longueur_manche)
+
+    my_swatch = Swatch(mailles_dans_10_cm, rangs_dans_10_cm)
+    
 
     #je ne mets pas les mailles d'aisselle dans une classe car elles sont communes a la manches et au corps, reparties sur le devant et le dos
     nb_de_mailles_aisselle = 0
@@ -92,7 +107,7 @@ def main():
     if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
         synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
-    print('\033[1m' + 'Montage')
+    print('\033[1m' + '\033[4m' + 'Montage' + '\033[0m')
     impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
     print(impression)
     impression = rangsAplat(rangs_a_plat)
@@ -124,7 +139,10 @@ def main():
     print(impression)
 
     my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
-    print(f"Le corps : \n Rang 1 a {my_back.getRowsToHem()} : tricoter normalement\n")
+    print('\033[1m' + '\033[4m' + 'Le corps : \n' + '\033[0m')
+    print(f"Rang 1 a {my_back.getRowsToHem()} : tricoter normalement\n")
+    print(f"Changer d'aiguilles (prenez une taille en dessous) et tricoter en cotes sur {longueur_cotes_corps} cm\n")
+
 
     #calcul et repartition des diminutions de la manche jusqu'au poignet
     #ne pas oublier de soustraire les cotes, j'ai mis 5cm pour l'instant
@@ -136,11 +154,12 @@ def main():
     nb_diminutions_manches = my_sleeve.calculDecreases(my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle, my_sleeve.getWristStitches()) / 2
     ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-    print(f"la manche : \n")
+    print('\033[1m' + '\033[4m' + 'La manche :' + '\033[0m')
 
     impression = diminutionDebutEtFinDeRang(1)
     print(impression)
-    print(f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n Repeter les {math.trunc(ratio_diminution_manche)} rangs precedents {nb_diminutions_manches} fois")
+    print(f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\nRepeter les {math.trunc(ratio_diminution_manche)} rangs precedents {int(nb_diminutions_manches)} fois\n")
+    print(f"Changer d'aiguilles (prenez une taille en dessous) et tricoter en cotes sur {longueur_cotes_manche} cm")
     
     
     

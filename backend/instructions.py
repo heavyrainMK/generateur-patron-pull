@@ -1,3 +1,5 @@
+import math
+
 abbreviations = {
     "m" : "maille", 
     "M" : "marqueur",
@@ -56,8 +58,12 @@ def augmentationsCorpsEtManches(rang):
     return (f"Rang {rang} : Tricoter jusqu'à 1 m avant M, 1 aug, GM, 1 m, GM, 1 aug. "
             f"Répéter jusqu'à la fin du rang. (8 augmentations)\n")
 
-def tricoter(rang):
+def tricoterUnRang(rang):
     return f"Rang {rang} : Tricoter le rang normalement.\n"
+
+def tricoterPlusieursRangs(rang_debut, rang_fin):
+    return(f"Rang {rang_debut} a {rang_fin} : tricoter normalement.\n")
+
 
 def joindre(rang):
     return (f"Rang {rang} : Joindre les deux côtés du tricot pour commencer à tricoter en rond. "
@@ -77,3 +83,10 @@ def separationManchesEtCorps(rang, mailles_aisselle, mailles_manches, maille_cor
 def diminutionDebutEtFinDeRang(rang):
     return (f"Rang {rang} : Tricoter 1 m, glisser les 2 mailles suivantes à l'envers puis les tricoter ensemble, "
             f"tricoter jusqu'à 3 m de la fin, tricoter 2 m ensemble à l'endroit, tricoter 1 m.\n")
+
+def cotes(longueur):
+    return(f"Changer d'aiguilles (prenez une taille en dessous) et tricoter en cotes sur {longueur}cm.\nRabattre les mailles avec un rabat elastique.\n")
+
+def maillesDencolure(mailles_manche, mailles_dos, rangs_encolure):
+    mailles_encolure = math.floor(rangs_encolure / 3 * 2)
+    return(f"Avec les petites aiguilles, relever les mailles de l'encolure de la facon suivante : {mailles_manche} mailles le long de la manche droite, {mailles_dos} mailles le long du dos, {mailles_manche} mailles le long de la manche gauche, {mailles_encolure} mailles de chaque cote de l'encolure (relever 2 mailles tous les 3 rangs).\n")

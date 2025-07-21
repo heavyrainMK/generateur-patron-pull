@@ -4,7 +4,7 @@ from front import Front
 from back import Back
 from swatch import Swatch
 from calculs import Calculs
-from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoter, joindre, separationManchesEtCorps, diminutionDebutEtFinDeRang
+from instructions import montage, rangsAplat, synchronisationDesRangs, augmentationsCorps, augmentationsManches, augmentationsCorpsEtManches, tricoterUnRang, tricoterPlusieursRangs, joindre, separationManchesEtCorps, diminutionDebutEtFinDeRang, cotes, maillesDencolure
 import math
 import io
 
@@ -25,6 +25,7 @@ def main():
     longueur_manche = longueur_totale_manche - longueur_cotes_manche
     tour_de_bras = 31
     tour_de_poignet = 18.5
+    cotes_encolure = 5
 
     fichier_a_telecharger = open("instructions_pull_sur_mesure.txt", "w")
     #il faut construire les objets avec les mesures fournis par l'utilisateur
@@ -107,41 +108,55 @@ def main():
     if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
         synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
-    print('\033[1m' + '\033[4m' + 'Montage' + '\033[0m')
+    print('Montage : \n')
+    fichier_a_telecharger.write('Montage : \n')
     impression = montage(my_front.getRightFrontStitches(), my_sleeve.getTopSleeveStitches(), my_back.getNeckStitches(), my_front.getLeftFrontStitches())
     print(impression)
+    fichier_a_telecharger.write(impression)
     impression = rangsAplat(rangs_a_plat)
     print(impression)
+    fichier_a_telecharger.write(impression)
 
     print()
     for rang_en_cours in range (1, my_back.getRowsToUnderarm()):
         if rang_en_cours == rangs_a_plat + 1:
             impression = joindre(rang_en_cours)
             print(impression)
+            fichier_a_telecharger.write(impression)
 
         if (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and my_sleeve.getNumeroRangsAugmentationLent()):
             impression = augmentationsCorpsEtManches(rang_en_cours)
             print(impression)
+            fichier_a_telecharger.write(impression)
 
         elif rang_en_cours in my_back.getNumeroRangsAugmentationRapide() or rang_en_cours in my_back.getNumeroRangsAugmentationLent():
             impression = augmentationsCorps(rang_en_cours)
             print(impression)
+            fichier_a_telecharger.write(impression)
 
         elif rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide() or rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent():
             impression = augmentationsManches(rang_en_cours)
             print(impression)
+            fichier_a_telecharger.write(impression)
 
         else:
-            impression = tricoter(rang_en_cours)
+            impression = tricoterUnRang(rang_en_cours)
             print(impression)
+            fichier_a_telecharger.write(impression)
 
     impression = separationManchesEtCorps(rang_en_cours + 1, nb_de_mailles_aisselle, my_sleeve.getUpperarmStitches(), my_back.getChestStitches())
     print(impression)
+    fichier_a_telecharger.write(impression)
 
     my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
-    print('\033[1m' + '\033[4m' + 'Le corps : \n' + '\033[0m')
-    print(f"Rang 1 a {my_back.getRowsToHem()} : tricoter normalement\n")
-    print(f"Changer d'aiguilles (prenez une taille en dessous) et tricoter en cotes sur {longueur_cotes_corps} cm\n")
+    print('Le corps : \n')
+    fichier_a_telecharger.write('Le corps : \n')
+    impression = tricoterPlusieursRangs(1, my_back.getRowsToHem())
+    print(impression)
+    fichier_a_telecharger.write(impression)
+    impression = cotes(longueur_cotes_corps)
+    print(impression)
+    fichier_a_telecharger.write(impression)
 
 
     #calcul et repartition des diminutions de la manche jusqu'au poignet
@@ -154,14 +169,26 @@ def main():
     nb_diminutions_manches = my_sleeve.calculDecreases(my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle, my_sleeve.getWristStitches()) / 2
     ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-    print('\033[1m' + '\033[4m' + 'La manche :' + '\033[0m')
+    print('La manche :\n')
+    fichier_a_telecharger.write('La manche :\n')
 
     impression = diminutionDebutEtFinDeRang(1)
     print(impression)
-    print(f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\nRepeter les {math.trunc(ratio_diminution_manche)} rangs precedents {int(nb_diminutions_manches)} fois\n")
-    print(f"Changer d'aiguilles (prenez une taille en dessous) et tricoter en cotes sur {longueur_cotes_manche} cm")
+    fichier_a_telecharger.write(impression)
+    impression = tricoterPlusieursRangs(2, ratio_diminution_manche)
+    print(impression)
+    fichier_a_telecharger.write(impression)
+    print(f"Repeter les {math.trunc(ratio_diminution_manche)} rangs precedents {int(nb_diminutions_manches)} fois\n")
+    fichier_a_telecharger.write((f"Repeter les {math.trunc(ratio_diminution_manche)} rangs precedents {int(nb_diminutions_manches)} fois\n"))
+    impression = cotes(longueur_cotes_manche)
+    fichier_a_telecharger.write(impression)
     
-    
+    mailles_encolure = math.floor(rangs_a_plat / 3 * 2)
+
+    print("L'encolure :\n")
+    fichier_a_telecharger.write("L'encolure :\n")
+    print(f"Avec les petites aiguilles, relever les mailles de l'encolure de la facon suivante : {my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, {my_back.getNeckStitches()} mailles le long du dos, {my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, {mailles_encolure} mailles de chaque cote de l'encolure (relever 2 mailles tous les 3 rangs).\nTricoter en cotes sur {cotes_encolure}cm.\nRabattre en utilisant un rabat elastique.\n")
+    fichier_a_telecharger.write(f"Avec les petites aiguilles, relever les mailles de l'encolure de la facon suivante : {my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, {my_back.getNeckStitches()} mailles le long du dos, {my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, {mailles_encolure} mailles de chaque cote de l'encolure (relever 2 mailles tous les 3 rangs).\nTricoter en cotes sur {cotes_encolure}cm.\nRabattre en utilisant un rabat elastique.\n")
     
     fichier_a_telecharger.close()
 

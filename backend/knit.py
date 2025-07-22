@@ -188,7 +188,7 @@ def main():
     print("L'encolure :\n")
     fichier_a_telecharger.write("L'encolure :\n")
     print(f"Avec les petites aiguilles, relever les mailles de l'encolure de la facon suivante : {my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, {my_back.getNeckStitches()} mailles le long du dos, {my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, {mailles_encolure} mailles de chaque cote de l'encolure (relever 2 mailles tous les 3 rangs).\nTricoter en cotes sur {cotes_encolure}cm.\nRabattre en utilisant un rabat elastique.\n")
-    fichier_a_telecharger.write(f"Avec les petites aiguilles, relever les mailles de l'encolure de la facon suivante : {my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, {my_back.getNeckStitches()} mailles le long du dos, {my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, {mailles_encolure} mailles de chaque cote de l'encolure (relever 2 mailles tous les 3 rangs).\nTricoter en cotes sur {cotes_encolure}cm.\nRabattre en utilisant un rabat elastique.\n")
+    fichier_a_telecharger.write(f"Avec les petites aiguilles, relever les mailles de l'encolure de la facon suivante : {my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, {my_back.getNeckStitches()} mailles le long du dos, {my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, {mailles_encolure} mailles de chaque cote de l'encolure (relever 2 mailles tous les 3 rangs).\nTricoter en cotes sur {cotes_encolure}cm en effectuant une double diminution centrale ) la pointe du V.\nRabattre en utilisant un rabat elastique.\n")
     
     fichier_a_telecharger.close()
 

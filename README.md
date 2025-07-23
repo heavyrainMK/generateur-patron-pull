@@ -71,6 +71,21 @@ npm start
 
 - Par défaut, le serveur écoute sur [http://localhost:3000](http://localhost:3000).
 
+💡 **Important** : si tu fais appel à l’API Python Flask depuis le frontend, pense à **modifier l’URL dans la requête `fetch` dans le fichier `script.js`** :
+
+Remplace :
+```js
+const reponse = await fetch('/api/calculer-patron', {
+```
+par :
+```js
+const reponse = await fetch('http://127.0.0.1:10000/api/calculer-patron', {
+```
+ou, si tu testes depuis un autre appareil sur le réseau local :
+```js
+const reponse = await fetch('http://192.168.1.46:10000/api/calculer-patron', {
+```
+
 ### 2. API Flask (Python)
 
 Assure-toi d’avoir Python 3.9+ et pip.

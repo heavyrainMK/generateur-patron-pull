@@ -30,10 +30,13 @@ from instructions import (
     augmentationsCorps,
     augmentationsManches,
     augmentationsCorpsEtManches,
-    tricoter,
+    tricoterUnRang,
+    tricoterPlusieursRangs,
     joindre,
     separationManchesEtCorps,
     diminutionDebutEtFinDeRang,
+    cotes,
+    maillesDencolure,
     abbreviations
 )
 
@@ -60,7 +63,12 @@ def calculer_patron():
         tour_bras = float(data.get('tour_bras', 0))
         tour_poignet = float(data.get('tour_poignet', 0))
         cotes_bas = float(data.get('cotes_bas', 5))  # 5 cm par défaut
-        cotes_poignets = float(data.get('cotes_poignets', 5))
+        cotes_poignets = float(data.get('cotes_poignets', 5))  # 5 cm par défaut
+        cotes_encolure = float(data.get('cotes_encolure', 5))  # 5 cm par défaut
+
+        # --- Ajustement des longueurs nettes (sans côtes) ---
+        longueur_corps = float(longueur_totale) - cotes_bas
+        longueur_manche = float(longueur_manches) - cotes_poignets
 
         # --- Aisance ---
         mode_aisance_corps = data.get('mode_aisance_corps')
@@ -88,9 +96,9 @@ def calculer_patron():
             aisance_manches = table_aisance.get(mode_aisance_manches, 10)
 
         # --- Création des objets ---
-        my_front = Front(tour_poitrine, longueur_totale)
-        my_back = Back(largeur_nuque, tour_poitrine, hauteur_emmanchure, longueur_totale)
-        my_sleeve = Sleeve(tour_bras, tour_poignet, longueur_manches)
+        my_front = Front(tour_poitrine, longueur_corps)
+        my_back = Back(largeur_nuque, tour_poitrine, hauteur_emmanchure, longueur_corps)
+        my_sleeve = Sleeve(tour_bras, tour_poignet, longueur_manche)
         my_swatch = Swatch(mailles_10cm, rangs_10cm)
 
         # --- Variables communes ---
@@ -159,7 +167,7 @@ def calculer_patron():
         # --- Construction des instructions (format amélioré) ---
         instructions = []
 
-        # Ajout du header
+        # --- Header du patron ---
         instructions.append("============================================================")
         instructions.append("                  Patron de pull raglan top-down            ")
         instructions.append("============================================================\n")
@@ -169,6 +177,7 @@ def calculer_patron():
             instructions.append(f"  - {k.ljust(3)}: {v}")
         instructions.append("\n")
 
+        # --- 1. MONTAGE ---
         instructions.append("------------------------------------------------------------")
         instructions.append("1. MONTAGE")
         instructions.append("------------------------------------------------------------")
@@ -178,23 +187,40 @@ def calculer_patron():
             my_back.getNeckStitches(),
             my_front.getLeftFrontStitches()
         ))
-
-        # Ajoute une répartition textuelle claire
-        instructions.append("Répartition : [devant droit] - raglan - [manche droite] - raglan - [dos] - raglan - [manche gauche] - raglan - [devant gauche]")
-        total_mailles = (
+        instructions.append(f"Répartition : [devant droit] - raglan - [manche droite] - raglan - [dos] - raglan - [manche gauche] - raglan - [devant gauche]")
+        total = (
             my_front.getRightFrontStitches() + 1 +
             my_sleeve.getTopSleeveStitches() + 1 +
             my_back.getNeckStitches() + 1 +
             my_sleeve.getTopSleeveStitches() + 1 +
             my_front.getLeftFrontStitches()
         )
-        instructions.append(f"Total mailles au montage : {total_mailles}")
+        instructions.append(f"Total mailles au montage : {total}\n")
 
-        instructions.append("\n------------------------------------------------------------")
+        # --- 2. FORMATION DE L’ENCOLURE EN V ---
+        mailles_encolure = math.floor(rangs_a_plat / 3 * 2)
+        instructions.append("------------------------------------------------------------")
         instructions.append("2. FORMATION DE L'ENCOLURE EN V")
         instructions.append("------------------------------------------------------------")
         instructions.append(rangsAplat(rangs_a_plat))
-        instructions.append("Finitions de l'encolure : Vous pouvez relever des mailles autour de l'encolure en V et tricoter 2 à 4 cm de côtes 1/1 si souhaité.\n")
+        instructions.append(maillesDencolure(
+            my_sleeve.getTopSleeveStitches(),
+            my_back.getNeckStitches(),
+            my_sleeve.getTopSleeveStitches(),
+        ))
+
+        # --- Ajout des explications détaillées sur l'encolure ---
+        instructions.append("\nL'encolure :")
+        instructions.append(
+            f"Avec les petites aiguilles, relever les mailles de l'encolure de la façon suivante : "
+            f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, "
+            f"{my_back.getNeckStitches()} mailles le long du dos, "
+            f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, "
+            f"{mailles_encolure} mailles de chaque côté de l'encolure (relever 2 mailles tous les 3 rangs).\n"
+            f"Tricoter en côtes sur {cotes_encolure} cm, en effectuant une double diminution centrale à la pointe du V.\n"
+            f"Rabattre souplement en utilisant un rabat élastique."
+        )
+        instructions.append("\n")
 
         instructions.append("\n------------------------------------------------------------")
         instructions.append("3. AUGMENTATIONS RAGLAN")
@@ -222,7 +248,7 @@ def calculer_patron():
             ):
                 instructions.append(augmentationsManches(rang_en_cours))
             else:
-                instructions.append(tricoter(rang_en_cours))
+                instructions.append(tricoterUnRang(rang_en_cours))
 
         instructions.append("\n------------------------------------------------------------")
         instructions.append("4. SÉPARATION MANCHES ET CORPS")
@@ -240,43 +266,28 @@ def calculer_patron():
         my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
         my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
 
-        # Diminutions manches
         nb_diminutions_manches = my_sleeve.calculDecreases(
             my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle,
             my_sleeve.getWristStitches()
         ) / 2
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
+        # --- 5. CORPS APRÈS SÉPARATION ---
+        instructions.append("\nLe corps :")
         instructions.append("\n------------------------------------------------------------")
         instructions.append("5. CORPS APRÈS SÉPARATION")
         instructions.append("------------------------------------------------------------")
-        # Calcul du nombre de rangs à tricoter pour le corps (sous les emmanchures)
-        my_back.setRowsToHem(
-            my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength())
-        )
-        instructions.append(f"Le corps :\nRang 1 à {my_back.getRowsToHem()} : tricoter normalement (ou jusqu'à atteindre {my_back.getUnderArmToHemLength()} cm depuis les aisselles).\n")
+        instructions.append(tricoterPlusieursRangs(1, my_back.getRowsToHem()))
+        instructions.append(cotes(cotes_bas))
 
-        instructions.append(
-            f"Quand la longueur désirée est atteinte (environ {my_back.getRowsToHem()} rangs ou {my_back.getUnderArmToHemLength()} cm depuis les aisselles), tricotez {cotes_bas} cm de côtes 1/1 pour la bordure du bas, puis rabattez souplement toutes les mailles."
-        ) 
-
+        # --- 6. MANCHES ---
+        instructions.append("\nLa manche :")
         instructions.append("\n------------------------------------------------------------")
         instructions.append("6. MANCHES")
         instructions.append("------------------------------------------------------------")
-        instructions.append("La manche :")
         instructions.append(diminutionDebutEtFinDeRang(1))
-        instructions.append(
-            f"Rangs 2-{ratio_diminution_manche} : tricoter le rang normalement.\n"
-            f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {int(nb_diminutions_manches)} fois"
-        )
-        instructions.append(
-            f"\nArrêtez les diminutions lorsque vous atteignez {my_sleeve.getRowsToWrist()} rangs depuis la séparation (ou {my_sleeve.getUnderArmToHemLength()} cm mesurés)."
-        )
-        instructions.append(
-            f"\nArrêtez les diminutions lorsque vous atteignez {my_sleeve.getRowsToWrist()} rangs (ou {my_sleeve.getUnderArmToHemLength()} cm) depuis la séparation.\n"
-            f"Arrêtez lorsque la manche mesure {my_sleeve.getUnderArmToHemLength()} cm (ou {my_sleeve.getRowsToWrist()} rangs) depuis l'emmanchure.\n"
-            f"Terminez la manche en tricotant {cotes_poignets} cm de côtes 1/1, puis rabattez souplement toutes les mailles."
-        )
+        instructions.append(tricoterPlusieursRangs(2, ratio_diminution_manche))
+        instructions.append(cotes(cotes_poignets))
 
         instructions.append("\n============================================================")
 

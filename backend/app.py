@@ -2,15 +2,13 @@
 # Nom ......... : app.py
 # Rôle ........ : Serveur Flask pour le générateur de patrons de tricot
 # Auteurs ..... : M, L, M
-# Version ..... : V2.1.5 du 17/07/2025
+# Version ..... : V2.1.6 du 23/07/2025
 # Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
 # Description . : API REST pour calculer un patron de tricot à partir des mesures utilisateur,
 #                 traitement des données, calculs personnalisés, génération du résumé du patron.
-#
 # Technologies  : Python, Flask
 # Dépendances . : flask, flask-cors, gunicorn
 # Usage ....... : Déploiement sur Render ; endpoint principal : POST /api/calculer-patron
-#                 Le frontend est accessible à la racine du site (/).
 # *******************************************************
 
 from flask import Flask, request, jsonify
@@ -67,14 +65,12 @@ def calculer_patron():
         cotes_encolure = float(data.get('cotes_encolure', 5))  # 5 cm par défaut
 
         # --- Ajustement des longueurs nettes (sans côtes) ---
-        longueur_corps = float(longueur_totale) - cotes_bas
-        longueur_manche = float(longueur_manches) - cotes_poignets
+        longueur_corps = longueur_totale - cotes_bas
+        longueur_manche = longueur_manches - cotes_poignets
 
         # --- Aisance ---
         mode_aisance_corps = data.get('mode_aisance_corps')
         mode_aisance_manches = data.get('mode_aisance_manches')
-
-        # Table de correspondance pour les aisances prédéfinies
         table_aisance = {
             'pres_corps': -5,
             'ajuste': 0,
@@ -82,18 +78,8 @@ def calculer_patron():
             'large': 10,
             'tres_large': 20,
         }
-
-        # Corps
-        if mode_aisance_corps == 'personnalise':
-            aisance_corps = float(data.get('aisance_corps', 0))
-        else:
-            aisance_corps = table_aisance.get(mode_aisance_corps, 10)  # 10cm par défaut
-
-        # Manches
-        if mode_aisance_manches == 'personnalise':
-            aisance_manches = float(data.get('aisance_manches', 0))
-        else:
-            aisance_manches = table_aisance.get(mode_aisance_manches, 10)
+        aisance_corps = float(data.get('aisance_corps', 0)) if mode_aisance_corps == 'personnalise' else table_aisance.get(mode_aisance_corps, 10)
+        aisance_manches = float(data.get('aisance_manches', 0)) if mode_aisance_manches == 'personnalise' else table_aisance.get(mode_aisance_manches, 10)
 
         # --- Création des objets ---
         my_front = Front(tour_poitrine, longueur_corps)
@@ -101,73 +87,51 @@ def calculer_patron():
         my_sleeve = Sleeve(tour_bras, tour_poignet, longueur_manche)
         my_swatch = Swatch(mailles_10cm, rangs_10cm)
 
-        # --- Variables communes ---
-        nb_de_mailles_aisselle = 0
-        nb_augmentations_dos = 0
-        nb_augmentations_manches = 0
-
-        # --- Calcul des mailles au montage ---
+        # --- Calculs des mailles et augmentations ---
+        nb_de_mailles_aisselle = my_back.calculStitchesNeeded(my_swatch.getStitches(), 3, 0)
         my_back.setNeckStitches(my_back.calculStitchesNeeded(my_swatch.getStitches(), my_back.getNeckWidth(), 0))
         my_sleeve.setTopSleeveStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getTopSleeveWidth(), 0))
-
-        # --- Calcul des mailles avant séparation manches/corps ---
-        my_front.setChestStitches(my_front.calculStitchesNeeded(my_swatch.getStitches(), (my_front.getChestWidth() / 2), aisance_corps))
-        my_back.setChestStitches(my_back.calculStitchesNeeded(my_swatch.getStitches(), (my_back.getChestWidth() / 2), aisance_corps))
+        my_front.setChestStitches(my_front.calculStitchesNeeded(my_swatch.getStitches(), my_front.getChestWidth() / 2, aisance_corps))
+        my_back.setChestStitches(my_back.calculStitchesNeeded(my_swatch.getStitches(), my_back.getChestWidth() / 2, aisance_corps))
         my_sleeve.setUpperarmStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getUpperArmCircumference(), aisance_manches))
 
-        # --- Calcul des mailles d'aisselle ---
-        nb_de_mailles_aisselle = my_back.calculStitchesNeeded(my_swatch.getStitches(), 3, 0)
-
-        # --- Calcul des augmentations ---
-        nb_augmentations_dos = math.ceil(
-            (my_back.calculIncreases(my_back.getNeckStitches(), my_back.getChestStitches()) - nb_de_mailles_aisselle - 2) / 2
-        )
-        # Actualisation des mailles après augmentations
+        nb_augmentations_dos = math.ceil((my_back.calculIncreases(my_back.getNeckStitches(), my_back.getChestStitches()) - nb_de_mailles_aisselle - 2) / 2)
         my_back.setChestStitches(my_back.getNeckStitches() + nb_augmentations_dos * 2 + 2 + nb_de_mailles_aisselle)
         my_front.setChestStitches(my_back.getChestStitches())
-
-        nb_augmentations_manches = math.ceil(
-            (my_sleeve.calculIncreases(my_sleeve.getTopSleeveStitches(), my_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle) / 2
-        )
+        nb_augmentations_manches = math.ceil((my_sleeve.calculIncreases(my_sleeve.getTopSleeveStitches(), my_sleeve.getUpperarmStitches()) - nb_de_mailles_aisselle) / 2)
         my_sleeve.setUpperarmStitches(my_sleeve.getTopSleeveStitches() + nb_augmentations_manches * 2 + nb_de_mailles_aisselle)
 
         # --- Calcul du nombre de rangs pour arriver à l'emmanchure ---
         my_back.setRowsToUnderarm(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getArmholeDepth()))
-
-        # --- Augmentations raglan (mêmes méthodes que knit.py) ---
         my_back.setAugmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
         my_sleeve.setAugmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
-        # --- Calcul des rangs à plat (identique knit.py) ---
+        # --- Calcul des rangs à plat (avant de joindre en rond) ---
         rangs_a_plat = 1
         x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
         y = my_back.getNeckStitches()
-        while (x <= y):
-            if (rangs_a_plat <= ((my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) + 1)):
-                if ((rangs_a_plat - 1) % my_back.getRythmeRapide() == 0):
+        while x <= y:
+            if rangs_a_plat <= (my_back.getAugmentationsRapides() * my_back.getRythmeRapide() + 1):
+                if (rangs_a_plat - 1) % my_back.getRythmeRapide() == 0:
                     x += 4
                     y += 2
-                    rangs_a_plat += 1
                 else:
                     x += 2
-                    rangs_a_plat += 1
             else:
-                if ((rangs_a_plat - (my_back.getAugmentationsRapides() * my_back.getRythmeRapide()) - 1) % my_back.getRythmeLent() == 0):
+                if (rangs_a_plat - my_back.getAugmentationsRapides() * my_back.getRythmeRapide() - 1) % my_back.getRythmeLent() == 0:
                     x += 4
                     y += 2
-                    rangs_a_plat += 1
                 else:
                     x += 2
-                    rangs_a_plat += 1
+            rangs_a_plat += 1
 
-        # --- Synchronisation des rangs d’augmentation lent ---
+        # Synchronisation des rangs d’augmentation lent si nécessaire
         if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
             synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
-        # --- Construction des instructions (format amélioré) ---
-        instructions = []
+        # ----------------------- Génération du patron -----------------------
 
-        # --- Header du patron ---
+        instructions = []
         instructions.append("============================================================")
         instructions.append("                  Patron de pull raglan top-down            ")
         instructions.append("============================================================\n")
@@ -177,7 +141,7 @@ def calculer_patron():
             instructions.append(f"  - {k.ljust(3)}: {v}")
         instructions.append("\n")
 
-        # --- 1. MONTAGE ---
+        # 1. MONTAGE
         instructions.append("------------------------------------------------------------")
         instructions.append("1. MONTAGE")
         instructions.append("------------------------------------------------------------")
@@ -197,7 +161,7 @@ def calculer_patron():
         )
         instructions.append(f"Total mailles au montage : {total}\n")
 
-        # --- 2. FORMATION DE L’ENCOLURE EN V ---
+        # 2. FORMATION DE L’ENCOLURE EN V
         mailles_encolure = math.floor(rangs_a_plat / 3 * 2)
         instructions.append("------------------------------------------------------------")
         instructions.append("2. FORMATION DE L'ENCOLURE EN V")
@@ -208,8 +172,6 @@ def calculer_patron():
             my_back.getNeckStitches(),
             my_sleeve.getTopSleeveStitches(),
         ))
-
-        # --- Ajout des explications détaillées sur l'encolure ---
         instructions.append("\nL'encolure :")
         instructions.append(
             f"Avec les petites aiguilles, relever les mailles de l'encolure de la façon suivante : "
@@ -222,13 +184,18 @@ def calculer_patron():
         )
         instructions.append("\n")
 
-        instructions.append("\n------------------------------------------------------------")
+        # 3. AUGMENTATIONS RAGLAN
+        instructions.append("------------------------------------------------------------")
         instructions.append("3. AUGMENTATIONS RAGLAN")
         instructions.append("------------------------------------------------------------")
-
+        rang_offset = 0
         for rang_en_cours in range(1, my_back.getRowsToUnderarm()):
             if rang_en_cours == rangs_a_plat + 1:
                 instructions.append(joindre(rang_en_cours))
+                rang_offset = 1  # à partir d'ici, on décale d'un pour la numérotation réelle
+
+            # Décalage de la numérotation du rang si on est après la jointure
+            numero_rang_affiche = rang_en_cours + rang_offset
 
             if (
                 (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or
@@ -236,62 +203,64 @@ def calculer_patron():
                 (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or
                 (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent())
             ):
-                instructions.append(augmentationsCorpsEtManches(rang_en_cours))
+                instructions.append(augmentationsCorpsEtManches(numero_rang_affiche))
             elif (
                 rang_en_cours in my_back.getNumeroRangsAugmentationRapide() or
                 rang_en_cours in my_back.getNumeroRangsAugmentationLent()
             ):
-                instructions.append(augmentationsCorps(rang_en_cours))
+                instructions.append(augmentationsCorps(numero_rang_affiche))
             elif (
                 rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide() or
                 rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()
             ):
-                instructions.append(augmentationsManches(rang_en_cours))
+                instructions.append(augmentationsManches(numero_rang_affiche))
             else:
-                instructions.append(tricoterUnRang(rang_en_cours))
+                instructions.append(tricoterUnRang(numero_rang_affiche))
 
-        instructions.append("\n------------------------------------------------------------")
+        # 4. SÉPARATION MANCHES ET CORPS
+        instructions.append("------------------------------------------------------------")
         instructions.append("4. SÉPARATION MANCHES ET CORPS")
         instructions.append("------------------------------------------------------------")
         instructions.append(
             separationManchesEtCorps(
-                rang_en_cours + 1,
+                rang_en_cours + rang_offset + 1,
                 nb_de_mailles_aisselle,
                 my_sleeve.getUpperarmStitches(),
                 my_back.getChestStitches()
             )
         )
 
-        # --- Partie manches/diminutions après séparation ---
+        # 5. CORPS APRÈS SÉPARATION
+        my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
+        instructions.append("\nLe corps :")
+        instructions.append("------------------------------------------------------------")
+        instructions.append("5. CORPS APRÈS SÉPARATION")
+        instructions.append("------------------------------------------------------------")
+        instructions.append(tricoterPlusieursRangs(1, my_back.getRowsToHem()))
+        instructions.append(cotes(cotes_bas))
+
+        # 6. MANCHES
         my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
         my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
-
         nb_diminutions_manches = my_sleeve.calculDecreases(
             my_sleeve.getUpperarmStitches() + nb_de_mailles_aisselle,
             my_sleeve.getWristStitches()
         ) / 2
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-        # --- 5. CORPS APRÈS SÉPARATION ---
-        instructions.append("\nLe corps :")
-        instructions.append("\n------------------------------------------------------------")
-        instructions.append("5. CORPS APRÈS SÉPARATION")
-        instructions.append("------------------------------------------------------------")
-        instructions.append(tricoterPlusieursRangs(1, my_back.getRowsToHem()))
-        instructions.append(cotes(cotes_bas))
-
-        # --- 6. MANCHES ---
         instructions.append("\nLa manche :")
-        instructions.append("\n------------------------------------------------------------")
+        instructions.append("------------------------------------------------------------")
         instructions.append("6. MANCHES")
         instructions.append("------------------------------------------------------------")
         instructions.append(diminutionDebutEtFinDeRang(1))
-        instructions.append(tricoterPlusieursRangs(2, ratio_diminution_manche))
+        instructions.append(tricoterPlusieursRangs(2, int(ratio_diminution_manche)))
+        instructions.append(
+            f"Répéter les {math.trunc(ratio_diminution_manche)} rangs précédents {int(nb_diminutions_manches)} fois\n"
+        )
         instructions.append(cotes(cotes_poignets))
 
-        instructions.append("\n============================================================")
+        instructions.append("============================================================")
 
-        # Retourne toutes les instructions joliment concaténées
         return jsonify({"patron": "\n".join(str(i) for i in instructions)})
 
     except Exception as e:

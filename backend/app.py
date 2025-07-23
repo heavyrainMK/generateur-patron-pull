@@ -167,12 +167,6 @@ def calculer_patron():
         instructions.append("2. FORMATION DE L'ENCOLURE EN V")
         instructions.append("------------------------------------------------------------")
         instructions.append(rangsAplat(rangs_a_plat))
-        instructions.append(maillesDencolure(
-            my_sleeve.getTopSleeveStitches(),
-            my_back.getNeckStitches(),
-            my_sleeve.getTopSleeveStitches(),
-        ))
-        instructions.append("\nL'encolure :")
         instructions.append(
             f"Avec les petites aiguilles, relever les mailles de l'encolure de la façon suivante : "
             f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, "
@@ -188,34 +182,29 @@ def calculer_patron():
         instructions.append("------------------------------------------------------------")
         instructions.append("3. AUGMENTATIONS RAGLAN")
         instructions.append("------------------------------------------------------------")
-        rang_offset = 0
         for rang_en_cours in range(1, my_back.getRowsToUnderarm()):
             if rang_en_cours == rangs_a_plat + 1:
                 instructions.append(joindre(rang_en_cours))
-                rang_offset = 1  # à partir d'ici, on décale d'un pour la numérotation réelle
-
-            # Décalage de la numérotation du rang si on est après la jointure
-            numero_rang_affiche = rang_en_cours + rang_offset
-
+            # Affiche et génère les instructions en utilisant rang_en_cours directement :
             if (
                 (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or
                 (rang_en_cours in my_back.getNumeroRangsAugmentationRapide() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()) or
                 (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide()) or
                 (rang_en_cours in my_back.getNumeroRangsAugmentationLent() and rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent())
             ):
-                instructions.append(augmentationsCorpsEtManches(numero_rang_affiche))
+                instructions.append(augmentationsCorpsEtManches(rang_en_cours))
             elif (
                 rang_en_cours in my_back.getNumeroRangsAugmentationRapide() or
                 rang_en_cours in my_back.getNumeroRangsAugmentationLent()
             ):
-                instructions.append(augmentationsCorps(numero_rang_affiche))
+                instructions.append(augmentationsCorps(rang_en_cours))
             elif (
                 rang_en_cours in my_sleeve.getNumeroRangsAugmentationRapide() or
                 rang_en_cours in my_sleeve.getNumeroRangsAugmentationLent()
             ):
-                instructions.append(augmentationsManches(numero_rang_affiche))
+                instructions.append(augmentationsManches(rang_en_cours))
             else:
-                instructions.append(tricoterUnRang(numero_rang_affiche))
+                instructions.append(tricoterUnRang(rang_en_cours))
 
         # 4. SÉPARATION MANCHES ET CORPS
         instructions.append("------------------------------------------------------------")
@@ -223,7 +212,7 @@ def calculer_patron():
         instructions.append("------------------------------------------------------------")
         instructions.append(
             separationManchesEtCorps(
-                rang_en_cours + rang_offset + 1,
+                rang_en_cours + 1,
                 nb_de_mailles_aisselle,
                 my_sleeve.getUpperarmStitches(),
                 my_back.getChestStitches()
@@ -232,7 +221,6 @@ def calculer_patron():
 
         # 5. CORPS APRÈS SÉPARATION
         my_back.setRowsToHem(my_back.calculRowsNeeded(my_swatch.getRows(), my_back.getUnderArmToHemLength()))
-        instructions.append("\nLe corps :")
         instructions.append("------------------------------------------------------------")
         instructions.append("5. CORPS APRÈS SÉPARATION")
         instructions.append("------------------------------------------------------------")
@@ -248,7 +236,6 @@ def calculer_patron():
         ) / 2
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
-        instructions.append("\nLa manche :")
         instructions.append("------------------------------------------------------------")
         instructions.append("6. MANCHES")
         instructions.append("------------------------------------------------------------")

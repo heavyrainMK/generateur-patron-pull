@@ -384,7 +384,7 @@ async function genererPatron() {
             'mailles_10cm', 'rangs_10cm',
             'tour_cou', 'tour_poitrine', 'largeur_nuque', 'hauteur_emmanchure', 'longueur_totale',
             'longueur_manches', 'tour_bras', 'tour_poignet',
-            'aisance_corps', 'aisance_manches', 'cotes_bas', 'cotes_poignets'
+            'aisance_corps', 'aisance_manches', 'cotes_bas', 'cotes_poignets', 'cotes_encolure'
         ];
         identifiantsIds.forEach(champ => {
             if (donnees[champ]) {
@@ -400,7 +400,7 @@ async function genererPatron() {
             delete donnees['aisance_manches'];
         }
 
-        const reponse = await fetch('/api/calculer-patron', {
+        const reponse = await fetch('http://127.0.0.1:10000/api/calculer-patron', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

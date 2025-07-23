@@ -1,0 +1,416 @@
+/*
+# *******************************************************
+# Nom ......... : user_dashboard.css
+# Rôle ........ : Feuille de style pour la page d'utilisateur
+# Auteurs ..... : M, L, M
+# Version ..... : V1.0 du 30/06/2025
+# Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
+# Description . : Styles CSS pour la page d'utilisateur
+# Compatibilité : Navigateurs modernes (Chrome, Firefox, Safari, Edge)
+# *******************************************************
+*/       
+
+
+/* En-tête et barre de navigation */
+.header {
+ padding: 10px;
+ background: var(--glass-bg);
+ backdrop-filter: blur(30px);
+ border-bottom: 1px solid var(--glass-border);
+ position: sticky;
+}
+
+.header-content {
+ max-width: 1000px;
+ margin: 0 auto;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+
+.logo {
+ font-size: 1.5rem;
+ font-weight: 800;
+ color: var(--text-white);
+}
+
+.user-info {
+ display: flex;
+ align-items: center;
+ gap: 15px;
+}
+
+.user-avatar {
+ width: 40px;
+ height: 40px;
+ background: var(--success-color);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 600;
+ color: #000;
+}
+
+
+/* Conteneur principal  */
+.container {
+ max-width: 800px;
+ position: relative;
+ left: 50%;
+ transform: translateX(-50%);
+}
+
+/* Titre de la page  */
+.page-title {
+ text-align: center;
+ margin-bottom: 40px;
+ margin-top: 50px;
+}
+
+.page-title h1 {
+ font-size: clamp(2rem, 4vw, 2.5rem);
+ font-weight: 800;
+ margin-bottom: 10px;
+}
+
+.page-title p {
+ font-size: 1.1rem;
+ color: var(--text-gray);
+}
+
+/*  Section statistiques utilisateur */
+.stats-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+ gap: 15px;
+ margin-bottom: 40px;
+}
+
+.stat-card {
+ background: var(--glass-bg);
+ backdrop-filter: blur(30px);
+ border-radius: 20px;
+ border: 1px solid var(--glass-border);
+ padding: 20px;
+ text-align: center;
+ transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.stat-icon {
+ font-size: 2.5rem;
+ margin-bottom: 15px;
+ opacity: 0.8;
+}
+
+.stat-number {
+ font-size: 2rem;
+ font-weight: 800;
+ margin-bottom: 5px;
+}
+
+/* Filtres, recherche */
+.controls {
+ background: var(--glass-bg);
+ backdrop-filter: blur(30px);
+ border-radius: 20px;
+ border: 1px solid var(--glass-border);
+ padding: 25px;
+ margin-bottom: 30px;
+}
+
+.controls-grid {
+ display: grid;
+ grid-template-columns: 1fr auto auto;
+ gap: 20px;
+ align-items: center;
+}
+
+.search-input {
+ width: 100%;
+ padding: 12px 45px 12px 15px;
+ background: rgba(255, 255, 255, 0.1);
+ border: 1px solid rgba(255, 255, 255, 0.3);
+ border-radius: 12px;
+ color: var(--text-white);
+ font-size: 1rem;
+ transition: all 0.3s ease;
+}
+
+
+/* Grille des modèles enregistrés */
+.patterns-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 25px;
+}
+
+.pattern-card {
+ background: var(--glass-bg);
+ backdrop-filter: blur(30px);
+ border-radius: 20px;
+ border: 1px solid var(--glass-border);
+ padding: 25px;
+ transition: all 0.3s ease;
+ position: relative;
+ overflow: hidden;
+ min-height: 400px;
+ max-height: 500px;
+ width: 100%;
+ box-sizing: border-box;
+}
+
+/* Informations sur le patron*/
+.pattern-title {
+ font-size: 1.3rem;
+ font-weight: 700;
+ margin-bottom: 5px;
+}
+
+.pattern-date {
+ font-size: 0.9rem;
+ color: var(--text-gray);
+}
+
+.pattern-menu {
+ position: relative;
+}
+
+.pattern-info {
+ margin-bottom: 20px;
+}
+
+.info-row {
+ display: flex;
+ justify-content: space-between;
+ margin-bottom: 8px;
+}
+
+.info-label {
+ color: var(--text-gray);
+ font-size: 0.9rem;
+}
+
+.info-value {
+ font-weight: 600;
+}
+
+/* Tags (mots-clés) */
+.tags-section {
+ margin-bottom: 20px;           
+}
+
+.tags-container {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 8px;
+ margin-bottom: 15px;
+}
+
+.tag {
+ background: rgba(255, 255, 255, 0.2);
+ color: var(--text-white);
+ padding: 4px 12px;
+ border-radius: 20px;
+ font-size: 0.85rem;
+ font-weight: 500;
+ display: flex;
+ align-items: center;
+ gap: 5px;
+ max-width: calc(50% - 4px);
+ word-break: break-word;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+ flex-shrink: 0;
+}
+
+.tag.removable {
+ cursor: pointer;
+ transition: background 0.3s ease;
+}
+
+.tag.removable:hover {
+ background: var(--danger-color);
+}
+
+.remove-tag {
+ font-size: 0.7rem;
+ opacity: 0.7;
+}
+
+
+/* Formulaire pour ajouter un tag */
+.add-tag-form {
+ display: flex;
+ gap: 10px;
+ position: relative;
+}
+
+.tag-input {
+ flex: 1;
+ padding: 8px 12px;
+ background: rgba(255, 255, 255, 0.1);
+ border: 1px solid rgba(255, 255, 255, 0.3);
+ border-radius: 8px;
+ color: var(--text-white);
+ font-size: 0.9rem;
+ transition: border-color 0.3s ease;
+}
+
+.tag-input.error {
+ border-color: var(--danger-color);
+ background: rgba(254, 70, 70, 0.243);
+}
+
+.tag-input::placeholder {
+ color: var(--text-gray);
+}
+
+.add-tag-btn {
+ background: var(--success-color);
+ color: #000000;
+ border: none;
+ padding: 8px 15px;
+ border-radius: 8px;
+ font-weight: 600;
+ cursor: pointer;
+ font-size: 0.9rem;
+}
+
+.add-tag-btn:hover {
+ background: var(--success-color);
+ transform: translateY(-2px);
+}
+   
+/* Boutons d’action sur les patrons */
+.pattern-actions {
+ display: flex;
+ gap: 10px;
+}
+
+
+/* Messages d’erreur */
+.error-message {
+ position: absolute;
+ top: 100%;
+ left: 0;
+ right: 0;
+ background: rgba(255, 59, 59, 0.517);
+ color: var(--text-white);
+ padding: 10px 14px;
+ border-radius: 10px;
+ font-size: 0.85rem;
+ font-weight: 500;
+ margin-top: 8px;
+ backdrop-filter: blur(12px);
+ border: 1px solid rgba(255, 59, 59, 0.4);
+ box-shadow: 0 6px 20px rgba(255, 59, 59, 0.25);
+ opacity: 0;
+ transform: translateY(-8px);
+ transition: all 0.4s ease;
+ pointer-events: none;
+}
+
+.error-message.show {
+ opacity: 1;
+ transform: translateY(0);
+ pointer-events: auto;
+}
+
+.error-message.fade-out {
+ animation: fadeOut 1s ease-out;
+ opacity: 0;
+}
+  
+.action-btn {
+ flex: 1;
+ padding: 12px;
+ border: none;
+ border-radius: 10px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+}
+
+.view-btn {
+ background: rgba(255, 255, 255, 0.53);
+ color: #111;
+}
+
+.view-btn:hover {
+ background: rgba(255, 255, 255, 0.8);
+ transform: translateY(-2px);
+}
+
+.download-btn {
+ background: var(--success-color);
+ color: #000;
+}
+
+.download-btn:hover {
+ transform: translateY(-2px);
+ box-shadow: 0 8px 16px rgba(84, 252, 123, 0.3);
+}
+
+.user-avatar {
+ width: 40px;
+ height: 40px;
+ background: var(--success-color);
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 600;
+ color: #000;
+}
+
+/* Bouton de déconnexion */
+.logout-btn {
+ background: var(--glass-bg);
+ backdrop-filter: blur(30px);
+ border: 1px solid var(--glass-border);
+ color: var(--text-white);
+ padding: 10px 20px;
+ border-radius: 12px;
+ font-weight: 600;
+ cursor: pointer;
+ font-size: 0.9rem;
+ transition: all 0.3s ease;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+.logout-btn:hover {
+ background: rgba(255, 255, 255, 0.2);
+ transform: translateY(-2px);
+ box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+}
+
+.error-message.show {
+ display: block;
+ animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+ from { opacity: 0; }
+ to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+
+        

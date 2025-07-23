@@ -17,6 +17,10 @@
 // INITIALISATION PRINCIPALE
 
 document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname.includes('user_dashboard')) {
+        checkSession();
+        loadUserInfo();
+    }
     initBackButton();
     initAboutModal();
     initFloatingAnimations();
@@ -300,12 +304,17 @@ async function performLogin(email, password) {
             // Sauvegarder les informations utilisateur si "Se souvenir de moi" est coché
             if (remember) {
                 localStorage.setItem('userEmail', email);
-            
+                localStorage.setItem('rememberMe', 'true');
             }
+            // Sauvegarder les infos utilisateur pour la session
+            sessionStorage.setItem('userEmail', email);
+            sessionStorage.setItem('userPrenom', data.user.prenom);
+            sessionStorage.setItem('userNom', data.user.nom);
+            sessionStorage.setItem('isLoggedIn', 'true');
             
             // Rediriger vers le dashboard après un court délai
             setTimeout(() => {
-                window.location.href = 'user_dashboard(1).html';
+                window.location.href = 'user_dashboard.html';
             }, 1000);
             
         } else {
@@ -316,5 +325,94 @@ async function performLogin(email, password) {
     } catch (error) {
         console.error('Erreur:', error);
         showAlert('Erreur de connexion', 'error');
+    }}
+
+// GESTION DES INFORMATIONS UTILISATEUR SUR LE DASHBOARD
+async function loadUserInfo() {
+    try {
+        // Vérifier si l'utilisateur est connecté
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const userEmail = sessionStorage.getItem('userEmail');
+        
+        if (!isLoggedIn || !userEmail) {
+            // Rediriger vers la page de connexion si pas connecté
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Récupérer les infos depuis sessionStorage d'abord
+        const userPrenom = sessionStorage.getItem('userPrenom');
+        const userNom = sessionStorage.getItem('userNom');
+        
+        if (userPrenom) {
+            updateUserDisplay(userPrenom, userNom);
+        } else {
+            // Si pas dans sessionStorage, récupérer depuis l'API
+            const response = await fetch(`/api/user/${userEmail}`);
+            
+            if (response.ok) {
+                const userData = await response.json();
+                updateUserDisplay(userData.prenom, userData.nom);
+                
+                // Sauvegarder dans sessionStorage pour les prochaines fois
+                sessionStorage.setItem('userPrenom', userData.prenom);
+                sessionStorage.setItem('userNom', userData.nom);
+            } else {
+                console.error('Erreur lors de la récupération des infos utilisateur');
+                // Rediriger vers la page de connexion en cas d'erreur
+                window.location.href = 'login.html';
+            }
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        // Rediriger vers la page de connexion en cas d'erreur
+        window.location.href = 'login.html';
+    }
+}
+
+function updateUserDisplay(prenom, nom) {
+    // Mettre à jour l'affichage du prénom
+    const userInfoElement = document.querySelector('.user-info span');
+    if (userInfoElement) {
+        userInfoElement.textContent = `Bonjour, ${prenom}`;
+    }
+    
+    // Mettre à jour l'avatar avec la première lettre du prénom
+    const userAvatar = document.querySelector('.user-avatar');
+    if (userAvatar) {
+        userAvatar.textContent = prenom.charAt(0).toUpperCase();
+    }
+}
+
+// FONCTION DE DÉCONNEXION
+function logout() {
+    // Supprimer toutes les informations de session
+    sessionStorage.clear();
+    
+    // Supprimer les informations "se souvenir de moi" si nécessaire
+    const rememberMe = localStorage.getItem('rememberMe');
+    if (!rememberMe) {
+        localStorage.removeItem('userEmail');
+    }
+    
+    // Rediriger vers la page d'accueil
+    window.location.href = 'page_accueille.html';
+}
+
+// VÉRIFICATION DE LA SESSION AU CHARGEMENT
+function checkSession() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    const currentPath = window.location.pathname;
+    
+    // Si on est sur une page protégée et pas connecté
+    if (currentPath.includes('user_dashboard') && !isLoggedIn) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Si on est sur la page de connexion et déjà connecté
+    if (currentPath.includes('login.html') && isLoggedIn) {
+        window.location.href = 'user_dashboard.html';
+        return;
     }
 }

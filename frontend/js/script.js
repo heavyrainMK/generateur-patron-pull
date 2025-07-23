@@ -400,7 +400,7 @@ async function genererPatron() {
             delete donnees['aisance_manches'];
         }
 
-        const reponse = await fetch('http://127.0.0.1:10000/api/calculer-patron', {
+        const reponse = await fetch('/api/calculer-patron', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

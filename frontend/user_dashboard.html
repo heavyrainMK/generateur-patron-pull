@@ -1,0 +1,273 @@
+<!--
+*******************************************************
+Nom          : user_dashboard.html
+Rôle         : La page d'utilisateur
+Auteurs      : M, L, M
+Version      : V1.0 (15/07/2025)
+Licence      : Réalisé dans le cadre du cours de Réalisation de Programmes
+Description  : Page utilisateur pour la consultation de l’historique des patrons
+Technologies : HTML5, CSS3
+Dépendances  : user_dashboard.css, user_dashboard.js
+Usage        : Ouvrir dans un navigateur web moderne
+*******************************************************
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Patrons de Pulls</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/user_dashboard.css" />
+</head>
+<body>
+    <!-- Éléments flottants -->
+    <div class="floating-active float-1"><img src="images/measurement.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-2"><img src="images/fashion-design.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-3"><img src="images/sweatshirt.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-4"><img src="images/buttons.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-5"><img src="images/knitting.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-6"><img src="images/pattern.png" alt="Image" class="icone-blanche" /></div>
+
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                Generateur de Patrons
+            </div>
+            <div class="user-info">
+                <span>Bonjour, Utilisateur</span>
+                <div class="user-avatar">U</div>
+                <button class="logout-btn" onclick="logout()" title="Se déconnecter">
+                    Déconnexion
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Mes Patrons</h1>
+            <p>Gérez vos créations et organisez votre collection</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                </div>
+                <div class="stat-number" id="patternsCount">0</div>
+                <div class="stat-label">Patrons créés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                </div>
+                <div class="stat-number" id="tagsCount">0</div>
+                <div class="stat-label">Tags utilisés</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="controls-grid">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Rechercher un patron..." id="searchInput">
+                </div>
+                <select class="filter-select" id="filterSelect">
+                    <option value="all">Tous les patrons</option>
+                    <option value="recent">Récents</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Patterns Grid -->
+        <div class="patterns-grid" id="patternsGrid">
+            <!-- Pattern Card 1 -->
+            <div class="pattern-card">
+                <div class="pattern-header">
+                    <div>
+                        <div class="pattern-title">Pull Norvégien</div>
+                        <div class="pattern-date">Créé le 15 juin 2025</div>
+                    </div>
+                    <div class="pattern-menu">
+                        <button class="menu-btn">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pattern-info">
+                    <div class="info-row">
+                        <span class="info-label">Taille :</span>
+                        <span class="info-value">M</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Type :</span>
+                        <span class="info-value">Col rond</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Longueur :</span>
+                        <span class="info-value">65 cm</span>
+                    </div>
+                </div>
+
+                <div class="tags-section">
+                    <div class="tags-container">
+                        <span class="tag removable" onclick="removeTag(this)">
+                            hiver <span class="remove-tag">×</span>
+                        </span>
+                        <span class="tag removable" onclick="removeTag(this)">
+                            chaud <span class="remove-tag">×</span>
+                        </span>
+                        <span class="tag removable" onclick="removeTag(this)">
+                            motifs <span class="remove-tag">×</span>
+                        </span>
+                    </div>
+                    <div class="add-tag-form">
+                        <input type="text" class="tag-input" placeholder="Ajouter un tag..." onkeypress="handleTagKeyPress(event, this)">
+                        <button class="add-tag-btn" onclick="addTag(this)">
+                        Add  
+                        </button>
+                        <div class="error-message">
+                            Erreur: maximum autorisé 12 lettres
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pattern-actions">
+                    <button class="action-btn view-btn">
+                        Voir
+                    </button>
+                    <button class="action-btn download-btn">
+                        PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pattern Card 2 -->
+            <div class="pattern-card">
+                <div class="pattern-header">
+                    <div>
+                        <div class="pattern-title">Cardigan Élégant</div>
+                        <div class="pattern-date">Créé le 12 juin 2025</div>
+                    </div>
+                    <div class="pattern-menu">
+                        <button class="menu-btn">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pattern-info">
+                    <div class="info-row">
+                        <span class="info-label">Taille :</span>
+                        <span class="info-value">L</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Type :</span>
+                        <span class="info-value">Cardigan</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Longueur :</span>
+                        <span class="info-value">70 cm</span>
+                    </div>
+                </div>
+
+                <div class="tags-section">
+                    <div class="tags-container">
+                        <span class="tag removable" onclick="removeTag(this)">
+                            élégant <span class="remove-tag">×</span>
+                        </span>
+                        <span class="tag removable" onclick="removeTag(this)">
+                            bureau <span class="remove-tag">×</span>
+                        </span>
+                    </div>
+                    <div class="add-tag-form">
+                        <input type="text" class="tag-input" placeholder="Ajouter un tag..." onkeypress="handleTagKeyPress(event, this)">
+                        <button class="add-tag-btn" onclick="addTag(this)">
+                        Add
+                        </button>
+                        <div class="error-message">
+                            Erreur: maximum autorisé 12 lettres
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pattern-actions">
+                    <button class="action-btn view-btn">
+                        Voir
+                    </button>
+                    <button class="action-btn download-btn">
+                        PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pattern Card 3 -->
+            <div class="pattern-card">
+                <div class="pattern-header">
+                    <div>
+                        <div class="pattern-title">Pull d'Été Léger</div>
+                        <div class="pattern-date">Créé le 10 juin 2020</div>
+                    </div>
+                    <div class="pattern-menu">
+                        <button class="menu-btn">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pattern-info">
+                    <div class="info-row">
+                        <span class="info-label">Taille :</span>
+                        <span class="info-value">S</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Type :</span>
+                        <span class="info-value">Col V</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Longueur :</span>
+                        <span class="info-value">60 cm</span>
+                    </div>
+                </div>
+
+                <div class="tags-section">
+                    <div class="tags-container">
+                        <span class="tag removable" onclick="removeTag(this)">
+                            été <span class="remove-tag">×</span>
+                        </span>
+                        <span class="tag removable" onclick="removeTag(this)">
+                            léger <span class="remove-tag">×</span>
+                        </span>
+                        <span class="tag removable" onclick="removeTag(this)">
+                            vacances <span class="remove-tag">×</span>
+                        </span>
+                    </div>
+                    <div class="add-tag-form">
+                        <input type="text" class="tag-input" placeholder="Ajouter un tag..." onkeypress="handleTagKeyPress(event, this)">
+                        <button class="add-tag-btn" onclick="addTag(this)">
+                        Add
+                        </button>
+                        <div class="error-message">
+                            Erreur: maximum autorisé 12 lettres
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pattern-actions">
+                    <button class="action-btn view-btn">
+                        Voir
+                    </button>
+                    <button class="action-btn download-btn">
+                        PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="js/script2.js"></script>
+    <script src="js/user_dashboard.js"></script>
+</body>
+</html>

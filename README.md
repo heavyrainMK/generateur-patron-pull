@@ -75,7 +75,7 @@ npm start
 
 Remplace :
 ```js
-const reponse = await fetch('/api/calculer-patron', {
+const reponse = await fetch('https://patron-flask-api.onrender.com/api/calculer-patron', {
 ```
 par :
 ```js

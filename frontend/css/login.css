@@ -158,6 +158,13 @@
   margin-top: 15px;
   position: relative;
   overflow: hidden;
+  padding: 18px 60px;
+  flex-shrink: 0; 
+  display: block;               
+  margin: 15px auto 0 auto;     
+  width: 100%;                 
+  max-width: 350px;            
+  padding: 18px 0;            
 }
 
 

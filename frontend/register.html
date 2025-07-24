@@ -1,13 +1,13 @@
 <!--
 *******************************************************
 Nom          : register.html
-Rôle         : Interface utilisateur d'inscription
+Rôle         : Formulaire d'inscription avec popups de succès et d'erreur
 Auteurs      : M, L, M
-Version      : V1.0 (30/06/2025)
+Version      : V1.1 (23/07/2025)
 Licence      : Réalisé dans le cadre du cours de Réalisation de Programmes
-Description  : Formulaire d'inscription pour nouveaux utilisateurs
-Technologies : HTML5, CSS3
-Dépendances  : register.css
+Description  : Formulaire d'inscription pour nouveaux utilisateurs avec gestion des erreurs
+Technologies : HTML5, CSS3, JavaScript
+Dépendances  : register.css, server.js
 Usage        : Ouvrir dans un navigateur web moderne
 *******************************************************
 -->
@@ -23,15 +23,15 @@ Usage        : Ouvrir dans un navigateur web moderne
 </head>
 <body class="accueil">
     <!-- Éléments décoratifs -->
-    <div class="floating-element float-1"><img src="images/measurement.png" alt="Image" class="icone-blanche" /></div>
-    <div class="floating-element float-2"><img src="images/fashion-design.png" alt="Image" class="icone-blanche" /></div>
-    <div class="floating-element float-3"><img src="images/sweatshirt.png" alt="Image" class="icone-blanche" /></div>
-    <div class="floating-element float-4"><img src="images/buttons.png" alt="Image" class="icone-blanche" /></div>
-    <div class="floating-element float-5"><img src="images/knitting.png" alt="Image" class="icone-blanche" /></div>
-    <div class="floating-element float-6"><img src="images/pattern.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-1"><img src="images/measurement.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-2"><img src="images/fashion-design.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-3"><img src="images/sweatshirt.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-4"><img src="images/buttons.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-5"><img src="images/knitting.png" alt="Image" class="icone-blanche" /></div>
+    <div class="floating-active float-6"><img src="images/pattern.png" alt="Image" class="icone-blanche" /></div>
 
     <!-- Bouton retour-->
-    <a href="page_accueille.html" class="back-home">← Retour</a>
+    <a href="login.html" class="back-home">← Retour</a>
 
     <!-- Contenu principal -->
     <div class="main-content" id="main-container">
@@ -42,7 +42,7 @@ Usage        : Ouvrir dans un navigateur web moderne
             </div>
 
             <!-- Formulaire d'inscription -->
-            <form class="register-form" id="registerForm" method="POST" action="/api/register">
+            <form class="register-form" id="registerForm">
                 <!-- Informations personnelles -->
                 <div class="form-section">
                     <h2 class="section-title">👤 Informations personnelles</h2>
@@ -150,6 +150,27 @@ Usage        : Ouvrir dans un navigateur web moderne
             </div>
         </div>
     </div>
-    <script src="node-backend/server.js"></script>
+
+    <!-- Popup de succès -->
+    <div class="popup-overlay" id="success-popup">
+        <div class="popup success-popup">
+            <div class="popup-icon success-icon">✓</div>
+            <h2>Utilisateur enregistré avec succès</h2>
+            <p>Votre compte a été créé. Vous allez être redirigé vers la page de connexion.</p>
+            <button class="popup-button success-button" onclick="closeSuccessPopup()">Compris</button>
+        </div>
+    </div>
+
+
+    <!-- Popup d'erreur -->
+    <div class="popup-overlay" id="error-popup">
+        <div class="popup error-popup">
+            <div class="popup-icon error-icon">✕</div>
+            <h2>Erreur d'inscription</h2>
+            <p id="error-message">Une erreur est survenue lors de l'inscription.</p>
+            <button class="popup-button error-button" onclick="closeErrorPopup()">Réessayer</button>
+        </div>
+    </div>
+    <script src="js/register.js"></script>
 </body>
 </html>

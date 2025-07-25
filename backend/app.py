@@ -49,20 +49,49 @@ def calculer_patron():
 
         if data is None:
             return jsonify({"error": "Aucune donnée JSON reçue."}), 400
+        
+        # Vérification des champs obligatoires
+        champs_obligatoires = [
+            'mailles_10cm', 'rangs_10cm', 'tour_poitrine', 'longueur_totale', 'largeur_nuque',
+            'hauteur_emmanchure', 'longueur_manches', 'tour_bras', 'tour_poignet'
+        ]
+        for champ in champs_obligatoires:
+            if champ not in data:
+                return jsonify({"error": f"Champ obligatoire manquant : {champ}"}), 400
 
-        # --- Extraction des mesures utilisateur ---
-        mailles_10cm = float(data.get('mailles_10cm', 0))
-        rangs_10cm = float(data.get('rangs_10cm', 0))
-        tour_poitrine = float(data.get('tour_poitrine', 0))
-        longueur_totale = float(data.get('longueur_totale', 0))
-        largeur_nuque = float(data.get('largeur_nuque', 0))
-        hauteur_emmanchure = float(data.get('hauteur_emmanchure', 0))
-        longueur_manches = float(data.get('longueur_manches', 0))
-        tour_bras = float(data.get('tour_bras', 0))
-        tour_poignet = float(data.get('tour_poignet', 0))
-        cotes_bas = float(data.get('cotes_bas', 5))  # 5 cm par défaut
-        cotes_poignets = float(data.get('cotes_poignets', 5))  # 5 cm par défaut
-        cotes_encolure = float(data.get('cotes_encolure', 5))  # 5 cm par défaut
+        # Vérifie la présence et la valeur des aisances personnalisées
+        if data.get('mode_aisance_corps') == 'personnalise':
+            if 'aisance_corps' not in data or data.get('aisance_corps') in [None, '', 0]:
+                return jsonify({"error": "Le mode d'aisance corps est personnalisé mais aucune valeur n'a été fournie."}), 400
+        if data.get('mode_aisance_manches') == 'personnalise':
+            if 'aisance_manches' not in data or data.get('aisance_manches') in [None, '', 0]:
+                return jsonify({"error": "Le mode d'aisance manches est personnalisé mais aucune valeur n'a été fournie."}), 400
+
+        # Extraction stricte des mesures utilisateur et conversion en float avec gestion d'erreur
+        try:
+            mailles_10cm = float(data.get('mailles_10cm'))
+            rangs_10cm = float(data.get('rangs_10cm'))
+            tour_poitrine = float(data.get('tour_poitrine'))
+            longueur_totale = float(data.get('longueur_totale'))
+            largeur_nuque = float(data.get('largeur_nuque'))
+            hauteur_emmanchure = float(data.get('hauteur_emmanchure'))
+            longueur_manches = float(data.get('longueur_manches'))
+            tour_bras = float(data.get('tour_bras'))
+            tour_poignet = float(data.get('tour_poignet'))
+            cotes_bas = float(data.get('cotes_bas', 5))
+            cotes_poignets = float(data.get('cotes_poignets', 5))
+            cotes_encolure = float(data.get('cotes_encolure', 5))
+        except Exception:
+            return jsonify({"error": "Toutes les mesures doivent être des nombres valides."}), 400
+
+        # Refuse toute valeur négative ou nulle
+        mesures = [
+            mailles_10cm, rangs_10cm, tour_poitrine, longueur_totale,
+            largeur_nuque, hauteur_emmanchure, longueur_manches, tour_bras, tour_poignet
+        ]
+        for v in mesures:
+            if v is None or v <= 0:
+                return jsonify({"error": "Toutes les mesures doivent être strictement positives."}), 400
 
         # --- Ajustement des longueurs nettes (sans côtes) ---
         longueur_corps = longueur_totale - cotes_bas

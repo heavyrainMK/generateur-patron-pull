@@ -23,13 +23,13 @@ class Calculs(ABC):
     def getRythmeLent(self):
         return self.rythme_lent
 
-    def setAugemntationsRapides(self, nombre):
+    def setAugmentationsRapides(self, nombre):
         self.augmentations_rapides = nombre
 
     def getAugmentationsRapides(self):
         return self.augmentations_rapides
 
-    def setAugemntationsLentes(self, nombre):
+    def setAugmentationsLentes(self, nombre):
         self.augmentations_lentes = nombre
 
     def getAugmentationsLentes(self):
@@ -86,8 +86,8 @@ class Calculs(ABC):
                 self.setNumeroRangsAugmentationRapide(rang_en_cours)
             self.setRythmeRapide(1) 
             self.setRythmeLent(2)
-            self.setAugemntationsRapides(augmentations_effectuees)
-            self.setAugemntationsLentes(augmentations_restantes)
+            self.setAugmentationsRapides(augmentations_effectuees)
+            self.setAugmentationsLentes(augmentations_restantes)
             rang_en_cours = (self.getAugmentationsRapides() * self.getRythmeRapide()) + 1
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
@@ -105,8 +105,8 @@ class Calculs(ABC):
                 self.setNumeroRangsAugmentationRapide(rang_en_cours)
             self.setRythmeRapide(1) 
             self.setRythmeLent(3)
-            self.setAugemntationsRapides(augmentations_effectuees)
-            self.setAugemntationsLentes(augmentations_restantes)
+            self.setAugmentationsRapides(augmentations_effectuees)
+            self.setAugmentationsLentes(augmentations_restantes)
             rang_en_cours = (self.getAugmentationsRapides() * self.getRythmeRapide()) + 1
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
@@ -125,8 +125,8 @@ class Calculs(ABC):
                 self.setNumeroRangsAugmentationRapide(rang_en_cours)
             self.setRythmeRapide(2) 
             self.setRythmeLent(4)
-            self.setAugemntationsRapides(augmentations_effectuees)
-            self.setAugemntationsLentes(augmentations_restantes)
+            self.setAugmentationsRapides(augmentations_effectuees)
+            self.setAugmentationsLentes(augmentations_restantes)
             rang_en_cours = (self.getAugmentationsRapides() * self.getRythmeRapide()) + 1
             while (rang_en_cours <= (self.getAugmentationsRapides() * self.getRythmeRapide() + self.getAugmentationsLentes() * self.getRythmeLent())):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)

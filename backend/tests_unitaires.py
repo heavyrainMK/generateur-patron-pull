@@ -1,3 +1,18 @@
+# *******************************************************
+# Nom ......... : tests_unitaires.py
+# Rôle ........ : Fichier de tests unitaires pour le générateur de patrons de tricot
+# Auteurs ..... : M, L, M
+# Version ..... : V2.0.0 du 26/07/2025
+# Licence ..... : Réalisé dans le cadre du cours de Réalisation de Programmes
+# Description . : Contient l'ensemble des tests pour les modules de calculs,
+#                 les classes représentant les parties du vêtement,
+#                 les fonctions d'instructions de tricot, la synchronisation des rangs,
+#                 ainsi que l’API Flask (testée via un client).
+# Technologies  : Python 3, unittest
+# Dépendances . : calculs, back, front, sleeve, swatch, instructions, app (Flask)
+# Usage ....... : Exécution locale via 'make test'
+# *******************************************************
+
 import math
 import unittest
 from io import StringIO

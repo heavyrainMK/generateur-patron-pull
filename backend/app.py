@@ -135,6 +135,7 @@ def calculer_patron():
         my_back.setAugmentationsRaglan(nb_augmentations_dos, my_back.getRowsToUnderarm())
         my_sleeve.setAugmentationsRaglan(nb_augmentations_manches, my_back.getRowsToUnderarm())
 
+
         # --- Calcul des rangs à plat (avant de joindre en rond) ---
         rangs_a_plat = 1
         x = my_front.getRightFrontStitches() + my_front.getLeftFrontStitches()
@@ -154,7 +155,7 @@ def calculer_patron():
                     x += 2
             rangs_a_plat += 1
 
-        # Synchronisation des rangs d’augmentation lent si nécessaire
+        # Synchronisation des rangs d’augmentation lent si nécessaire pour éviter les risque d'erreurs (augmentations au mauvais endroit/rang)
         if my_back.getRythmeLent() == my_sleeve.getRythmeLent():
             synchronisationDesRangs(my_back.getNumeroRangsAugmentationLent(), my_sleeve.getNumeroRangsAugmentationLent())
 
@@ -246,6 +247,7 @@ def calculer_patron():
         instructions.append(tricoterPlusieursRangs(1, my_back.getRowsToHem()))
         instructions.append(cotes(cotes_bas))
 
+        # 6 . FINITIONS ENCOLURE
         instructions.append("------------------------------------------------------------")
         instructions.append("6. FINITIONS ENCOLURE")
         instructions.append("------------------------------------------------------------")
@@ -260,7 +262,7 @@ def calculer_patron():
         )
         instructions.append("\n")
 
-        # 6. MANCHES
+        # 7. MANCHES
         my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
         my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
         nb_diminutions_manches = my_sleeve.calculDecreases(

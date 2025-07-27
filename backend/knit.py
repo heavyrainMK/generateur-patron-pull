@@ -25,7 +25,6 @@ def main():
     longueur_manche = longueur_totale_manche - longueur_cotes_manche
     tour_de_bras = 31
     tour_de_poignet = 18.5
-    cotes_encolure = 5
 
     fichier_a_telecharger = open("instructions_pull_sur_mesure.txt", "w")
     #il faut construire les objets avec les mesures fournis par l'utilisateur

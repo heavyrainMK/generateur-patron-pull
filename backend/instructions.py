@@ -7,7 +7,8 @@ abbreviations = {
     "aug" : "augmentation",
     "dim" : "diminution",
     "PM" : "placer le marqueur",
-    "RM" : "retirer le marqueur"
+    "RM" : "retirer le marqueur",
+    "DDMC" : "diminution double à maille centrée"
 }
 def montage(devant_droit, manche, dos, devant_gauche):
     return (f"Début : monter {devant_droit} m, PM, 1 m, PM, {manche} m, PM, 1 m, PM, "

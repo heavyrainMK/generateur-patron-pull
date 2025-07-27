@@ -196,16 +196,6 @@ def calculer_patron():
         instructions.append("2. FORMATION DE L'ENCOLURE EN V")
         instructions.append("------------------------------------------------------------")
         instructions.append(rangsAplat(rangs_a_plat))
-        instructions.append(
-            f"Avec les petites aiguilles, relever les mailles de l'encolure de la façon suivante : "
-            f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, "
-            f"{my_back.getNeckStitches()} mailles le long du dos, "
-            f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, "
-            f"{mailles_encolure} mailles de chaque côté de l'encolure (relever 2 mailles tous les 3 rangs).\n"
-            f"Tricoter en côtes sur {cotes_encolure} cm, en effectuant une double diminution centrale à la pointe du V.\n"
-            f"Rabattre souplement en utilisant un rabat élastique."
-        )
-        instructions.append("\n")
 
         # 3. AUGMENTATIONS RAGLAN
         instructions.append("------------------------------------------------------------")
@@ -256,6 +246,20 @@ def calculer_patron():
         instructions.append(tricoterPlusieursRangs(1, my_back.getRowsToHem()))
         instructions.append(cotes(cotes_bas))
 
+        instructions.append("------------------------------------------------------------")
+        instructions.append("6. FINITIONS ENCOLURE")
+        instructions.append("------------------------------------------------------------")
+        instructions.append(
+            f"Avec les petites aiguilles, relever les mailles de l'encolure de la façon suivante : "
+            f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche droite, "
+            f"{my_back.getNeckStitches()} mailles le long du dos, "
+            f"{my_sleeve.getTopSleeveStitches()} mailles le long de la manche gauche, "
+            f"{mailles_encolure} mailles de chaque côté de l'encolure (relever 2 mailles tous les 3 rangs).\n"
+            f"Tricoter en côtes sur {cotes_encolure} cm, en effectuant une double diminution centrale à la pointe du V.\n"
+            f"Rabattre souplement en utilisant un rabat élastique."
+        )
+        instructions.append("\n")
+
         # 6. MANCHES
         my_sleeve.setRowsToWrist(my_sleeve.calculRowsNeeded(my_swatch.getRows(), my_sleeve.getUnderArmToHemLength()))
         my_sleeve.setWristStitches(my_sleeve.calculStitchesNeeded(my_swatch.getStitches(), my_sleeve.getWristCircumference(), 0))
@@ -266,7 +270,7 @@ def calculer_patron():
         ratio_diminution_manche = my_sleeve.calculRatio(my_sleeve.getRowsToWrist(), nb_diminutions_manches)
 
         instructions.append("------------------------------------------------------------")
-        instructions.append("6. MANCHES")
+        instructions.append("7. MANCHES")
         instructions.append("------------------------------------------------------------")
         instructions.append(diminutionDebutEtFinDeRang(1))
         instructions.append(tricoterPlusieursRangs(2, int(ratio_diminution_manche)))

@@ -36,12 +36,26 @@ function handleFormSubmit(event) {
 
   const email = document.getElementById('reset-email').value.trim();
 
-  if (!isValidEmail(email)) {
-    showAlert("Format d'email invalide", "error"); // Message d'erreur si email incorrect
+  clearError(); // Nettoie les anciens messages
+
+  if (!email) {
+    showError("Veuillez saisir votre adresse e-mail");
     return;
   }
 
-  showSuccessPopup(email); // Affiche le popup de confirmation
+  if (!isValidEmail(email)) {
+    showError("Format d'e-mail invalide");
+    return;
+  }
+
+  // En cas de succès, mettre le champ en succès et afficher le popup de confirmation
+  const emailField = document.getElementById('reset-email');
+  if (emailField) {
+    emailField.classList.remove('error');
+    emailField.classList.add('success');
+  }
+  showSuccessPopup(email);
+
 }
 
 //  Alertes 
@@ -59,6 +73,30 @@ function showSuccessPopup(email) {
   popup.classList.add('active');
 
   setTimeout(closePopup, 10000); // Fermeture automatique après 10s
+}
+
+function showError(message) {
+  const errorDiv = document.getElementById('email-error');
+  // Ajout de la classe d’erreur sur le champ et affichage du message
+  const emailField = document.getElementById('reset-email');
+  if (emailField) {
+    emailField.classList.add('error');
+    emailField.classList.remove('success');
+  }
+  errorDiv.textContent = message;
+  errorDiv.classList.add('error-popup');
+}
+
+function clearError() {
+  const errorDiv = document.getElementById('email-error');
+  errorDiv.textContent = '';
+  errorDiv.classList.remove('error-popup');
+  // Retirer l’état d’erreur du champ
+  const emailField = document.getElementById('reset-email');
+  if (emailField) {
+    emailField.classList.remove('error');
+    emailField.classList.remove('success');
+  }
 }
 
 // Ferme le popup et réinitialise le formulaire

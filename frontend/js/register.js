@@ -62,6 +62,19 @@ function showErrorPopup(message) {
 
 // Gestion de l'inscription utilisateur
 // Formulaire d'inscription
+// Désactive les messages d'erreur HTML5 natifs en interceptant les événements "invalid".
+document.addEventListener('DOMContentLoaded', function() {
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        // Désactive la validation HTML5 par défaut
+        registerForm.setAttribute('novalidate', 'novalidate');
+        // Empêche l'affichage des bulles d'erreur par défaut
+        registerForm.addEventListener('invalid', function(e) {
+            e.preventDefault();
+        }, true);
+    }
+});
+
 document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Empêcher le rechargement de la page
 
@@ -69,15 +82,46 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
+    // Nettoyage des champs
+    data.prenom = data.prenom ? data.prenom.trim() : '';
+    data.nom    = data.nom ? data.nom.trim()    : '';
+    data.email  = data.email ? data.email.trim()  : '';
+    data.experience = data.experience || '';
+
+    // Expressions régulières pour validations
+    const emailRegex    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nameRegex     = /^[A-Za-zÀ-ÖØ-öø-ÿ'\-\s]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    // Vérifications du prénom et du nom (non vides et alphabétiques)
+    if (!data.prenom || !nameRegex.test(data.prenom)) {
+        showErrorPopup("Veuillez saisir un prénom valide (lettres uniquement).");
+        return;
+    }
+    if (!data.nom || !nameRegex.test(data.nom)) {
+        showErrorPopup("Veuillez saisir un nom valide (lettres uniquement).");
+        return;
+    }
+    // Vérification de l'adresse e‑mail
+    if (!data.email || !emailRegex.test(data.email)) {
+        showErrorPopup("Format de l'adresse e-mail invalide.");
+        return;
+    }
+    // Vérification que l'expérience est sélectionnée
+    if (!data.experience) {
+        showErrorPopup("Veuillez sélectionner votre niveau d'expérience en tricot.");
+        return;
+    }
+
     // Validation des champs
     if (data.password !== data['confirm-password']) {
         showErrorPopup("Les mots de passe ne correspondent pas.");
         return;
     }
 
-    // Validation du mot de passe
-    if (data.password.length < 8) {
-        showErrorPopup("Le mot de passe doit contenir au moins 8 caractères.");
+    // Validation du mot de passe (longueur et complexité)
+    if (!passwordRegex.test(data.password)) {
+        showErrorPopup("Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule et un chiffre.");
         return;
     }
 

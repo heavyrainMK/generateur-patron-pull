@@ -157,12 +157,16 @@ function validateLoginForm(email, password) {
     if (!email) {
         showFieldError('email', 'L\'adresse e-mail est requise');
         hasErrors = true;
+    } else if (!isValidEmail(email)) {
+        // Si l'e‑mail est renseigné mais invalide
+        showFieldError('email', 'Format d\'e-mail invalide');
+        hasErrors = true;
     }
     if (!password) {
         showFieldError('password', 'Le mot de passe est requis');
         hasErrors = true;
     }
-    
+
     return !hasErrors;
 }
 
@@ -187,12 +191,15 @@ function initRealTimeValidation() {
     if (passwordField) {
         passwordField.addEventListener('input', function() {
             const password = this.value.trim();
-            if (password.length >= 6) {
+            if (password.length === 0) {
+                // Retirer les classes si vide
+                this.classList.remove('success');
+                this.classList.remove('error');
+            } else {
+                // Mot de passe présent : succès
                 clearFieldError('password');
                 this.classList.remove('error');
                 this.classList.add('success');
-            } else if (password.length > 0) {
-                this.classList.remove('success');
             }
         });
     }
@@ -415,4 +422,8 @@ function checkSession() {
         window.location.href = 'user_dashboard.html';
         return;
     }
+}
+
+function goBack() {
+    window.history.back();
 }

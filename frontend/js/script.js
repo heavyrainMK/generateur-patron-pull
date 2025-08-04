@@ -210,22 +210,29 @@ function validerChamp(champ) {
     let estValide = true;
     champ.classList.remove('erreur');
     if (champ.type === 'number') {
-        const valeur = parseFloat(champ.value);
+        const valeurBrute = champ.value.trim();
         const min = parseFloat(champ.min);
         const max = parseFloat(champ.max);
-        if (champ.required && (!champ.value || isNaN(valeur))) {
+        if (champ.required && champ.validity.valueMissing) {
+            // Champ requis mais vide
             afficherErreurChamp(champ, elementErreur, 'Ce champ est obligatoire');
             estValide = false;
-        } else if (champ.required && valeur < min) {
-            afficherErreurChamp(champ, elementErreur, `La valeur doit être au moins ${min}`);
+        } else if (champ.validity.badInput) {
+            // L'utilisateur a saisi un texte non convertible en nombre
+            afficherErreurChamp(champ, elementErreur, 'Veuillez entrer un nombre valide');
             estValide = false;
-        } else if (champ.required && valeur > max) {
-            afficherErreurChamp(champ, elementErreur, `La valeur doit être au maximum ${max}`);
-            estValide = false;
+        } else if (valeurBrute !== '') {
+            // La valeur est un nombre (sinon badInput aurait été vrai). On vérifie les limites.
+            const valeur = parseFloat(valeurBrute);
+            if (!isNaN(valeur) && (valeur < min || valeur > max)) {
+                afficherErreurChamp(champ, elementErreur, `La valeur doit être comprise entre ${min} et ${max}`);
+                estValide = false;
+            }
         }
     } else if (champ.tagName === 'SELECT') {
         if (!champ.value) {
-            afficherErreurChamp(champ, elementErreur, 'Veuillez faire un choix');
+            // Message générique pour les sélecteurs vides
+            afficherErreurChamp(champ, elementErreur, 'Veuillez sélectionner une option');
             estValide = false;
         }
     } else if (champ.required && !champ.value) {
@@ -256,14 +263,23 @@ function validerAisanceEtape1() {
     if (!modeAisanceCorps.value) estValide = false;
     if (modeAisanceCorps.value === "personnalise") {
         const champAisanceCorps = document.getElementById('aisance_corps');
-        const valeur = parseFloat(champAisanceCorps.value);
-        if (champAisanceCorps.value === "" || isNaN(valeur)) {
-            afficherErreurChamp(champAisanceCorps, champAisanceCorps.parentElement.querySelector('.message-erreur'), 'Valeur obligatoire');
+        const valeurBrute = champAisanceCorps.value.trim();
+        const min = parseFloat(champAisanceCorps.min);
+        const max = parseFloat(champAisanceCorps.max);
+        const messageContainer = champAisanceCorps.parentElement.querySelector('.message-erreur');
+        // Utiliser l'API de validation native pour différencier absence de valeur et mauvaise saisie
+        if (champAisanceCorps.validity.valueMissing) {
+            afficherErreurChamp(champAisanceCorps, messageContainer, 'Veuillez saisir une aisance personnalisée pour le corps');
             estValide = false;
-        }
-        if (valeur < parseFloat(champAisanceCorps.min) || valeur > parseFloat(champAisanceCorps.max)) {
-            afficherErreurChamp(champAisanceCorps, champAisanceCorps.parentElement.querySelector('.message-erreur'), `L'aisance doit être entre ${champAisanceCorps.min} et ${champAisanceCorps.max} cm`);
+        } else if (champAisanceCorps.validity.badInput) {
+            afficherErreurChamp(champAisanceCorps, messageContainer, 'Valeur invalide : veuillez entrer un nombre');
             estValide = false;
+        } else if (valeurBrute !== '') {
+            const valeur = parseFloat(valeurBrute);
+            if (!isNaN(valeur) && (valeur < min || valeur > max)) {
+                afficherErreurChamp(champAisanceCorps, messageContainer, `L'aisance doit être comprise entre ${min} et ${max} cm`);
+                estValide = false;
+            }
         }
     }
     // Manches
@@ -271,14 +287,22 @@ function validerAisanceEtape1() {
     if (!modeAisanceManches.value) estValide = false;
     if (modeAisanceManches.value === "personnalise") {
         const champAisanceManches = document.getElementById('aisance_manches');
-        const valeur = parseFloat(champAisanceManches.value);
-        if (champAisanceManches.value === "" || isNaN(valeur)) {
-            afficherErreurChamp(champAisanceManches, champAisanceManches.parentElement.querySelector('.message-erreur'), 'Valeur obligatoire');
+        const valeurBrute = champAisanceManches.value.trim();
+        const min = parseFloat(champAisanceManches.min);
+        const max = parseFloat(champAisanceManches.max);
+        const messageContainer = champAisanceManches.parentElement.querySelector('.message-erreur');
+        if (champAisanceManches.validity.valueMissing) {
+            afficherErreurChamp(champAisanceManches, messageContainer, 'Veuillez saisir une aisance personnalisée pour les manches');
             estValide = false;
-        }
-        if (valeur < parseFloat(champAisanceManches.min) || valeur > parseFloat(champAisanceManches.max)) {
-            afficherErreurChamp(champAisanceManches, champAisanceManches.parentElement.querySelector('.message-erreur'), `L'aisance doit être entre ${champAisanceManches.min} et ${champAisanceManches.max} cm`);
+        } else if (champAisanceManches.validity.badInput) {
+            afficherErreurChamp(champAisanceManches, messageContainer, 'Valeur invalide : veuillez entrer un nombre');
             estValide = false;
+        } else if (valeurBrute !== '') {
+            const valeur = parseFloat(valeurBrute);
+            if (!isNaN(valeur) && (valeur < min || valeur > max)) {
+                afficherErreurChamp(champAisanceManches, messageContainer, `L'aisance doit être comprise entre ${min} et ${max} cm`);
+                estValide = false;
+            }
         }
     }
     return estValide;

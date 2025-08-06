@@ -199,8 +199,8 @@ function validerEtapeCourante() {
     // Ajout validation de l’aisance personnalisée si affichée
     if (etapeCourante === 1) {
         estValide = validerAisanceEtape1() && estValide;
-    } else if (etapeCourante === 3) {
-        estValide = validerEtape3() && estValide;
+    } else if (etapeCourante === 4) {
+        estValide = validerMesuresBras() && estValide;
     }
     return estValide;
 }
@@ -308,16 +308,17 @@ function validerAisanceEtape1() {
     return estValide;
 }
 
-function validerEtape3() {
+function validerMesuresBras() {
     const tourBras    = parseFloat(document.getElementById('tour_bras').value);
     const tourPoignet = parseFloat(document.getElementById('tour_poignet').value);
     let estValide = true;
-    if (tourPoignet >= tourBras) {
+    // Vérifie uniquement si les deux valeurs sont bien remplies
+    if (!isNaN(tourBras) && !isNaN(tourPoignet) && tourPoignet >= tourBras) {
         const elementErreur = document.getElementById('tour_poignet').parentElement.querySelector('.message-erreur');
         afficherErreurChamp(
-          document.getElementById('tour_poignet'),
-          elementErreur,
-          'Le tour de poignet doit être inférieur au tour de bras'
+            document.getElementById('tour_poignet'),
+            elementErreur,
+            'Le tour de poignet doit être inférieur au tour de bras'
         );
         estValide = false;
     }

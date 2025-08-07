@@ -225,12 +225,6 @@ class Calculs(ABC):
             ):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours += self.getRythmeLent()
-            print(
-                f"Rythme rapide : {self.getAugmentationsRapides()} augmentations tous les {self.getRythmeRapide()} rangs. "
-                f"Rythme lent : {self.getAugmentationsLentes()} augmentations tous les {self.getRythmeLent()} rangs\n"
-            )
-            print(self.getNumeroRangsAugmentationRapide())
-            print(self.getNumeroRangsAugmentationLent())
 
         # Cas où les augmentations sont légèrement moins fréquentes : toutes les 1 ou 3 rangs.
         elif (increases * 3) > rows:
@@ -254,13 +248,7 @@ class Calculs(ABC):
             ):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours += self.getRythmeLent()
-            print(
-                f"Rythme rapide : {self.getAugmentationsRapides()} augmentations tous les {self.getRythmeRapide()} rangs. "
-                f"Rythme lent : {self.getAugmentationsLentes()} augmentations tous les {self.getRythmeLent()} rangs\n"
-            )
-            print(self.getNumeroRangsAugmentationRapide())
-            print(self.getNumeroRangsAugmentationLent())
-
+        
         # Cas par défaut : augmentations plus espacées (par exemple toutes les 2 ou 4 rangs).
         else:
             while (augmentations_restantes * 4) >= rangs_restants:
@@ -283,12 +271,7 @@ class Calculs(ABC):
             ):
                 self.setNumeroRangsAugmentationLent(rang_en_cours)
                 rang_en_cours += self.getRythmeLent()
-            print(
-                f"Rythme rapide : {self.getAugmentationsRapides()} augmentations tous les {self.getRythmeRapide()} rangs. "
-                f"Rythme lent : {self.getAugmentationsLentes()} augmentations tous les {self.getRythmeLent()} rangs\n"
-            )
-            print(self.getNumeroRangsAugmentationRapide())
-            print(self.getNumeroRangsAugmentationLent())
+            
 
     # pour l'instant on utilisera cette fonction uniquement pour les manches
     # mais à l'avenir il est possible que j'en aie besoin pour le corps également

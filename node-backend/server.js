@@ -227,23 +227,6 @@ const upload = multer({
     }
 });
 
-// Schéma Pattern pour les images de patrons
-const patternSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Utilisateur', required: true },
-    title: { type: String, required: true },
-    size: String,
-    type: String,
-    length: String,
-    tags: [String],
-    image: {
-        url: String,           // URL Cloudinary
-        publicId: String,      // ID public 
-        originalName: String   // Nom original du fichier
-    },
-    createdAt: { type: Date, default: Date.now }
-});
-
-const Pattern = mongoose.model('Pattern', patternSchema);
 
 // Route pour uploader une image vers Cloudinary
 app.post('/api/pattern/:patternId/upload-image', upload.single('patternImage'), async (req, res) => {

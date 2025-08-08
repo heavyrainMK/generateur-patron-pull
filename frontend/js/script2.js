@@ -5,7 +5,9 @@
 # Auteurs ..... : M, L, M
 # Version ..... : V2.0.1 du 26/06/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
-# Description . : Script  pour le pages login.html, page_accueille.html
+# Description . : Ce script gère la navigation, l'affichage de la modale “À propos”, 
+#                 les animations visuelles, la validation et la soumission du formulaire de connexion, 
+#                 ainsi que le chargement et l'affichage des données utilisateur.
 #
 # Technologies  : JavaScript
 # Dépendances . : formulaire.html, login.html, page_accueille.html, style.css
@@ -15,7 +17,6 @@
 
 
 // INITIALISATION PRINCIPALE
-
 document.addEventListener('DOMContentLoaded', function() {
     if (window.location.pathname.includes('user_dashboard')) {
         checkSession();
@@ -30,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 // GESTION DU BOUTON RETOUR
+
+/**
+ * Initialise le bouton retour
+ */
 function initBackButton() {
     const backBtn = document.getElementById('back-button');
     if (backBtn) {
@@ -40,8 +45,23 @@ function initBackButton() {
     }
 }
 
+/**
+ * Fonction de navigation vers la page précédente
+ */
+function goBack() {
+    if (document.referrer && document.referrer !== window.location.href) {
+        window.history.back();
+    } else {
+        window.location.href = 'page_accueille.html';
+    }
+}
+
 
 // GESTION DE LA MODAL "À PROPOS"
+
+/**
+ * Initialise la modal "À propos" avec ses événements
+ */
 function initAboutModal() {
     const modal = document.getElementById('about-overlay');
     const aboutBtn = document.getElementById('about-button');
@@ -89,6 +109,10 @@ function initAboutModal() {
 
 
 // ANIMATIONS FLOTTANTES
+
+/**
+ * Initialise les animations flottantes des éléments
+ */
 function initFloatingAnimations() {
     const floatingElements = document.querySelectorAll('.floating-active, .floating-element');
     
@@ -113,6 +137,10 @@ function initFloatingAnimations() {
 
 
 // ANIMATIONS DES BOUTONS
+
+/**
+ * Initialise les animations de clic pour les boutons
+ */
 function initButtonAnimations() {
     const clickableButtons = document.querySelectorAll('.login-button, .cta-button');
     
@@ -126,6 +154,10 @@ function initButtonAnimations() {
 
 
 // GESTION DU FORMULAIRE DE CONNEXION
+
+/**
+ * Initialise le formulaire de connexion
+ */
 function initLoginForm() {
     const loginForm = document.getElementById('loginForm');
     
@@ -135,6 +167,10 @@ function initLoginForm() {
     initRealTimeValidation();
 }
 
+/**
+ * La soumission du formulaire de connexion
+ * @param {Event} e - L'événement de soumission du formulaire
+ */
 function handleLoginSubmit(e) {
     e.preventDefault();
     
@@ -151,25 +187,34 @@ function handleLoginSubmit(e) {
     performLogin(email, password);
 }
 
+/**
+ * Valide les champs du formulaire de connexion
+ * @param {string} email - L'adresse email saisie
+ * @param {string} password - Le mot de passe saisi
+ * @returns {boolean} - True si le formulaire est valide, false sinon
+ */
 function validateLoginForm(email, password) {
     let hasErrors = false;
     
     if (!email) {
         showFieldError('email', 'L\'adresse e-mail est requise');
         hasErrors = true;
-    } else if (!isValidEmail(email)) {
+    }  else if (!isValidEmail(email)) {
         // Si l'e‑mail est renseigné mais invalide
         showFieldError('email', 'Format d\'e-mail invalide');
-        hasErrors = true;
+    hasErrors = true;
     }
     if (!password) {
         showFieldError('password', 'Le mot de passe est requis');
         hasErrors = true;
     }
-
+    
     return !hasErrors;
 }
 
+/**
+ * Initialise la validation des champs du formulaire
+ */
 function initRealTimeValidation() {
     const emailField = document.getElementById('email');
     const passwordField = document.getElementById('password');
@@ -205,8 +250,14 @@ function initRealTimeValidation() {
     }
 }
 
+
 // UTILITAIRES DE VALIDATION
 
+/**
+ * Valide le format d'une adresse email
+ * @param {string} email - L'adresse email à valider
+ * @returns {boolean} - True si l'email est valide, false sinon
+ */
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -215,6 +266,11 @@ function isValidEmail(email) {
 
 // GESTION DES ERREURS
 
+/**
+ * Affiche un message d'erreur pour un champ spécifique
+ * @param {string} fieldName - Le nom du champ
+ * @param {string} message - Le message d'erreur à afficher
+ */
 function showFieldError(fieldName, message) {
     const field = document.getElementById(fieldName);
     const errorDiv = document.getElementById(fieldName + '-error');
@@ -227,6 +283,10 @@ function showFieldError(fieldName, message) {
     }
 }
 
+/**
+ * Efface le message d'erreur d'un champ spécifique
+ * @param {string} fieldName - Le nom du champ
+ */
 function clearFieldError(fieldName) {
     const field = document.getElementById(fieldName);
     const errorDiv = document.getElementById(fieldName + '-error');
@@ -238,6 +298,9 @@ function clearFieldError(fieldName) {
     }
 }
 
+/**
+ * Efface tous les messages d'erreur du formulaire
+ */
 function clearErrors() {
     const errorMessages = document.querySelectorAll('.error-message');
     const inputs = document.querySelectorAll('.form-input');
@@ -255,6 +318,11 @@ function clearErrors() {
 
 // GESTION DES ALERTES
 
+/**
+ * Affiche une alerte utilisateur avec animation
+ * @param {string} message - Le message à afficher
+ * @param {string} type - Le type d'alerte ('success', 'error', 'warning')
+ */
 function showAlert(message, type) {
     const alertContainer = document.getElementById('alert-container');
     
@@ -286,6 +354,13 @@ function showAlert(message, type) {
 
 
 // GESTION DE LA CONNEXION API
+
+/**
+ * Effectue la connexion utilisateur via l'API
+ * @param {string} email - L'adresse email de l'utilisateur
+ * @param {string} password - Le mot de passe de l'utilisateur
+ * @returns {Promise<void>}
+ */
 async function performLogin(email, password) {
     const remember = document.getElementById('remember')?.checked || false;
 
@@ -308,11 +383,6 @@ async function performLogin(email, password) {
             // Connexion réussie
             showAlert('Connexion réussie !', 'success');
             
-            // Sauvegarder les informations utilisateur si "Se souvenir de moi" est coché
-            if (remember) {
-                localStorage.setItem('userEmail', email);
-                localStorage.setItem('rememberMe', 'true');
-            }
             // Sauvegarder les infos utilisateur pour la session
             sessionStorage.setItem('userEmail', email);
             sessionStorage.setItem('userPrenom', data.user.prenom);
@@ -332,9 +402,15 @@ async function performLogin(email, password) {
     } catch (error) {
         console.error('Erreur:', error);
         showAlert('Erreur de connexion', 'error');
-    }}
+    }
+}
 
 // GESTION DES INFORMATIONS UTILISATEUR SUR LE DASHBOARD
+
+/**
+ * Charge les informations utilisateur pour le dashboard
+ * @returns {Promise<void>}
+ */
 async function loadUserInfo() {
     try {
         // Vérifier si l'utilisateur est connecté
@@ -361,7 +437,7 @@ async function loadUserInfo() {
                 const userData = await response.json();
                 updateUserDisplay(userData.prenom, userData.nom);
                 
-                // Sauvegarder dans sessionStorage pour les prochaines fois
+                // Sauvegarder dans sessionStorage
                 sessionStorage.setItem('userPrenom', userData.prenom);
                 sessionStorage.setItem('userNom', userData.nom);
             } else {
@@ -377,6 +453,11 @@ async function loadUserInfo() {
     }
 }
 
+/**
+ * Met à jour l'affichage des informations utilisateur dans l'interface
+ * @param {string} prenom - Le prénom de l'utilisateur
+ * @param {string} nom - Le nom de famille de l'utilisateur
+ */
 function updateUserDisplay(prenom, nom) {
     // Mettre à jour l'affichage du prénom
     const userInfoElement = document.querySelector('.user-info span');
@@ -391,27 +472,17 @@ function updateUserDisplay(prenom, nom) {
     }
 }
 
-// FONCTION DE DÉCONNEXION
-function logout() {
-    // Supprimer toutes les informations de session
-    sessionStorage.clear();
-    
-    // Supprimer les informations "se souvenir de moi" si nécessaire
-    const rememberMe = localStorage.getItem('rememberMe');
-    if (!rememberMe) {
-        localStorage.removeItem('userEmail');
-    }
-    
-    // Rediriger vers la page d'accueil
-    window.location.href = 'page_accueille.html';
-}
 
-// VÉRIFICATION DE LA SESSION AU CHARGEMENT
+// VÉRIFICATION DE LA SESSION
+
+/**
+ * Vérifie l'état de la session utilisateur et redirige si nécessaire
+ */
 function checkSession() {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn');
     const currentPath = window.location.pathname;
     
-    // Si on est sur une page protégée et pas connecté
+    // Si on est sur une page pas connecté
     if (currentPath.includes('user_dashboard') && !isLoggedIn) {
         window.location.href = 'login.html';
         return;
@@ -422,8 +493,4 @@ function checkSession() {
         window.location.href = 'user_dashboard.html';
         return;
     }
-}
-
-function goBack() {
-    window.history.back();
 }

@@ -1,9 +1,10 @@
+
 /*
 # *******************************************************
 # Nom ......... : login.css
 # Rôle ........ : Feuille de style pour la page de login de générateur de patrons de pulls
 # Auteurs ..... : M, L, M
-# Version ..... : V1 du 04/08/2025
+# Version ..... : V2 du 08/08/2025
 # Licence ..... : Réalisé dans le cadre du cours de la Réalisation de Programmes
 # Description . : Styles CSS pour la page de login
 # Compatibilité : Navigateurs modernes (Chrome, Firefox, Safari, Edge)
@@ -26,6 +27,7 @@
   overflow: hidden;
   animation: slideUp 0.6s ease-out;
 }
+
 /* Animation d'apparition */
 @keyframes slideUp {
   from {
@@ -37,7 +39,6 @@
     transform: translateY(0);
   }
 }
-
 
 /* En-tête du formulaire */
 .login-header {
@@ -98,7 +99,7 @@
   animation: shake 0.5s ease-in-out;
 }
 
-/* Champ valide */
+/* Input valide */
 .form-input.success {
   border-color: var(--success-color);
   box-shadow: 0 0 0 3px rgba(81, 207, 102, 0.3);
@@ -129,22 +130,7 @@
   margin: 10px 0;
 }
 
-/* Case à cocher "se souvenir de moi" */
-.remember-me {
-  display: flex;
-  transform: translateY(7px);
-  gap: 8px;
-  color: var(--text-gray);
-  font-size: 0.9rem;
-}
 
-/* Style de la checkbox */
-.remember-me input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: rgba(255, 255, 255, 0.8);
-
-}
 
 /* Mot de passe oublié */
 .forgot-password {

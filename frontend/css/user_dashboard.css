@@ -43,7 +43,7 @@
 
 /* Conteneur principal  */
 .container {
- max-width: 800px;
+ max-width: 850px;
  position: relative;
  left: 50%;
  transform: translateX(-50%);
@@ -102,34 +102,6 @@
  margin-bottom: 5px;
 }
 
-/* Filtres, recherche */
-.controls {
- background: var(--glass-bg);
- backdrop-filter: blur(30px);
- border-radius: 20px;
- border: 1px solid var(--glass-border);
- padding: 25px;
- margin-bottom: 30px;
-}
-
-.controls-grid {
- display: grid;
- grid-template-columns: 1fr auto auto;
- gap: 20px;
- align-items: center;
-}
-
-.search-input {
- width: 100%;
- padding: 12px 45px 12px 15px;
- background: rgba(255, 255, 255, 0.1);
- border: 1px solid rgba(255, 255, 255, 0.3);
- border-radius: 12px;
- color: var(--text-white);
- font-size: 1rem;
- transition: all 0.3s ease;
-}
-
 
 /* Grille des modèles enregistrés */
 .patterns-grid {
@@ -148,25 +120,21 @@
  position: relative;
  overflow: hidden;
  min-height: 400px;
- max-height: 500px;
+ height: 580px;
  width: 100%;
  box-sizing: border-box;
 }
 
-/* Informations sur le patron*/
+/* Card titre */
 .pattern-title {
- font-size: 1.3rem;
- font-weight: 700;
- margin-bottom: 5px;
-}
-
-.pattern-date {
- font-size: 0.9rem;
- color: var(--text-gray);
-}
-
-.pattern-menu {
- position: relative;
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  border: none;
+  background: transparent;
+  width: 100%;
+  cursor: text;
 }
 
 .pattern-info {
@@ -188,7 +156,7 @@
  font-weight: 600;
 }
 
-/* Tags (mots-clés) */
+/* Mots-clés */
 .tags-section {
  margin-bottom: 20px;           
 }
@@ -231,7 +199,6 @@
  font-size: 0.7rem;
  opacity: 0.7;
 }
-
 
 /* Formulaire pour ajouter un tag */
 .add-tag-form {
@@ -315,39 +282,20 @@
  animation: fadeOut 1s ease-out;
  opacity: 0;
 }
-  
-.action-btn {
- flex: 1;
- padding: 12px;
- border: none;
- border-radius: 10px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.3s ease;
- display: flex;
- align-items: center;
- justify-content: center;
- gap: 8px;
+
+.error-message.show {
+ display: block;
+ animation: fadeIn 0.3s ease-in;
 }
 
-.view-btn {
- background: rgba(255, 255, 255, 0.53);
- color: #111;
+@keyframes fadeIn {
+ from { opacity: 0; }
+ to { opacity: 1; }
 }
 
-.view-btn:hover {
- background: rgba(255, 255, 255, 0.8);
- transform: translateY(-2px);
-}
-
-.download-btn {
- background: var(--success-color);
- color: #000;
-}
-
-.download-btn:hover {
- transform: translateY(-2px);
- box-shadow: 0 8px 16px rgba(84, 252, 123, 0.3);
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 .user-avatar {
@@ -385,20 +333,296 @@
  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
 }
 
-.error-message.show {
- display: block;
- animation: fadeIn 0.3s ease-in;
+/* Upload d’image */
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 30px;
 }
 
-@keyframes fadeIn {
- from { opacity: 0; }
- to { opacity: 1; }
+.image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: linear-gradient(135deg, #9fc5ff4a 0%, #ddeaff77 100%);
+    border: transparent;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+.image-placeholder:hover {
+    background: linear-gradient(135deg, #e2e8f0a0 0%, #a0aec08d 100%);
+    border-color: #718096;
+}
+
+.upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    opacity: 0.6;
+}
+
+.image-placeholder p {
+    margin: 10px 0;
+    color: #718096;
+    font-weight: 500;
+}
+
+/*Bouton Choisir une image*/
+.upload-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s ease;
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+}
+
+/*Boutons d'action d'image*/
+.image-actions {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-preview:hover .image-actions {
+    opacity: 1;
+}
+
+/*Boutons Changer et Supprimer*/
+.change-image-btn,
+.remove-image-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-image-btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: #4a5568;
+}
+
+.change-image-btn:hover {
+    background: white;
+}
+
+.remove-image-btn {
+    background: rgba(245, 101, 101, 0.9);
+    color: white;
+}
+
+.remove-image-btn:hover {
+    background: #f56565;
+}
+
+/* Animation de chargement d'une image*/
+.image-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Badge cloud pour indiquer le stockage */
+.cloud-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(102, 126, 234, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+.image-loading p {
+    margin: 0;
+    font-size: 14px;
+}
+
+#html-templates {
+    display: none !important;
+}
+
+.hidden-file-input {
+    display: none !important;
+}
+
+/* Styles pour les messages d'alerte de téléchargement d'images */
+.alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+
+.alert {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.alert.success {
+    background: #48bb78;
+}
+
+.alert.error {
+    background: #f56565;
+}
+
+.alert.show {
+    transform: translateX(0);
+}
+
+.alert.hide {
+    transform: translateX(100%);
+}
+
+/* Styles pour le loading des images */
+.loading-message {
+    margin-top: 10px;
+    color: #667eea;
+    font-weight: 500;
 }
 
 
-        
+/* Styles pour la popup de déconnexion */
+.logout-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.logout-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.logout-modal, .delete-modal {
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    transform: translateY(-20px) scale(0.9);
+    transition: all 0.3s ease;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.logout-overlay.show .logout-modal {
+    transform: translateY(0) scale(1);
+}
+
+
+.logout-title .delete-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-white);
+}
+
+.logout-message, .delete-message {
+    font-size: 1rem;
+    color: var(--text-gray);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.logout-buttons, .delete-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.logout-btn-confirm, .delete-btn-cancel, .delete-btn-confirm,
+.logout-btn-cancel {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+.logout-btn-confirm, .delete-btn-confirm {
+    background: var(--danger-color);
+    color: white;
+}
+
+.logout-btn-confirm:hover,
+.delete-btn-confirm:hover  {
+    background: #e53e3e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(245, 101, 101, 0.3);
+}
+
+.logout-btn-cancel, .delete-btn-cancel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    color: var(--text-white);
+}
+
+.logout-btn-cancel:hover,
+.delete-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+}
+
+.logout-overlay.hide {
+    opacity: 0;
+    visibility: hidden;
+}

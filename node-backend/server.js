@@ -13,12 +13,20 @@
 */
 
 // Importation des modules nécessaires
+
+require('dotenv').config();              // Chargement des variables d'environnement
 const express = require('express');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');    // Connexion MongoDB
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const app = express();
+
+const multer = require('multer');
+const { v2: cloudinary } = require('cloudinary'); // API Cloudinary v
+const { CloudinaryStorage } = require('multer-storage-cloudinary'); // Storage pour multer/Cloudinary
+const bcrypt = require('bcrypt'); // Hachage des mots de passe
+const NBhachage = 10; 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +34,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '../frontend'))); // Fichiers HTML/CSS
 
 // Connexion à la base de données MongoDB
-mongoose.connect('mongodb+srv://pull:b7SOBeu4HqfABfct@cluster.puhrkui.mongodb.net/?retryWrites=true&w=majority&appName=Cluster')
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Connecté à MongoDB'))
     .catch(err => console.error('Erreur MongoDB :', err));
 
@@ -49,8 +57,6 @@ const Utilisateur = mongoose.model('Utilisateur', utilisateurSchema);
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        
-        console.log('Tentative de connexion pour:', email);
 
         // Vérification des champs requis
         if (!email || !password) {
@@ -59,16 +65,17 @@ app.post('/api/login', async (req, res) => {
 
         // Recherche de l'utilisateur par email
         const user = await Utilisateur.findOne({ email: email });
-        
-        console.log('Utilisateur trouvé:', user ? 'Oui' : 'Non');
 
         // Vérification de l'existence de l'utilisateur
         if (!user) {
             return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
         }
 
+        // Vérification avec bcrypt
+        const isPasswordValid = await bcrypt.compare(password, user.motdepasse);
+        
         // Vérification du mot de passe
-        if (user.motdepasse !== password) {
+        if (!isPasswordValid) {
             console.log('Mot de passe incorrect');
             return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
         }
@@ -106,20 +113,22 @@ app.post('/api/register', async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
         }
+        // Hachage du mot de passe
+        const hashedPassword = await bcrypt.hash(password, NBhachage);
 
         // Créer nouvel utilisateur
         const nouvelUtilisateur = new Utilisateur({
             prenom,
             nom,
             email: email,        
-            motdepasse: password,
+            motdepasse: hashedPassword,
             experience,
         });
 
         // Sauvegarde dans la base de données
         await nouvelUtilisateur.save();
         console.log('Nouvel utilisateur enregistré:', email);
-        // Redirect with a success query parameter
+        // Réponse de succès
         res.status(201).json({ message: 'Utilisateur enregistré avec succès.' });
     } catch (error) {
         // Gestion des erreurs serveur
@@ -128,16 +137,6 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// Route pour voir tous les utilisateurs
-app.get('/api/utilisateurs', async (req, res) => {
-    try {
-        const utilisateurs = await Utilisateur.find({});
-        res.json(utilisateurs);
-    } catch (error) {
-        console.error('Erreur lors de la récupération:', error);
-        res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs' });
-    }
-});
 
 // Route pour récupérer les informations de l'utilisateur connecté
 app.get('/api/user/:email', async (req, res) => {
@@ -191,7 +190,131 @@ app.listen(PORT, () => {
     console.log(`   - Connexion: http://localhost:${PORT}/login.html`);
     console.log(`   - Inscription: http://localhost:${PORT}/register.html`);
     console.log(`   - Page utilisateur: http://localhost:${PORT}/user_dashboard.html`);
-    console.log(`   - Utilisateurs: http://localhost:${PORT}/api/utilisateurs`);
 });
 
+// Configuration Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'cloud_name',
+    api_key: process.env.CLOUDINARY_API_KEY || 'api_key',
+    api_secret: process.env.CLOUDINARY_API_SECRET || 'api_secret'
+});
 
+// Configuration du storage Cloudinary
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'pattern-pulls', // Dossier dans Cloudinary
+        allowed_formats: ['jpg', 'png', 'jpeg'], // Formats autorisés
+        transformation: [
+            { width: 500, height: 400, crop: 'limit' },
+            { quality: 'auto:good' }
+        ],
+        public_id: (req, file) => {
+            // Nom unique pour chaque image
+            const userEmail = req.body.userEmail;
+            const patternId = req.params.patternId;
+            const timestamp = Date.now();
+            return `${userEmail}_${patternId}_${timestamp}`;
+        }
+    }
+});
+
+// Configuration Multer avec Cloudinary
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fileSize: 10 * 1024 * 1024 // 10MB 
+    }
+});
+
+// Schéma Pattern pour les images de patrons
+const patternSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Utilisateur', required: true },
+    title: { type: String, required: true },
+    size: String,
+    type: String,
+    length: String,
+    tags: [String],
+    image: {
+        url: String,           // URL Cloudinary
+        publicId: String,      // ID public 
+        originalName: String   // Nom original du fichier
+    },
+    createdAt: { type: Date, default: Date.now }
+});
+
+const Pattern = mongoose.model('Pattern', patternSchema);
+
+// Route pour uploader une image vers Cloudinary
+app.post('/api/pattern/:patternId/upload-image', upload.single('patternImage'), async (req, res) => {
+    try {
+        const patternId = req.params.patternId;
+        const userEmail = req.body.userEmail;
+
+        if (!req.file) {
+            return res.status(400).json({ message: 'Aucune image fournie' });
+        }
+
+        // Vérifier que l'utilisateur existe
+        const user = await Utilisateur.findOne({ email: userEmail });
+        if (!user) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        console.log('Image uploadée vers Cloudinary:', req.file.path);
+
+        // Les informations Cloudinary sont dans req.file
+        const imageData = {
+            url: req.file.path,           // URL Cloudinary
+            publicId: req.file.filename,  // Public ID
+            originalName: req.file.originalname
+        };
+
+
+        res.status(200).json({ 
+            message: 'Image uploadée avec succès vers le cloud',
+            imageUrl: imageData.url,
+            publicId: imageData.publicId
+        });
+
+    } catch (error) {
+        console.error('Erreur upload Cloudinary:', error);
+        res.status(500).json({ message: 'Erreur lors de l\'upload: ' + error.message });
+    }
+});
+
+// Route pour supprimer une image de Cloudinary
+app.delete('/api/pattern/image/:publicId', async (req, res) => {
+    try {
+        const publicId = decodeURIComponent(req.params.publicId);
+
+        if (!publicId || publicId === 'undefined') {
+            return res.status(400).json({ 
+                message: 'Public ID manquant ou invalide',
+                receivedPublicId: publicId 
+            });
+        }
+
+        const result = await cloudinary.uploader.destroy(publicId);
+
+        if (result.result === 'ok') {
+            res.status(200).json({ 
+                message: 'Image supprimée avec succès du cloud'
+            });
+        } else if (result.result === 'not found') {
+            res.status(404).json({ 
+                message: 'Image non trouvée dans le cloud'
+            });
+        } else {
+            res.status(500).json({ 
+                message: 'Échec de la suppression dans le cloud'
+            });
+        }
+
+    } catch (error) {
+        console.error('Erreur suppression Cloudinary:', error);
+        res.status(500).json({ 
+            message: 'Erreur serveur lors de la suppression: ' + error.message
+        });
+    }
+});

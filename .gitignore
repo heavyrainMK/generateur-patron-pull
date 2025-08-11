@@ -18,9 +18,9 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Environnements (parfois utilisés)
+# Environnements
 .env
-.env.*
+.env.*.local
 
 # Autres fichiers potentiellement générés
 *.log

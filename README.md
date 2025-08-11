@@ -44,7 +44,7 @@ Accessible via une interface web moderne, il guide les utilisateurs pas à pas d
 4. Le **backend Node.js** reçoit la demande, la transmet à l’API Python (Flask) dédiée au calcul du patron.
 5. L’API Flask retourne les instructions de tricot détaillées.
 6. L’utilisateur obtient son patron personnalisé, avec possibilité de téléchargement PDF.
-7. L’historique des patrons générés et les profils utilisateurs sont sauvegardés dans MongoDB.
+7. Les profils utilisateurs sont sauvegardés dans MongoDB.
 
 ---
 

@@ -35,7 +35,10 @@ app.use(express.static(path.join(__dirname, '../frontend'))); // Fichiers HTML/C
 
 // Connexion à la base de données MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connecté à MongoDB'))
+    .then(() => {
+        console.log('Connecté à MongoDB');
+        console.log('Base utilisée :', mongoose.connection.name);
+    })
     .catch(err => console.error('Erreur MongoDB :', err));
 
 

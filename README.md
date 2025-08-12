@@ -61,51 +61,45 @@ Accessible via une interface web moderne, il guide les utilisateurs pas à pas d
 
 ## 🚀 Installation & Lancement local
 
-### 1. Backend Node.js/Express
+Ce projet utilise un **Makefile** pour simplifier l'installation, le lancement et l'arrêt des serveurs.
 
+### 1️⃣ Installation des dépendances
 ```bash
-cd node-backend
-npm install
-npm start
+make install
 ```
+> Cette commande installe automatiquement :
+> - Les dépendances **Node.js** dans `node-backend/`
+> - Les dépendances **Python** dans un environnement virtuel `venv/`
 
-- Par défaut, le serveur écoute sur [http://localhost:3000](http://localhost:3000).
-
-💡 **Important** : si tu fais appel à l’API Python Flask depuis le frontend, pense à **modifier l’URL dans la requête `fetch` dans le fichier `script.js`** :
-
-Remplace :
-```js
-const reponse = await fetch('https://patron-flask-api.onrender.com/api/calculer-patron', {
-```
-par :
-```js
-const reponse = await fetch('http://127.0.0.1:10000/api/calculer-patron', {
-```
-ou, si tu testes depuis un autre appareil sur le réseau local :
-```js
-const reponse = await fetch('http://192.168.1.46:10000/api/calculer-patron', {
-```
-
-### 2. API Flask (Python)
-
-Assure-toi d’avoir Python 3.9+ et pip.
-
+### 2️⃣ Lancement en mode développement
 ```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python app.py
+make dev
+```
+> Lance simultanément :
+> - Le serveur **Flask** sur le port `10000`
+> - Le serveur **Node.js** sur le port `3000`
+
+### 3️⃣ Arrêter les serveurs
+```bash
+make stop
+```
+> Arrête proprement Flask et Node.js et restaure l'état du terminal.
+
+### 4️⃣ Nettoyer l'environnement
+```bash
+make clean
+```
+> Supprime l'environnement Python, `node_modules` et les fichiers PID.
+
+Pour plus de commandes disponibles :
+```bash
+make help
 ```
 
-- Par défaut, l’API Flask écoute sur le port 5000 ou selon config Render.
-
-### 3. Frontend
-
-- Les fichiers statiques sont servis automatiquement par Node.js (voir `/frontend`).
-
----
-
+💡 **Astuce :** Après `make stop`, si votre terminal semble bloqué ou que les touches ne s'affichent pas correctement, tapez :  
+```bash
+stty sane
+```
 ## 🔐 Configuration & Sécurité
 
 - Les identifiants MongoDB sont à placer dans une variable d’environnement ou un fichier `.env` (jamais en dur en production !).

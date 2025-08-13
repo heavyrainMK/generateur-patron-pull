@@ -60,6 +60,12 @@ function showErrorPopup(message) {
     }
 }
 
+function getUserEmail() {
+    return sessionStorage.getItem('userEmail') || 
+           localStorage.getItem('userEmail') || 
+           null;
+}
+
 // Gestion de l'inscription utilisateur
 // Formulaire d'inscription
 // Désactive les messages d'erreur HTML5 natifs en interceptant les événements "invalid".

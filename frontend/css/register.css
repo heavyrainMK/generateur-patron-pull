@@ -10,6 +10,10 @@
 # *******************************************************
 */
 
+/* Empêche les calculs de largeur "content-box" de provoquer des débordements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 /* Conteneur du formulaire d'inscription */
 .register-container {
@@ -80,7 +84,7 @@
 /* Ligne de formulaire pour aligner les champs*/
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   margin-bottom: 20px;
 }
@@ -91,6 +95,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  min-width: 0;
 }
 
 /* Label de champ */
@@ -107,6 +112,7 @@
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   padding: 16px 10px;
+  width: 100%;
   color: #ffffff;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -131,6 +137,7 @@ select.form-input {
   background-position: right 15px center;
   background-size: 20px;
   padding-right: 50px;
+  width: 100%;
 }
 
 select.form-input option {

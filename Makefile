@@ -55,6 +55,10 @@ dev: install start-flask start-node
 
 start-flask:
 	@echo "🚀 Démarrage Flask (port $(PORT_FLASK))…"
+	@if lsof -tiTCP:$(PORT_FLASK) -sTCP:LISTEN >/dev/null 2>&1; then \
+		echo "❌ Port $(PORT_FLASK) déjà utilisé. Lance 'make stop' ou libère le port."; \
+		exit 1; \
+	fi
 	@sh -c 'cd $(PY_DIR) && \
 		FLASK_APP=app.py exec ../$(VENV_BIN)/python -m flask run \
 		--host=127.0.0.1 --port=$(PORT_FLASK) --no-reload --no-debugger' \
@@ -62,8 +66,12 @@ start-flask:
 
 start-node:
 	@echo "🚀 Démarrage Node (port $(PORT_NODE))…"
-	@cd $(NODE_DIR) && PORT=$(PORT_NODE) node server.js \
-	  & echo $$! > "$(PID_NODE)"
+	@if lsof -tiTCP:$(PORT_NODE) -sTCP:LISTEN >/dev/null 2>&1; then \
+		echo "❌ Port $(PORT_NODE) déjà utilisé. Lance 'make stop' ou libère le port."; \
+		exit 1; \
+	fi
+	@sh -c 'cd $(NODE_DIR) && PORT=$(PORT_NODE) exec node server.js' \
+		> /dev/stdout 2>&1 & echo $$! > "$(PID_NODE)"
 
 # ====== STOP ======
 stop:
@@ -78,9 +86,20 @@ stop:
 	else \
 		echo "  (Flask déjà arrêté)"; \
 	fi
-	-@[ -f "$(PID_NODE)" ] && kill `cat "$(PID_NODE)"` 2>/dev/null && rm -f "$(PID_NODE)" && echo "  ✔ Node stoppé" || echo "  (Node déjà arrêté)"
+	-@if [ -f "$(PID_NODE)" ]; then \
+		PID=$$(cat "$(PID_NODE)"); \
+		kill $$PID 2>/dev/null || true; \
+		sleep 0.5; \
+		if ps -p $$PID >/dev/null 2>&1; then kill -9 $$PID 2>/dev/null || true; fi; \
+		rm -f "$(PID_NODE)"; \
+		echo "  ✔ Node stoppé"; \
+	else \
+		echo "  (Node déjà arrêté)"; \
+	fi
 	-@command -v fuser >/dev/null 2>&1 && fuser -k -n tcp $(PORT_FLASK) 2>/dev/null || true
 	-@command -v lsof  >/dev/null 2>&1 && lsof -tiTCP:$(PORT_FLASK) -sTCP:LISTEN | xargs -r kill -9 2>/dev/null || true
+	-@command -v fuser >/dev/null 2>&1 && fuser -k -n tcp $(PORT_NODE)  2>/dev/null || true
+	-@command -v lsof  >/dev/null 2>&1 && lsof -tiTCP:$(PORT_NODE)  -sTCP:LISTEN | xargs -r kill -9 2>/dev/null || true
 	@stty sane || true
 
 # ====== TESTS ======

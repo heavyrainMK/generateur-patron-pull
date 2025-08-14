@@ -1,4 +1,4 @@
-# ====== Générateur de Patrons de Tricot — Makefile ======
+# ====== Générateur de Patrons de Tricot - Makefile ======
 # Cibles: make install, make dev, make stop, make test, make clean, make help
 
 # --- Racine & venv ---

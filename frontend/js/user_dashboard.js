@@ -392,7 +392,6 @@ function displayUploadedImage(patternId, imageUrl, publicId) {
  */
 function setupImageControls(template, patternId, publicId) {
     const changeBtn = template.querySelector('.change-image-btn');
-    const removeBtn = template.querySelector('.remove-image-btn');
     const fileInput = template.querySelector('.hidden-file-input');
     
     fileInput.id = `imageInput-${patternId}`;
@@ -484,17 +483,6 @@ function createImageDeleteModal() {
 
     return overlay;
 }
-
-document.querySelectorAll('.remove-image-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const modal = createImageDeleteModal();
-        document.body.appendChild(modal);
-
-        const confirmBtn = modal.querySelector('.delete-btn-confirm');
-        confirmBtn.setAttribute('data-pattern-id', btn.dataset.patternId || '');
-        confirmBtn.setAttribute('data-public-id', btn.dataset.publicId || '');
-    });
-});
 
 
 /**
